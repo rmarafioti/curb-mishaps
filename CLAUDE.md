@@ -96,6 +96,17 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 - BigQuery has no exact median aggregate (`percentile_cont` is window-only). For the Median metrics use `agg: percentile` with `use_approximate_percentile: true`; on ~100 rows it is effectively exact. Confirm with `mf validate-configs`.
 - `profiles.yml` lives at the repo root (copied from `profiles.example.yml`, gitignored). dbt and SQLFluff read it from there. The key lives in `~/.gcp/`. Never commit either, or `.env`.
 
+## Dev → prod
+
+- All work builds in `curb_dev` (the default target). Never run `--target prod` on a branch.
+- Promote only after the change is merged to `main` and dev is green:
+  `dbt build` passes, `sqlfluff lint models/` is clean, `mf validate-configs` passes.
+- Promote with `dbt build --target prod`, then reconcile: prod total `mishap_cost`
+  must equal dev's (and the Sheet's `Losses by Year` tab).
+- The dashboard and every export read `curb_prod` only. The export script runs
+  `dbt parse --target prod` before any `mf query`, so MetricFlow points at prod.
+- Ask Rich before any prod build.
+
 ## Git
 
 - `main` is always green. Work on a branch (`feat/fct-mishap`, `fix/stg-casts`), open a PR, merge.
