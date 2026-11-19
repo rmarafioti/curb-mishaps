@@ -1,0 +1,42 @@
+# Copy to the repo root as profiles.yml:   cp profiles.example.yml profiles.yml
+# dbt looks for profiles.yml in the current folder before ~/.dbt, so this
+# project's connection stays in this project. profiles.yml is gitignored.
+# It holds no secrets (the key path comes from an env var); the key itself
+# lives in ~/.gcp and is never committed.
+#
+# Set these in ~/.zshrc:
+#   export CURB_GCP_PROJECT="your-gcp-project-id"
+#   export CURB_GCP_KEYFILE="$HOME/.gcp/curb-dbt-sa.json"
+
+curb_mishaps:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('CURB_GCP_PROJECT') }}"
+      keyfile: "{{ env_var('CURB_GCP_KEYFILE') }}"
+      dataset: curb_dev
+      location: US
+      threads: 4
+      priority: interactive
+      job_execution_timeout_seconds: 300
+      # Drive scope is required to read the Google Sheet external table.
+      scopes:
+        - https://www.googleapis.com/auth/bigquery
+        - https://www.googleapis.com/auth/cloud-platform
+        - https://www.googleapis.com/auth/drive.readonly
+    prod:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('CURB_GCP_PROJECT') }}"
+      keyfile: "{{ env_var('CURB_GCP_KEYFILE') }}"
+      dataset: curb_prod
+      location: US
+      threads: 4
+      priority: interactive
+      job_execution_timeout_seconds: 300
+      scopes:
+        - https://www.googleapis.com/auth/bigquery
+        - https://www.googleapis.com/auth/cloud-platform
+        - https://www.googleapis.com/auth/drive.readonly

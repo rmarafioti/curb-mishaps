@@ -1,0 +1,73 @@
+sources:
+  - name: sheets
+    description: >
+      Live BigQuery external tables over the master Google Sheet
+      (https://docs.google.com/spreadsheets/d/1-SbV6CB3GlgIQJPgsCssc2eStrgImUCeB2eXOGwokMo).
+      Created by dbt-external-tables: `dbt run-operation stage_external_sources`.
+      Every column is declared STRING; all casting happens in staging.
+    schema: curb_raw
+    tables:
+      - name: mishaps
+        description: >
+          `Mishaps` tab, one row per mishap (episodes with no mishap = one row,
+          has_mishap = 0). Columns are read by POSITION (A to Y), so if a column is
+          added, removed or moved in the Sheet, update this list and sheet_range, then
+          run `dbt run-operation stage_external_sources --vars "ext_full_refresh: true"`.
+        external:
+          options:
+            format: GOOGLE_SHEETS
+            uris:
+              - https://docs.google.com/spreadsheets/d/1-SbV6CB3GlgIQJPgsCssc2eStrgImUCeB2eXOGwokMo
+            sheet_range: Mishaps!A:Y
+            skip_leading_rows: 1
+        columns:
+          - name: row_id               # A  (display order only; renumbers, never a key)
+            data_type: string
+          - name: episode_id           # B
+            data_type: string
+          - name: season               # C
+            data_type: string
+          - name: episode_in_season    # D
+            data_type: string
+          - name: title                # E
+            data_type: string
+          - name: air_date             # F
+            data_type: string
+          - name: air_year             # G
+            data_type: string
+          - name: has_mishap           # H
+            data_type: string
+          - name: description          # I
+            data_type: string
+          - name: loss_kind            # J
+            data_type: string
+          - name: loss_kind_category   # K
+            data_type: string
+          - name: amount_usd           # L
+            data_type: string
+          - name: amount_stated        # M
+            data_type: string
+          - name: needs_verification   # N  (sheet-only, dropped in staging)
+            data_type: string
+          - name: source               # O
+            data_type: string
+          - name: review_status        # P
+            data_type: string
+          - name: review_notes         # Q
+            data_type: string
+          - name: est_low_usd          # R
+            data_type: string
+          - name: est_mid_usd          # S
+            data_type: string
+          - name: est_high_usd         # T
+            data_type: string
+          - name: estimate_basis       # U
+            data_type: string
+          - name: confidence           # V
+            data_type: string
+          - name: estimate_source      # W  (sheet-only, dropped in staging)
+            data_type: string
+          - name: is_catastrophic      # X  (TRUE on catastrophic rows, blank = FALSE)
+            data_type: string
+          - name: mishap_num           # Y  (1, 2, 3... within an episode; 0 = no-mishap placeholder; never renumbered)
+            data_type: string

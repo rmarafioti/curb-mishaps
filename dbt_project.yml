@@ -1,0 +1,32 @@
+name: curb_mishaps
+version: "0.1.0"
+config-version: 2
+require-dbt-version: [">=1.10.0", "<2.0.0"]
+
+profile: curb_mishaps
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  curb_mishaps:
+    +persist_docs:
+      relation: true
+      columns: true
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  curb_mishaps:
+    +persist_docs:
+      relation: true

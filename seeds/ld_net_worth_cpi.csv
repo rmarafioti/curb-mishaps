@@ -1,0 +1,29 @@
+year,net_worth_low_musd,net_worth_mid_musd,net_worth_high_musd,basis,event,source,cpi_u_annual_avg,cpi_basis,to_2026_dollars_multiplier,real_divorce_addback_mid_musd,net_worth_adj_low_musd,net_worth_adj_mid_musd,net_worth_adj_high_musd
+2000,150,280,300,anchor,"Post-1998 Seinfeld syndication windfall ($250M pre-tax) on top of ~$30M prior fortune; low end assumes ~50% tax",https://www.celebritynetworth.com/articles/entertainment-articles/how-much-money-did-jerry-seinfeld-make-off-of-seinfeld-from-salary-and-royalties/,172.2,BLS annual average,1.923,0,150,280,300
+2001,200,333,350,interpolated,,,177.1,BLS annual average,1.870,0,200,333,350
+2002,250,387,400,interpolated,,,179.9,BLS annual average,1.841,0,250,387,400
+2003,300,440,450,interpolated,,,184,BLS annual average,1.800,0,300,440,450
+2004,350,493,500,interpolated,,,188.9,BLS annual average,1.753,0,350,493,500
+2005,400,547,550,interpolated,,,195.3,BLS annual average,1.696,0,400,547,550
+2006,450,600,600,anchor,"Pre-divorce peak: est. ~$600M (June 2007 reports)",https://extratv.com/2007/06/05/larry-david-and-wife-laurie-split-after-14-years,201.6,BLS annual average,1.643,0,450,600,600
+2007,250,300,400,anchor,"Divorce from Laurie David: fortune est. ~$600M before split, then halved",https://extratv.com/2007/06/05/larry-david-and-wife-laurie-split-after-14-years,207.342,BLS annual average,1.597,250,450,550,700
+2008,262,312,412,interpolated,,,215.303,BLS annual average,1.538,250,462,562,712
+2009,275,325,425,interpolated,,,214.537,BLS annual average,1.544,250,475,575,725
+2010,288,338,438,interpolated,,,218.056,BLS annual average,1.519,250,488,588,738
+2011,300,350,450,interpolated,"Curb S8 'The Divorce' airs (show event)",,224.939,BLS annual average,1.472,250,500,600,750
+2012,312,362,462,interpolated,,,229.594,BLS annual average,1.442,250,512,612,762
+2013,325,375,475,interpolated,,,232.957,BLS annual average,1.422,250,525,625,775
+2014,338,388,488,interpolated,,,236.736,BLS annual average,1.399,250,538,638,788
+2015,350,400,500,anchor,"Reported ~$400M; Larry confirms 'my wife took half of it'",https://www.businessinsider.in/heres-why-larry-david-says-he-isnt-really-worth-half-a-billion/articleshow/46449672.cms,237.017,BLS annual average,1.397,250,550,650,800
+2016,362,400,506,interpolated,,,240.007,BLS annual average,1.380,250,562,650,806
+2017,375,400,512,interpolated,,,245.12,BLS annual average,1.351,250,575,650,812
+2018,388,400,519,interpolated,,,251.107,BLS annual average,1.319,250,588,650,819
+2019,400,400,525,anchor,"Netflix Seinfeld deal: est. $100-125M+ apiece to Larry and Jerry (pre-tax)",https://thewrap.com/jerry-seinfeld-larry-david-100-million-dollars-netflix-deal,255.657,BLS annual average,1.295,250,600,650,825
+2020,400,400,521,interpolated,,,258.811,BLS annual average,1.280,250,600,650,821
+2021,400,400,518,interpolated,,,270.97,BLS annual average,1.222,250,600,650,818
+2022,400,400,514,interpolated,,,292.655,BLS annual average,1.132,250,600,650,814
+2023,400,400,511,interpolated,,,304.702,BLS annual average,1.087,250,600,650,811
+2024,400,400,507,interpolated,,,313.689,BLS annual average,1.056,250,600,650,807
+2025,400,400,504,interpolated,,,321.943,BLS annual average,1.029,250,600,650,804
+2026,400,400,500,anchor,"Celebrity Net Worth: $400M (updated Mar 2026); other sources up to ~$500M",https://www.celebritynetworth.com/?p=43,331.18,Year-to-date average (Jan-Oct 2026),1.000,250,600,650,800
+2027,400,400,500,projection,Held flat at 2026 estimate,,341.115,Projection: 2026 + 3% inflation,0.971,250,600,650,800

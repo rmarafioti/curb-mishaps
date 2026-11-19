@@ -1,0 +1,37 @@
+seeds:
+  - name: ld_net_worth_cpi
+    description: >
+      Copy of the Sheet's `LD Net Worth` tab: Larry David's reported net worth by
+      year (low/mid/high, $M), CPI-U, and the `net_worth_adj_*` columns (real 2007
+      divorce added back). The tab is finished, so it lives here as a versioned seed.
+      If the tab changes, re-export it to this file and run `dbt seed`.
+    config:
+      quote_columns: false
+      column_types:
+        year: int64
+        net_worth_low_musd: numeric
+        net_worth_mid_musd: numeric
+        net_worth_high_musd: numeric
+        basis: string
+        event: string
+        source: string
+        cpi_u_annual_avg: numeric
+        cpi_basis: string
+        to_2026_dollars_multiplier: numeric
+        real_divorce_addback_mid_musd: numeric
+        net_worth_adj_low_musd: numeric
+        net_worth_adj_mid_musd: numeric
+        net_worth_adj_high_musd: numeric
+    columns:
+      - name: year
+        data_tests:
+          - unique
+          - not_null
+      - name: basis
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['anchor', 'interpolated', 'projection']
+      - name: net_worth_adj_mid_musd
+        data_tests:
+          - not_null

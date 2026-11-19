@@ -1,0 +1,27 @@
+# dbt
+target/
+dbt_packages/
+logs/
+package-lock.yml
+.user.yml
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets: keys live in ~/.gcp, profiles in ~/.dbt. These are a backstop.
+profiles.yml
+*-sa.json
+*service-account*.json
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+.vscode/settings.json
+
+# Next.js (web/ comes later)
+web/node_modules/
+web/.next/
+web/out/

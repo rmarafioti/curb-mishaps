@@ -1,0 +1,167 @@
+# Curb Your Enthusiasm: Larry's Mishaps — Project Brief
+
+Handoff document for any agent or session working on this repo. Read this first, then `CLAUDE.md` (code conventions).
+
+---
+
+## 1. Thesis (stay the course)
+
+> **Define a metric once. Use it everywhere — in dashboards, in reports, in AI answers. Always the same, always traceable to the warehouse.**
+
+- **The hook:** how much money Larry David's TV character loses through his mishaps across all 12 seasons (2000–2024). Funny, fun to explore.
+- **The point:** the dbt semantic layer (MetricFlow). Once metrics are defined and wired to the dashboard, the page practically builds itself and every number is true to the warehouse — no hand-written queries.
+- **The AI angle:** an AI that writes its own SQL can be confidently wrong. An AI that asks a governed semantic layer can only give answers the business already agreed on. Showcase: the dashboard assembled by AI querying MetricFlow.
+
+### Rules for the build
+1. Metrics live **only** in MetricFlow YAML. Dashboards and AI request metrics by name, sliced by dimensions.
+2. No one-off SQL behind a chart. If a chart needs a custom query, the story breaks.
+3. The page includes a **"How this was built"** section: lineage (seeds → models → semantic layer → dashboard) and one metric's YAML next to the chart it powers.
+4. Demonstrate **one metric, many views** (e.g. `total_realized_loss` driving the KPI tile, by-season chart and by-category chart — all reconcile).
+
+### Scope
+Portfolio/showcase, **1–2 weeks**. Minimum version first: clean data, ~5 governed metrics, one dashboard page (KPIs, losses by season, losses by category, top disasters), one simple forecast with a confidence band. Extras only if time allows ("TV Larry" net worth line, multiple forecast scenarios, AI/MCP-built page).
+
+---
+
+## 2. Source of truth
+
+**Google Sheet (master, human-editable):**
+https://docs.google.com/spreadsheets/d/1-SbV6CB3GlgIQJPgsCssc2eStrgImUCeB2eXOGwokMo/edit
+
+| Tab | Purpose | Becomes |
+|---|---|---|
+| `Mishaps` | One row per mishap (episodes with no mishap = one row, `has_mishap = 0`). Columns (restructured 2026-11-18): A–G episode (`row_id`, `episode_id`, `season`, `episode_in_season`, `title`, `air_date`, `air_year`); H `has_mishap` (1/0); I `description`; J `loss_kind` → K `loss_kind_category` (hierarchy); L `amount_usd` (only when stated); M `amount_stated` (1/0); N `needs_verification` (TRUE/FALSE, sheet-only, drop once review is done); O `source`; P–Q `review_status`, `review_notes`; **R–W `est_low_usd`, `est_mid_usd`, `est_high_usd`, `estimate_basis`, `confidence`, `estimate_source`** (filled by Claude for `keep` rows; `estimate_source` optional, nice-to-have); **X `is_catastrophic`** (TRUE on catastrophic rows, blank = FALSE; added 2026-11-19 so the flag travels with the row instead of a hardcoded `row_id` list); **Y `mishap_num`** (1, 2, 3... within an episode, 0 = no-mishap placeholder; assigned once, never renumbered; added 2026-11-19). Removed: `mishap_seq`, `direction` (all rows are losses), `estimated_amount_usd`, `source_url`. Pre-restructure version is in the Sheet's version history (backup tab deleted). Sheet row = `row_id` + 1. | BigQuery external table `curb_raw.mishaps` (live) → `stg_mishaps` → `fct_mishap` + `dim_episode` |
+| `Losses by Year` | Formula mockup of the year-by-year table (Realized / Hypothetical / Catastrophic / Total / net worth / %); each column labeled with its MetricFlow metric. Includes a reconciliation check. | — (reference for the semantic layer) |
+| `LD Net Worth` | 2000–2027: reported net worth low/mid/high ($M), basis (anchor/interpolated/projection), event, source; CPI-U annual average, CPI basis, multiplier to 2026 dollars; **`net_worth_adj_low/mid/high_musd` = reported + real 2007 divorce added back ($200M/$250M/$300M from 2007 on). Use the adj columns in metrics.** | seed `ld_net_worth_cpi` (tab is finished; re-export if it changes) → `stg_ld_net_worth` → `dim_net_worth` |
+| `README` | Thesis, review rules, data principles. | — |
+| `Glossary` | Finance/insurance/stats terms with education-data equivalents. | — |
+
+The Sheet is the source. **dbt reads the `Mishaps` tab live** through a BigQuery external table (defined in `models/staging/_sources.yml`, created by `dbt-external-tables`), so Rich's ongoing edits flow in on the next `dbt build` with no exporting. All external columns are declared STRING and cast in staging. The external table reads columns by position: any column change in the Sheet needs `_sources.yml` updated and a full refresh of the external table.
+
+**Lesson learned (row-ID bug, fixed 2026-11-18):** an earlier merge applied corrections by `row_id` after rows had been renumbered, and 20 rows landed on the wrong mishaps. **Never match edits by `row_id` after any renumbering — match by `episode_id` + description.**
+
+---
+
+## 3. Data principles
+
+- **Cite everything.** Every amount has a basis — `stated` (on screen / in synopsis) / reference price / category default — and a `source`; `estimate_source` links are a nice-to-have (it's fiction, the point is to show the research was done).
+- **Rough is fine.** Unstated amounts get `est_low / est_mid / est_high` + confidence. Don't agonize over small items.
+- **Price in the year it happened.** Estimates are in *that air year's* dollars (`mishap_cost`, nominal). When the reference price is current (e.g. a 2026 repair quote), deflate it by CPI to the air year before entering it. dbt also keeps a CPI-converted copy (`mishap_cost_2026`) — see "Two kinds of dollars" below.
+- **Two kinds of dollars (decided 2026-11-18).**
+  - **Nominal (`mishap_cost`) is the dashboard default.** Totals, by season, by category, top 10 and every net worth comparison use the year's own dollars. Net worth is also nominal, so same-year comparisons need no conversion. Net worth is never reduced by a cumulative total.
+  - **2026 dollars (`mishap_cost_2026`) are for the trend and the forecast.** Inflation alone makes later mishaps look pricier; converting removes that so the trend shows real change, and the forecast projects from there.
+  - **The dashboard explains this in a note** and separates the two sources of growth, so the reader can weigh them: (1) **frequency** — are there more mishaps per episode as the seasons go on? (count, no dollars involved); (2) **cost** — is each mishap pricier, and how much of that is just inflation? (nominal vs. 2026-dollar cost side by side; the gap between them is inflation, what's left is real growth).
+- **Pricing workflow:** Rich marks a row `keep` and leaves a note on how to price it → Claude fills R–W with a cited range. `pass`/`drop` rows get no price; `unsure` rows wait for Rich to re-watch on HBO Max.
+- **Hypothetical HBO show (row 23, "The Shrimp Incident"):** Rich's call — count it, priced as **1 full season (12 episodes)** at $50K/$150K/$500K per episode = **$600K / $1.8M / $6M** (2001 dollars), confidence low. It stays in the hypothetical bucket; even at the high end it's a small share of his net worth (that's part of the joke).
+- **Be transparent.** Dashboard shows the share of the total that is stated vs. estimated.
+- **One divorce, counted once.** Curb's Larry *is* Larry David playing himself with his real money, so show losses can be applied to real net worth. To avoid double counting, the net worth series **adds back the real 2007 divorce** (`net_worth_adj_*` columns), and the show's **2011 Cheryl divorce is the only divorce**: a catastrophic mishap valued at the real settlement (low $200M / mid $250M / high $300M).
+- **Net Worth After Mishaps is single-year only.** `net_worth_adj` (that year) − that year's mishaps. Required single-select year filter, no "All years" — the metric is not cumulative.
+- **Catastrophic losses separate.** Divorce, house fire (S6 "Meet the Blacks"), Latte Larry's burning down (S10) go in a catastrophic bucket so they don't distort everyday mishap stats.
+- **Realized vs. hypothetical.** `loss_kind = realized` (money/property actually lost) vs. `hypothetical` (missed income: shelved musical, lost car-periscope investment, Prius sold under market).
+
+---
+
+## 4. Data model
+
+```
+sources: sheets.mishaps (external table over the Mishaps tab, live)
+seeds:   ld_net_worth_cpi (copy of the LD Net Worth tab)
+staging: stg_mishaps, stg_ld_net_worth
+dims:    dim_date     (date_day 2000-01-01..2028-12-31; MetricFlow time spine)
+         dim_episode  (episode_id, season, episode_in_season, episode_title, episode_date, episode_year)
+         dim_net_worth (year, year_start_date, net_worth_adj_low/mid/high_musd, net_worth_basis, cpi_index, to_2026_multiplier, is_show_airing)
+facts:   fct_mishap   (mishap_id, episode_id, mishap_num, episode_date, episode_year, description, loss_kind, loss_kind_category,
+                       amount_usd, amount_stated, est_low/mid/high_usd,
+                       mishap_cost = case when amount_stated = 1 then amount_usd else est_mid_usd end,
+                       mishap_cost_2026, estimate_basis, confidence, is_catastrophic, source)
+marts:   mart_losses_by_year, mart_losses_by_season, (later) mart_forecast
+```
+
+- **Key: `episode_id` + `mishap_num`** (`mishap_id` = surrogate of the two), not `row_id` (row_id renumbers after review; see the row-ID bug above). A new mishap takes the next unused number in its episode; gaps from deleted rows stay.
+- **Dates:** `dim_date` (2000-01-01 to 2028-12-31, day grain) is the calendar and MetricFlow's time spine. `fct_mishap.episode_date` joins to it; `episode_year` (parsed from the date) joins to `dim_net_worth.year`. `dim_year` is renamed **`dim_net_worth`** (built from the seed via `stg_ld_net_worth`).
+- An episodes semantic model (on `dim_episode`) is needed for Mishaps per Episode.
+- **Median on BigQuery:** BigQuery has no exact median aggregate (`PERCENTILE_CONT` is window-only), so the Median metrics use `agg: percentile` with `use_approximate_percentile: true` (`APPROX_QUANTILES`); on ~100 rows the result is effectively exact.
+- Grain of `fct_mishap`: one row per mishap. `dim_net_worth` grain: one row per year. Join on `episode_year` (each season aired within one calendar year).
+- **Fan-out warning:** net worth is non-additive. Never `SUM(net_worth)` after joining to mishaps. Either aggregate mishaps to year first then join, or compute `loss / net_worth_mid` per row and only sum losses.
+- **Inflation:** `amount_2026 = amount × (cpi_2026 / cpi_year)`; multiplier is precomputed in `dim_net_worth`. 2026 CPI is a Jan–Oct YTD average — swap in the official annual average after BLS publishes December 2026 (Jan 13, 2027).
+- Only `review_status = 'keep'` rows reach `fct_mishap` (until review is complete, unreviewed rows are excluded or flagged — decide in staging).
+- Exclude `has_mishap = 0` placeholder rows from the fact table (or filter in staging); keep them for `dim_episode`.
+- **Cost rule:** `amount_stated = 1` → use `amount_usd`; `amount_stated = 0` → use `est_mid_usd` (low/high kept for ranges and the forecast). Test: `amount_usd` is null whenever `amount_stated = 0`.
+- **Not in the warehouse:** `needs_verification` (sheet-only working flag), `estimate_source` (optional; shown on the page as "we did the research", not modeled).
+- Hierarchy: `loss_kind` (realized / hypothetical) → `loss_kind_category`: purchase, payment, gift, donation, investment, bet, loan_unrepaid, fine_fee, cash_lost, property_damage, property_lost, lost_opportunity. (`money_received` rows were all dropped; every row is a loss, so `direction` was removed.)
+
+### Metrics (MetricFlow) — Rich's list, refined
+| Metric | Definition | Notes |
+|---|---|---|
+| Total Mishap Loss | `sum(mishap_cost)` (stated, else est_mid; **year-of-event dollars**) | dashboard default; slice by `loss_kind` (realized / hypothetical). Running total by year; never subtracted from net worth |
+| Total Mishap Loss (2026 $) | `sum(mishap_cost_2026)` | shown beside the nominal total in the inflation note; feeds the cost trend and forecast |
+| Median Mishap Cost (2026 $) | `percentile(mishap_cost_2026, 0.5)` by season | severity trend with inflation removed |
+| Median Mishap Cost | `percentile(mishap_cost, 0.5)` | replaces Average (no outlier trimming needed); check percentile support on chosen warehouse |
+| Most Costly Mishap | `max(mishap_cost)` | pair with a Top 10 disasters table |
+| # Routine Mishaps | `count(mishap_id)` where not `is_catastrophic` | count, not sum |
+| # Big Losses | `count(mishap_id)` where `is_catastrophic` | |
+| Net Worth After Mishaps | `net_worth_adj − total_loss` | **single year only**, both sides nominal (same year, no conversion); `net_worth` is semi-additive (`non_additive_dimension` on `metric_time`) |
+| % Mishap to Net Worth | `total_loss / net_worth_adj` | both sides nominal; semi-additive denominator, never summed |
+| Mishaps per Episode | `mishap_count / episode_count` | frequency trend (no dollars, unaffected by inflation); forecast frequency input |
+| % Stated | stated $ / total $ | data-honesty KPI |
+
+Dimensions: year, season, episode, `loss_kind` → `loss_kind_category`, `is_catastrophic`.
+
+**Dashboard inflation note:** a short panel explaining that amounts are in the dollars of the year they happened, plus three views, each answering one question:
+1. **More mishaps?** Mishaps per Episode by season. No dollars, so inflation can't affect it; the most trustworthy of the three.
+2. **Pricier mishaps?** Median Mishap Cost (2026 $) by season, catastrophic rows excluded. Label it as mostly estimated, or filter to stated rows (see caveat below).
+3. **How much is just prices rising?** Nominal vs. 2026-dollar cost per season; the gap between the lines is inflation.
+
+**Caveat (estimates have no built-in real trend):** many estimates were made by taking a current price and deflating it to the air year. Converted back to 2026 dollars, those rows return today's price, so their real cost is flat across seasons by construction. Only `stated` amounts carry a real cost signal. The % Stated KPI tells the reader how much to trust view 2.
+
+Forecast lives in `mart_forecast` (season, median, p10, p90) produced by Python; semantic layer only exposes simple metrics on it.
+
+---
+
+## 5. Statistics plan (Phase 5)
+
+Frequency–severity model, insurance style:
+- **Frequency:** mishaps per episode — negative binomial (overdispersed counts); test for a trend across seasons. Forecast the **total** count per season (enough data for a real trend).
+- **Category mix:** too sparse to trend per category (~100 mishaps / 12 seasons / 13 categories = under 1 per category per season; most cells 0 or 1). Instead, split the forecast total by each category's historical share (e.g. property damage 25% of all mishaps → 25% of forecast count). To test whether the mix is shifting, group the 13 categories into 4–5 buckets (e.g. damage/loss, payments/fees, gifts/donations, bets/investments, missed opportunities) so each has enough rows. Report category forecasts as ranges ("3–7 property damage, most likely 5"), not single numbers.
+- **Severity (routine mishaps):** cost per mishap — lognormal; summarize with the **median**, which ignores how big the outliers are (a $250M loss counts the same as a $300 one, as one value above the middle). Test whether costs grow over seasons **in 2026 dollars** (nominal would show a false upward trend from inflation alone). Run the trend test on `stated` rows, or report it as mostly estimated (see caveat in section 4).
+- **Catastrophic:** modeled separately as rare events with a per-season probability. This is where the tails go: a forecast of total dollars can't ignore big losses, so routine (median cost × count) and catastrophic (probability × size) are added together. Nothing is double counted or dropped.
+- **Decomposition for the dashboard note:** growth in nominal loss per season = frequency change × real cost change × inflation. Report each piece so the reader sees how much is "more mishaps" vs. "pricier mishaps" vs. "prices rising."
+- **Forecast:** Monte Carlo — "if the show kept going to the present," simulate missing seasons (2025–2027), CPI-projected, report median + 80% band. Realized and hypothetical modeled separately.
+- Keep it modest and honest; the semantic layer is the star.
+
+---
+
+## 6. Status (as of 2026-11-19)
+
+**2026-11-19 update:** Sheet now has 195 rows (row 187, the $650 sports coat in "The Lawn Jockey", was added). Rows 16 (sunglasses for Jeff's mom, $100/$200/$350), 186 (lawn jockey, $300/$600/$2,400) and 187 ($650 stated) priced. Column X `is_catastrophic` added. Running mid total: **$262,024,688** (`Losses by Year` tab, reconciles). Review covers all rows except the `unsure` rows (23 plus S12 episodes 3–10, which Rich is still watching) and rows 7 and 34 (RE-REVIEW). Row 187 source set to `user`. Stack decided (section 7); repo scaffolded with the external source, net worth seed and staging models. The table below is the 2026-11-18 snapshot.
+
+| Phase | Status |
+|---|---|
+| 1. Clean list (keep/drop review) | **In progress — Rich.** 194 rows, 170 mishaps, 120 episodes. First ~37 rows reviewed. Row-ID bug fixed (20 rows rewritten). **Rows 7 and 34 marked RE-REVIEW** (their reviews moved to rows 10 and 37). Reviewed through row 119 and rows 161–185; rows 120–160 and 186 still to review. Several rows `unsure` (Rich to check on HBO Max). After review: delete `drop` rows, apply notes, renumber `row_id` (`mishap_seq` removed 2026-11-18). |
+| 2. Price unstated mishaps | **In progress.** Estimate columns R–W. All reviewed `keep` rows priced (76 rows). Running mid total (year-of-event dollars): **$1.67M realized + $5.16M hypothetical + $255.2M catastrophic = $262.0M** (as of 2026-11-18 evening) (see `Losses by Year` tab). Restaurant (rows 35 + 46, Bobo's is a wash) and hospital wing ($1M) dominate everyday realized; HBO show + golf club = most of hypothetical; divorce = 97% of everything. Decisions: row 113 (house in divorce) dropped, counted once; row 149 (Latte Larry's lease) folded into row 167; row 166 priced as the old Prius given away; rows 86 and 158 dropped; row 126 counts only the $75 haircut difference; row 147 only the $500 overpayment; car periscope (row 122, $2.5M mid) and Fatwa! musical (row 146, $750K mid) are the big new hypotheticals. Rule: if a row already has a stated amount, use it over Rich's guess. Row 61 `amount_usd` changed 30 → 10 (only the extra tip counts). Rows 76+ await review. 27 rows still flagged `needs_verification` (incl. $20K Mantle ball, $10K MJF donation, $4K charity lunch). |
+| 3. Dashboard spec (plain English → KPIs/charts) | **Metrics agreed** (table in section 4). Charts/layout not started. |
+| 4. Net worth by year | **Done** (`LD Net Worth` tab) — anchors 2000, 2006, 2007, 2015, 2019, 2026; CPI added; real 2007 divorce added back (`net_worth_adj_*`). |
+| 5. Statistics / forecast | Not started. **Waits until all data is in.** |
+
+### Sequencing (agreed)
+1. **Start dbt modeling at ~50–60 priced rows** (in VS Code): sources on the live Sheet, staging, `dim_net_worth`, `dim_episode`, `fct_mishap`, tests, MetricFlow YAML. The model doesn't depend on the data being finished.
+2. Rich keeps reviewing in the Sheet; new rows flow through on each `dbt build`; Claude prices new `keep` rows.
+3. **BI build (dashboard) and forecast start only after all data is in.**
+
+**Data sources used so far:** Wikipedia episode lists, Curb Fandom wiki, IMDb plot synopses (read via the browser extension; Seasons 11–12 have no IMDb synopses), Rich's own recollection (`source = user`), price references cited per row in `estimate_source`.
+
+---
+
+## 7. Decisions (settled 2026-11-19)
+
+1. **Warehouse: BigQuery.** New GCP project `curb-mishaps`, datasets `curb_raw` / `curb_dev` / `curb_prod` (US), dbt service account with a JSON key. Billing linked (sandbox tables expire after 60 days).
+2. **Transform + metrics: dbt Core + MetricFlow (`mf`), self-hosted.** No dbt platform account needed.
+3. **Dashboard: Next.js static page, built by Claude from MetricFlow output.** Each chart is one `mf query` (ideally a `saved_query` in YAML) exported with `--csv` to `web/data/`; the page reads those files at build time and deploys statically (Vercel). No warehouse credentials in the web app, no SQL behind any chart. Rebuild the data with one script after `dbt build`. Lightdash is dropped from the minimum version.
+4. **AI route: Claude Code calling `mf query` directly.** No paid `dbt-mcp`; a small MCP wrapper stays an optional extra.
+5. **Linting: SQLFluff** (dbt templater, BigQuery dialect). **Version control:** GitHub repo `curb-mishaps`, branch per task.
+
+---
+
+## 8. Conventions
+
+See `CLAUDE.md` — to be generated by scanning Rich's existing dbt project (CTEs over subqueries, import CTEs first, final `select`, `stg_/int_/fct_/dim_` naming, YAML style). Rich steers; the agent writes the SQL.
