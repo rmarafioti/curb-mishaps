@@ -80,9 +80,11 @@ metrics:
   - name: median_mishap_cost
     label: Median Mishap Cost
     description: >
-      The typical mishap: the median cost across the mishaps in each group of the query
-      (all of them, or per year or season when grouped by one). Each mishap is valued in
-      dollars of the year its episode aired (not inflation-adjusted).
+      The typical mishap: the lower median cost across the mishaps in each group of the
+      query (all of them, or per year or season when grouped by one). With an even number
+      of mishaps it is the lower of the middle two, not their average, so it is always a
+      real mishap's cost. Each mishap is valued in dollars of the year its episode aired
+      (not inflation-adjusted).
     type: simple
     type_params:
       measure: mishap_cost_median
@@ -101,8 +103,9 @@ metrics:
   - name: median_routine_mishap_cost_2026
     label: Median Routine Mishap Cost (2026 $)
     description: >
-      The severity trend with inflation removed: the median cost across the routine mishaps
-      in each group (e.g. per season), each converted to 2026 dollars. Catastrophic mishaps
+      The severity trend with inflation removed: the lower median cost across the routine
+      mishaps in each group (e.g. per season), each converted to 2026 dollars. With an even
+      number of mishaps it is the lower of the middle two, not their average. Catastrophic mishaps
       (the divorce, the house fire, Latte Larry's) are excluded so a single outlier can't
       move a season's median; they are forecast separately as rare events.
     type: simple

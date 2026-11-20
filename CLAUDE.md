@@ -107,7 +107,7 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 - BigQuery reads every Sheet row that has **anything** in it, including just a number format. Formatting cells below the data (e.g. currency on R:T) shows up as blank rows and fails the `not_null` tests on `stg_mishaps`. Fix it in the Sheet (delete those rows or clear their formatting), not with a filter. Don't trim the grid's other empty rows either: the `Losses by Year` tab's formulas read fixed ranges (`Mishaps!$X$2:$X$296`), and new rows past row 296 would fall outside them.
 - The Sheet must be shared (Viewer) with the dbt service account email, and the profile needs the Drive scope, or queries fail with "Permission denied while getting Drive credentials".
 - `dim_date` is registered as MetricFlow's time spine (`time_spine:` in `models/core/dim_date.yml`). Keep its range covering every date a metric or forecast uses (now 2000–2028).
-- BigQuery has no exact median aggregate (`percentile_cont` is window-only). For the Median metrics use `agg: percentile` with `use_approximate_percentile: true`; on ~100 rows it is effectively exact. Confirm with `mf validate-configs`.
+- BigQuery has no exact median aggregate (`percentile_cont` is window-only). For the Median metrics use `agg: percentile` with `use_approximate_percentile: true`. MetricFlow renders it as `APPROX_QUANTILES(x, 2)[OFFSET(1)]`, which returns the **lower median**: with an even count, the lower of the middle two values, not their average (Season 8 routine 2026 $: $441.60 vs. a true median of $7,580.80). Accepted 2026-11-20 and stated in the metric descriptions; to check by hand, use the same function, not `percentile_cont`.
 - `profiles.yml` lives at the repo root (copied from `profiles.example.yml`, gitignored). dbt and SQLFluff read it from there. The key lives in `~/.gcp/`. Never commit either, or `.env`.
 
 ## Dev → prod
@@ -131,6 +131,6 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 
 1. ~~Sources: external table on the Mishaps tab; seed for net worth; `dim_date`~~ (done)
 2. ~~`dim_net_worth`, `dim_episode`, `fct_mishap`; reconciled to $262,024,688 (101 rows)~~ (done, PR #1)
-3. `_semantic_models.yml`, `_metrics.yml` per `docs/losses_by_year_mockup.md` (names already match the built models)
-4. Reconcile `mf query` output to the Sheet's `Losses by Year` tab (total $262.02M as of 2026-11-19)
+3. ~~`_semantic_models.yml`, `_metrics.yml`: 3 semantic models, 15 metrics~~ (done, PR #3)
+4. ~~Reconcile `mf query` output to BigQuery and the Sheet's `Losses by Year` tab~~ (done 2026-11-20, every metric matched by hand; total $262,024,688)
 5. Export script (`mf query --csv`) → `web/` Next.js page (after all data is in)
