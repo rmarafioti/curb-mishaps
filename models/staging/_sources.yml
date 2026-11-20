@@ -9,10 +9,11 @@ sources:
     tables:
       - name: mishaps
         description: >
-          `Mishaps` tab, one row per mishap (episodes with no mishap = one row,
-          has_mishap = 0). Columns are read by POSITION (A to Y), so if a column is
-          added, removed or moved in the Sheet, update this list and sheet_range, then
-          run `dbt run-operation stage_external_sources --vars "ext_full_refresh: true"`.
+          Grain: one row per mishap; episodes with no mishap get one placeholder row
+          (has_mishap = 0, mishap_num = 0). `Mishaps` tab. Columns are read by POSITION
+          (A to Y), so if a column is added, removed or moved in the Sheet, update this
+          list and sheet_range, then run
+          `dbt run-operation stage_external_sources --vars "ext_full_refresh: true"`.
         external:
           options:
             format: GOOGLE_SHEETS
@@ -67,7 +68,7 @@ sources:
             data_type: string
           - name: estimate_source      # W  (sheet-only, dropped in staging)
             data_type: string
-          - name: is_catastrophic      # X  (TRUE on catastrophic rows, blank = FALSE)
+          - name: is_catastrophic      # X  (1 on catastrophic rows, 0 otherwise)
             data_type: string
           - name: mishap_num           # Y  (1, 2, 3... within an episode; 0 = no-mishap placeholder; never renumbered)
             data_type: string

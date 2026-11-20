@@ -2,8 +2,12 @@
 templater = dbt
 dialect = bigquery
 max_line_length = 100
-# LT05 (line length) is noisy on long jinja/surrogate-key lines in staging
-exclude_rules = LT05
+# LT05 (line length) is noisy on long jinja/surrogate-key lines in staging.
+# LT01 (spacing) is off so aliases can be padded out by hand to line up; SQLFluff
+#   can only align them one space past the longest column.
+# CV03 (select trailing comma) is off: trailing commas on column lists are a
+#   convention (see CLAUDE.md), but `select * from <cte>` stays as is.
+exclude_rules = LT05, LT01, CV03
 
 [sqlfluff:templater:dbt]
 project_dir = .

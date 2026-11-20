@@ -1,0 +1,27 @@
+models:
+  - name: dim_episode
+    description: >
+      Grain: one row per episode (120 today), keyed on episode_id. Includes episodes
+      with no mishap; built from every Sheet row regardless of review status. Feeds
+      the episodes semantic model (Mishaps per Episode).
+    columns:
+      - name: episode_id
+        data_type: int64
+        description: '{{ doc("episode_id") }}'
+        data_tests:
+          - unique
+      - name: season
+        data_type: int64
+        description: '{{ doc("season") }}'
+      - name: episode_in_season
+        data_type: int64
+        description: '{{ doc("episode_in_season") }}'
+      - name: episode_title
+        data_type: string
+        description: '{{ doc("episode_title") }}'
+      - name: episode_date
+        data_type: date
+        description: '{{ doc("episode_date") }}'
+      - name: episode_year
+        data_type: int64
+        description: '{{ doc("episode_year") }}'

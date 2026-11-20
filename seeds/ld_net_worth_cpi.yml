@@ -1,0 +1,23 @@
+seeds:
+  - name: ld_net_worth_cpi
+    description: >
+      Grain: one row per calendar year (2000-2027). The columns of the Sheet's
+      `LD Net Worth` tab that the models use: net worth with the real 2007 divorce added
+      back (`net_worth_adj_*`, low/mid/high, $M), its basis and event, CPI-U and the
+      2026-dollars multiplier. The tab's reported net worth, add-back amount, sources and
+      CPI basis stay in the Sheet. The tab was the working record for building this file;
+      from here this CSV is the source, edited directly (then `dbt seed`). It also holds
+      `is_show_airing` (1 in the 12 years a season aired; fixed, since the show has
+      ended), which the tab does not have.
+    config:
+      quote_columns: false
+      column_types:
+        year: int64
+        is_show_airing: int64
+        basis: string
+        event: string
+        cpi_u_annual_avg: float64
+        to_2026_dollars_multiplier: float64
+        net_worth_adj_low_musd: float64
+        net_worth_adj_mid_musd: float64
+        net_worth_adj_high_musd: float64

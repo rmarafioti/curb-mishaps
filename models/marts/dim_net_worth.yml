@@ -1,0 +1,40 @@
+models:
+  - name: dim_net_worth
+    description: >
+      Grain: one row per calendar year (2000-2027), keyed on year. Larry David's net
+      worth with the real 2007 divorce added back, in dollars, plus CPI and whether the
+      show aired that year. Semi-additive: never sum net worth across years or after
+      joining to mishaps. year_start_date (Jan 1 of the year) is the date MetricFlow uses
+      to line net worth up with mishaps on metric_time__year. Built 1:1 from
+      stg_ld_net_worth, where year is tested.
+    columns:
+      - name: year
+        data_type: int64
+        description: '{{ doc("net_worth_year") }}'
+      - name: is_show_airing
+        data_type: int64
+        description: '{{ doc("is_show_airing") }}'
+      - name: net_worth_basis
+        data_type: string
+        description: '{{ doc("net_worth_basis") }}'
+      - name: net_worth_event
+        data_type: string
+        description: '{{ doc("net_worth_event") }}'
+      - name: cpi_index
+        data_type: float64
+        description: '{{ doc("cpi_index") }}'
+      - name: to_2026_dollars_multiplier
+        data_type: float64
+        description: '{{ doc("to_2026_dollars_multiplier") }}'
+      - name: year_start_date
+        data_type: date
+        description: '{{ doc("net_worth_year_start_date") }}'
+      - name: net_worth_adj_low_usd
+        data_type: float64
+        description: '{{ doc("net_worth_adj_low_usd") }}'
+      - name: net_worth_adj_mid_usd
+        data_type: float64
+        description: '{{ doc("net_worth_adj_mid_usd") }}'
+      - name: net_worth_adj_high_usd
+        data_type: float64
+        description: '{{ doc("net_worth_adj_high_usd") }}'
