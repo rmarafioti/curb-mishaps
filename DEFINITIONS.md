@@ -13,10 +13,6 @@ Stated amount (Sheet column amount_usd), in dollars of the year the episode aire
 Confidence in the estimate: low, medium or high.
 {% enddocs %}
 
-{% docs cpi_index %}
-CPI-U annual average for the year.
-{% enddocs %}
-
 {% docs date_day %}
 Calendar day. MetricFlow's time spine column (day grain).
 {% enddocs %}
@@ -29,10 +25,6 @@ Air date of the episode (Sheet column air_date). Joins to dim_date.date_day.
 Episode number across the whole series (1-120), from the Sheet.
 {% enddocs %}
 
-{% docs episode_in_season %}
-Episode number within its season.
-{% enddocs %}
-
 {% docs episode_title %}
 Episode title.
 {% enddocs %}
@@ -42,15 +34,15 @@ Year parsed from episode_date. Joins to dim_net_worth.year; each season aired wi
 {% enddocs %}
 
 {% docs est_high_usd %}
-High estimate, in dollars of the year the episode aired (ranges and the forecast).
+High estimate, in dollars of the year the episode aired (ranges and the forecast). Only filled when amount_stated = 0.
 {% enddocs %}
 
 {% docs est_low_usd %}
-Low estimate, in dollars of the year the episode aired (ranges and the forecast).
+Low estimate, in dollars of the year the episode aired (ranges and the forecast). Only filled when amount_stated = 0.
 {% enddocs %}
 
 {% docs est_mid_usd %}
-Mid estimate, in dollars of the year the episode aired. Required on every kept mishap; stated rows repeat the stated amount.
+Mid estimate, in dollars of the year the episode aired. Only filled when amount_stated = 0, and required on every kept estimated mishap.
 {% enddocs %}
 
 {% docs estimate_basis %}
@@ -81,6 +73,14 @@ Child of loss_kind: purchase, payment, gift, donation, investment, bet, loan_unr
 Cost of the mishap in dollars of the year the episode aired (not inflation-adjusted): amount_stated_usd when amount_stated = 1, else est_mid_usd. The dashboard default.
 {% enddocs %}
 
+{% docs mishap_cost_high %}
+High end of the mishap's cost range, in dollars of the year the episode aired: amount_stated_usd when amount_stated = 1 (a stated price has no range), else est_high_usd.
+{% enddocs %}
+
+{% docs mishap_cost_low %}
+Low end of the mishap's cost range, in dollars of the year the episode aired: amount_stated_usd when amount_stated = 1 (a stated price has no range), else est_low_usd.
+{% enddocs %}
+
 {% docs mishap_cost_2026 %}
 mishap_cost converted to 2026 dollars with the CPI-U multiplier for the year the episode aired. Only for the cost trend and the forecast.
 {% enddocs %}
@@ -97,48 +97,16 @@ Unique identifier of a mishap: surrogate key on episode_id + mishap_num. Both ar
 Mishap number within its episode (1, 2, 3...); 0 marks a no-mishap placeholder row. New mishaps take the next unused number; gaps left by deleted rows stay.
 {% enddocs %}
 
-{% docs mishap_source %}
-Where the mishap was found. `user` = Rich's own viewing or recollection.
-{% enddocs %}
-
-{% docs net_worth_adj_high_musd %}
-High reported net worth + real 2007 divorce added back, in millions of dollars.
-{% enddocs %}
-
-{% docs net_worth_adj_low_musd %}
-Low reported net worth + real 2007 divorce added back, in millions of dollars.
-{% enddocs %}
-
 {% docs net_worth_adj_mid_musd %}
 Mid reported net worth + real 2007 divorce added back, in millions of dollars.
-{% enddocs %}
-
-{% docs net_worth_adj_high_usd %}
-High reported net worth + real 2007 divorce added back, in dollars.
-{% enddocs %}
-
-{% docs net_worth_adj_low_usd %}
-Low reported net worth + real 2007 divorce added back, in dollars.
 {% enddocs %}
 
 {% docs net_worth_adj_mid_usd %}
 Mid reported net worth + real 2007 divorce added back, in dollars.
 {% enddocs %}
 
-{% docs net_worth_basis %}
-anchor (sourced), interpolated, or projection.
-{% enddocs %}
-
-{% docs net_worth_event %}
-What drove the anchor value, where noted.
-{% enddocs %}
-
 {% docs net_worth_year %}
 Calendar year of the net worth figure.
-{% enddocs %}
-
-{% docs net_worth_year_start_date %}
-January 1 of the year. The time dimension (year grain) MetricFlow uses to align net worth with mishaps on metric_time__year.
 {% enddocs %}
 
 {% docs review_status %}

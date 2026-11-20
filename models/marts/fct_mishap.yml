@@ -3,9 +3,24 @@ models:
     description: >
       Grain: one row per kept mishap, keyed on mishap_key (episode_id + mishap_num).
       Only review_status = 'keep' rows with has_mishap = 1. Costs are in dollars of the year
-      the episode aired; mishap_cost_2026 is the CPI-adjusted copy. Metrics on this table live
-      only in MetricFlow YAML. Hypothetical losses always count: never filter on loss_kind
-      here. The grain is tested in stg_mishaps; this model only filters those rows.
+      the episode aired; mishap_cost_low/high are the range around mishap_cost and
+      mishap_cost_2026 is the CPI-adjusted copy. Metrics on this table live only in
+      MetricFlow YAML. Hypothetical losses always count: never filter on loss_kind here.
+      The grain is tested in stg_mishaps; this model only filters those rows.
+    data_tests:
+      # temporary: guards pricing of the remaining 'unsure' rows; retire once they are
+      # reviewed and the Sheet stops changing (reconciliation then covers the same case)
+      - dbt_utils.expression_is_true:
+          name: fct_mishap_amounts_match_stated_flag
+          arguments:
+            expression: >
+              (
+                (amount_stated = 1 and amount_stated_usd is not null)
+                or (amount_stated = 0
+                    and amount_stated_usd is null
+                    and est_low_usd is not null
+                    and est_high_usd is not null)
+              )
     columns:
       - name: mishap_key
         data_type: string
@@ -34,9 +49,6 @@ models:
       - name: is_catastrophic
         data_type: int64
         description: '{{ doc("is_catastrophic") }}'
-      - name: mishap_source
-        data_type: string
-        description: '{{ doc("mishap_source") }}'
       - name: amount_stated
         data_type: int64
         description: '{{ doc("amount_stated") }}'
@@ -63,6 +75,12 @@ models:
         description: '{{ doc("mishap_cost") }}'
         data_tests:
           - not_null
+      - name: mishap_cost_low
+        data_type: float64
+        description: '{{ doc("mishap_cost_low") }}'
+      - name: mishap_cost_high
+        data_type: float64
+        description: '{{ doc("mishap_cost_high") }}'
       - name: mishap_cost_2026
         data_type: float64
         description: '{{ doc("mishap_cost_2026") }}'

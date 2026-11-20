@@ -1,7 +1,8 @@
 -- One row per kept mishap (review_status = 'keep' and has_mishap = 1); 'unsure' rows
 -- flow in on the next build once Rich marks them 'keep'. mishap_cost is in dollars of
--- the year the episode aired (the default); mishap_cost_2026 converts it with that
--- year's CPI multiplier, for the cost trend and the forecast.
+-- the year the episode aired (the default); mishap_cost_low/high give the range around
+-- it (a stated price has no range). mishap_cost_2026 converts it with that year's CPI
+-- multiplier, for the cost trend and the forecast.
 
 with
 
@@ -16,7 +17,6 @@ kept_mishaps as (
         loss_kind,
         loss_kind_category,
         is_catastrophic,
-        mishap_source,
         amount_stated,
         amount_stated_usd,
         est_low_usd,
@@ -25,6 +25,8 @@ kept_mishaps as (
         estimate_basis,
         confidence,
         if(amount_stated = 1, amount_stated_usd, est_mid_usd)   as mishap_cost,
+        if(amount_stated = 1, amount_stated_usd, est_low_usd)   as mishap_cost_low,
+        if(amount_stated = 1, amount_stated_usd, est_high_usd)  as mishap_cost_high,
 
     from {{ ref('stg_mishaps') }}
     where (review_status = 'keep' and has_mishap = 1)
@@ -56,7 +58,6 @@ mishap_costs as (
         kept_mishaps.loss_kind,
         kept_mishaps.loss_kind_category,
         kept_mishaps.is_catastrophic,
-        kept_mishaps.mishap_source,
         kept_mishaps.amount_stated,
         kept_mishaps.amount_stated_usd,
         kept_mishaps.est_low_usd,
@@ -65,6 +66,8 @@ mishap_costs as (
         kept_mishaps.estimate_basis,
         kept_mishaps.confidence,
         kept_mishaps.mishap_cost,
+        kept_mishaps.mishap_cost_low,
+        kept_mishaps.mishap_cost_high,
         round(
             kept_mishaps.mishap_cost * dollar_multipliers.to_2026_dollars_multiplier, 2
         )                                                       as mishap_cost_2026,
