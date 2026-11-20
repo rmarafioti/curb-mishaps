@@ -4,9 +4,8 @@ models:
       Grain: one row per kept mishap, keyed on mishap_key (episode_id + mishap_num).
       Only review_status = 'keep' rows with has_mishap = 1. Costs are in dollars of the year
       the episode aired; mishap_cost_2026 is the CPI-adjusted copy. Metrics on this table live
-      only in MetricFlow YAML. Completeness (every kept row, realized and hypothetical,
-      reaches this table) is tested in tests/assert_fct_mishap_keeps_every_loss_kind.sql.
-      The grain is tested in stg_mishaps; this model only filters those rows.
+      only in MetricFlow YAML. Hypothetical losses always count: never filter on loss_kind
+      here. The grain is tested in stg_mishaps; this model only filters those rows.
     columns:
       - name: mishap_key
         data_type: string
@@ -41,9 +40,9 @@ models:
       - name: amount_stated
         data_type: int64
         description: '{{ doc("amount_stated") }}'
-      - name: amount_usd
+      - name: amount_stated_usd
         data_type: float64
-        description: '{{ doc("amount_usd") }}'
+        description: '{{ doc("amount_stated_usd") }}'
       - name: est_low_usd
         data_type: float64
         description: '{{ doc("est_low_usd") }}'

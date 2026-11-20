@@ -18,13 +18,13 @@ kept_mishaps as (
         is_catastrophic,
         mishap_source,
         amount_stated,
-        amount_usd,
+        amount_stated_usd,
         est_low_usd,
         est_mid_usd,
         est_high_usd,
         estimate_basis,
         confidence,
-        if(amount_stated = 1, amount_usd, est_mid_usd)          as mishap_cost,
+        if(amount_stated = 1, amount_stated_usd, est_mid_usd)   as mishap_cost,
 
     from {{ ref('stg_mishaps') }}
     where (review_status = 'keep' and has_mishap = 1)
@@ -58,7 +58,7 @@ mishap_costs as (
         kept_mishaps.is_catastrophic,
         kept_mishaps.mishap_source,
         kept_mishaps.amount_stated,
-        kept_mishaps.amount_usd,
+        kept_mishaps.amount_stated_usd,
         kept_mishaps.est_low_usd,
         kept_mishaps.est_mid_usd,
         kept_mishaps.est_high_usd,

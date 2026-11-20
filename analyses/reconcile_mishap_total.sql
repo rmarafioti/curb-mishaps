@@ -23,7 +23,7 @@ sheet_summary as (
         count(*) as sheet_rows,
         sum(
             case
-                when amount_stated = 1 then amount_usd
+                when amount_stated = 1 then amount_stated_usd
                 else est_mid_usd
             end
         ) as sheet_total

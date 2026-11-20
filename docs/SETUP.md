@@ -140,7 +140,7 @@ dbt deps           # installs dbt_utils and dbt_external_tables into dbt_package
 sqlfluff lint models/
 ```
 
-The `.sqlfluff` file uses the dbt templater (BigQuery dialect, lowercase, trailing commas), so it needs `dbt debug` passing first (it reads the same repo-root profile). For VS Code, install the **sqlfluff** extension (dorzey.vscode-sqlfluff) and set its executable path to `.venv/bin/sqlfluff`.
+The `.sqlfluff` file uses the dbt templater (BigQuery dialect, lowercase). LT01, LT05 and CV03 are off because wide hand-aligned aliases and the trailing comma are conventions kept by hand (see `CLAUDE.md`). It needs `dbt debug` passing first (it reads the same repo-root profile). For VS Code, install the **sqlfluff** extension (dorzey.vscode-sqlfluff) and set its executable path to `.venv/bin/sqlfluff`.
 
 ### B6. First commit
 
