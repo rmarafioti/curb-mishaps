@@ -57,7 +57,8 @@ semantic_models:
         agg: count
         expr: mishap_key
       - name: mishap_cost_median
-        # BigQuery has no exact median aggregate; approximate is exact enough on ~100 rows
+        # BigQuery has no exact median aggregate. The approximate one returns the lower
+        # median: with an even count, the lower of the middle two values, not their average
         agg: percentile
         expr: mishap_cost
         agg_params:
