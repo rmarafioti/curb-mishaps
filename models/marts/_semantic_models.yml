@@ -42,6 +42,8 @@ semantic_models:
         type: categorical
       - name: description
         type: categorical
+      - name: estimate_basis
+        type: categorical
     # measures are the aggregations metrics are built from; a measure alone is not
     # queryable, only metrics are
     measures:
@@ -88,6 +90,8 @@ semantic_models:
         type_params:
           time_granularity: day
       - name: season
+        type: categorical
+      - name: episode_in_season
         type: categorical
       - name: episode_title
         type: categorical

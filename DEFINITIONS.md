@@ -25,6 +25,10 @@ Air date of the episode (Sheet column air_date). Joins to dim_date.date_day.
 Episode number across the whole series (1-120), from the Sheet.
 {% enddocs %}
 
+{% docs episode_in_season %}
+Episode number within its season (the E in S8 E10).
+{% enddocs %}
+
 {% docs episode_title %}
 Episode title.
 {% enddocs %}

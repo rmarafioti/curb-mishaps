@@ -12,6 +12,7 @@ source_mishaps as (
 
         -- episode
         cast(season as int64)                                   as season,
+        cast(episode_in_season as int64)                        as episode_in_season,
         trim(title)                                             as episode_title,
         cast(trim(air_date) as date)                            as episode_date,
         extract(year from cast(trim(air_date) as date))         as episode_year,
