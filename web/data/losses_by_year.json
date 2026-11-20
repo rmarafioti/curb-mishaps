@@ -1,0 +1,166 @@
+{
+  "name": "losses_by_year",
+  "label": "Losses by year vs. net worth",
+  "description": "The year table: losses by kind against that year's net worth, for the 12 years a season aired.\n",
+  "metrics": [
+    {
+      "name": "realized_loss",
+      "label": "Realized",
+      "description": "Everyday money or property actually lost (catastrophic excluded)."
+    },
+    {
+      "name": "hypothetical_loss",
+      "label": "Hypothetical",
+      "description": "Everyday missed income, e.g. the HBO show and the golf club (catastrophic excluded)."
+    },
+    {
+      "name": "catastrophic_loss",
+      "label": "Catastrophic",
+      "description": "The divorce, the house fire and Latte Larry's."
+    },
+    {
+      "name": "total_mishap_loss",
+      "label": "Total Mishap Loss",
+      "description": "Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
+    },
+    {
+      "name": "net_worth_mid",
+      "label": "LD Net Worth",
+      "description": "Larry David's net worth that year: the central (mid) estimate from reported figures (see the sources page), with the real 2007 divorce added back. Single-year only."
+    },
+    {
+      "name": "pct_mishap_to_net_worth",
+      "label": "% of Net Worth",
+      "description": "That year's total mishap loss / that year's net worth. Single-year only: query it grouped by metric_time__year."
+    },
+    {
+      "name": "net_worth_after_mishaps",
+      "label": "Net Worth After Mishaps",
+      "description": "That year's net worth minus that year's total mishap loss. Single-year only: query it grouped by metric_time__year."
+    }
+  ],
+  "rows": [
+    {
+      "metric_time__year": "2005-01-01 00:00:00",
+      "realized_loss": 25070,
+      "hypothetical_loss": 5000,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 30070,
+      "net_worth_mid": 547000000,
+      "pct_mishap_to_net_worth": 5.497257769652651e-05,
+      "net_worth_after_mishaps": 546969930
+    },
+    {
+      "metric_time__year": "2001-01-01 00:00:00",
+      "realized_loss": 15820,
+      "hypothetical_loss": 1800000,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 1815820,
+      "net_worth_mid": 333000000,
+      "pct_mishap_to_net_worth": 0.005452912912912913,
+      "net_worth_after_mishaps": 331184180
+    },
+    {
+      "metric_time__year": "2007-01-01 00:00:00",
+      "realized_loss": 1020125,
+      "hypothetical_loss": 0,
+      "catastrophic_loss": 5000000,
+      "total_mishap_loss": 6020125,
+      "net_worth_mid": 550000000,
+      "pct_mishap_to_net_worth": 0.010945681818181818,
+      "net_worth_after_mishaps": 543979875
+    },
+    {
+      "metric_time__year": "2021-01-01 00:00:00",
+      "realized_loss": 10185,
+      "hypothetical_loss": 0,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 10185,
+      "net_worth_mid": 650000000,
+      "pct_mishap_to_net_worth": 1.566923076923077e-05,
+      "net_worth_after_mishaps": 649989815
+    },
+    {
+      "metric_time__year": "2000-01-01 00:00:00",
+      "realized_loss": 7860,
+      "hypothetical_loss": 180,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 8040,
+      "net_worth_mid": 280000000,
+      "pct_mishap_to_net_worth": 2.8714285714285713e-05,
+      "net_worth_after_mishaps": 279991960
+    },
+    {
+      "metric_time__year": "2002-01-01 00:00:00",
+      "realized_loss": 301110,
+      "hypothetical_loss": 1900,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 303010,
+      "net_worth_mid": 387000000,
+      "pct_mishap_to_net_worth": 0.0007829715762273902,
+      "net_worth_after_mishaps": 386696990
+    },
+    {
+      "metric_time__year": "2004-01-01 00:00:00",
+      "realized_loss": 7125,
+      "hypothetical_loss": 100000,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 107125,
+      "net_worth_mid": 493000000,
+      "pct_mishap_to_net_worth": 0.0002172920892494929,
+      "net_worth_after_mishaps": 492892875
+    },
+    {
+      "metric_time__year": "2009-01-01 00:00:00",
+      "realized_loss": 28413,
+      "hypothetical_loss": 0,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 28413,
+      "net_worth_mid": 575000000,
+      "pct_mishap_to_net_worth": 4.941391304347826e-05,
+      "net_worth_after_mishaps": 574971587
+    },
+    {
+      "metric_time__year": "2017-01-01 00:00:00",
+      "realized_loss": 43680,
+      "hypothetical_loss": 750250,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 793930,
+      "net_worth_mid": 650000000,
+      "pct_mishap_to_net_worth": 0.0012214307692307693,
+      "net_worth_after_mishaps": 649206070
+    },
+    {
+      "metric_time__year": "2024-01-01 00:00:00",
+      "realized_loss": 1860,
+      "hypothetical_loss": 0,
+      "catastrophic_loss": 0,
+      "total_mishap_loss": 1860,
+      "net_worth_mid": 650000000,
+      "pct_mishap_to_net_worth": 2.8615384615384615e-06,
+      "net_worth_after_mishaps": 649998140
+    },
+    {
+      "metric_time__year": "2020-01-01 00:00:00",
+      "realized_loss": 197750,
+      "hypothetical_loss": 3000,
+      "catastrophic_loss": 195000,
+      "total_mishap_loss": 395750,
+      "net_worth_mid": 650000000,
+      "pct_mishap_to_net_worth": 0.0006088461538461538,
+      "net_worth_after_mishaps": 649604250
+    },
+    {
+      "metric_time__year": "2011-01-01 00:00:00",
+      "realized_loss": 10360,
+      "hypothetical_loss": 2500000,
+      "catastrophic_loss": 250000000,
+      "total_mishap_loss": 252510360,
+      "net_worth_mid": 600000000,
+      "pct_mishap_to_net_worth": 0.4208506,
+      "net_worth_after_mishaps": 347489640
+    }
+  ],
+  "exported_at": "2026-11-20T21:22:55+00:00",
+  "source": "curb_prod"
+}
