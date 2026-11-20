@@ -90,8 +90,8 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 ## Data rules you'll need when modeling
 
 - Only `review_status = 'keep'` and `has_mishap = 1` rows reach `fct_mishap`. `has_mishap = 0` rows still feed `dim_episode`.
-- Cost rule: `mishap_cost = if(amount_stated = 1, amount_usd, est_mid_usd)`. Low/high estimates stay for ranges and the forecast.
-- **Hypothetical losses always count toward the total.** Never filter `loss_kind` out of `fct_mishap` or `total_mishap_loss`; `realized` / `hypothetical` is only a slice. Guarded by `tests/assert_fct_mishap_keeps_every_loss_kind.sql`.
+- Cost rule: `mishap_cost = if(amount_stated = 1, amount_stated_usd, est_mid_usd)`. Low/high estimates stay for ranges and the forecast.
+- **Hypothetical losses always count toward the total.** Never filter `loss_kind` out of `fct_mishap` or `total_mishap_loss`; `realized` / `hypothetical` is only a slice. Reconciling to the Sheet's `Losses by Year` tab shows it if they ever go missing.
 - `is_catastrophic` comes from Sheet column X (1/0 on every row). Today: house fire, 2011 divorce, Latte Larry's.
 - Dates: `episode_date` (Sheet `air_date`) joins `fct_mishap` to `dim_date.date_day`; `episode_year` is parsed from it and joins to `dim_net_worth.year`. The Sheet's `air_year` column is not used.
 - `review_status = 'unsure'` rows (incl. unwatched S12 episodes) stay out of the fact table until Rich reviews them; they flow in on the next build once marked `keep`.
@@ -129,7 +129,7 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 ## Current task list
 
 1. ~~Sources: external table on the Mishaps tab; seed for net worth; `dim_date`~~ (done)
-2. `dim_net_worth` (from `stg_ld_net_worth`: `year_start_date`, `net_worth_adj_*_usd = musd * 1e6`, `is_show_airing`), `dim_episode`, `fct_mishap` (+ `mishap_cost`, `mishap_cost_2026`)
-3. `_semantic_models.yml`, `_metrics.yml` per `docs/losses_by_year_mockup.md` (rename its `yearly_net_worth` / `dim_year` to `dim_net_worth`)
+2. ~~`dim_net_worth`, `dim_episode`, `fct_mishap`; reconciled to $262,024,688 (101 rows)~~ (done, PR #1)
+3. `_semantic_models.yml`, `_metrics.yml` per `docs/losses_by_year_mockup.md` (names already match the built models)
 4. Reconcile `mf query` output to the Sheet's `Losses by Year` tab (total $262.02M as of 2026-11-19)
 5. Export script (`mf query --csv`) → `web/` Next.js page (after all data is in)

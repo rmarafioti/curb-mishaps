@@ -25,38 +25,38 @@ Shows how the year-by-year table is built: **no custom SQL**. Two semantic model
 semantic_models:
 
   - name: mishaps
-    description: One row per kept mishap. Costs in the air year's dollars.
+    description: One row per kept mishap. Costs in dollars of the year the episode aired.
     model: ref('fct_mishap')
     defaults:
-      agg_time_dimension: air_date
+      agg_time_dimension: episode_date
     entities:
       - name: mishap
         type: primary
-        expr: mishap_id
+        expr: mishap_key
       - name: year
         type: foreign
-        expr: air_year
+        expr: episode_year
     dimensions:
-      - name: air_date
+      - name: episode_date
         type: time
         type_params:
           time_granularity: day
       - name: loss_kind          # realized | hypothetical
         type: categorical
-      - name: is_catastrophic
+      - name: is_catastrophic    # int64 1/0, not a boolean
         type: categorical
       - name: loss_kind_category # child of loss_kind
         type: categorical
     measures:
-      - name: mishap_cost        # amount_usd if amount_stated = 1, else est_mid_usd
+      - name: mishap_cost        # amount_stated_usd if amount_stated = 1, else est_mid_usd
         agg: sum
       - name: mishap_count
         agg: count
-        expr: mishap_id
+        expr: mishap_key
 
-  - name: yearly_net_worth
+  - name: dim_net_worth
     description: One row per year. Net worth with the real 2007 divorce added back.
-    model: ref('dim_year')
+    model: ref('dim_net_worth')
     defaults:
       agg_time_dimension: year_start_date
     entities:
@@ -64,15 +64,16 @@ semantic_models:
         type: primary
         expr: year
     dimensions:
-      - name: year_start_date    # date(year, 1, 1), built in dim_year
+      - name: year_start_date    # date(year, 1, 1), built in dim_net_worth
         type: time
         type_params:
           time_granularity: year
-      - name: is_show_airing
+      - name: is_show_airing     # int64 1/0, from the seed
         type: categorical
     measures:
-      - name: net_worth_adj_mid  # dollars, not $M: dim_year multiplies by 1e6
+      - name: net_worth_adj_mid  # dollars, not $M: dim_net_worth multiplies by 1e6
         agg: sum
+        expr: net_worth_adj_mid_usd
         non_additive_dimension:  # semi-additive: never summed across years
           name: year_start_date
           window_choice: max
@@ -103,7 +104,7 @@ metrics:
       measure: mishap_cost
     filter: |
       {{ Dimension('mishap__loss_kind') }} = 'realized'
-      and {{ Dimension('mishap__is_catastrophic') }} = false
+      and {{ Dimension('mishap__is_catastrophic') }} = 0
 
   - name: hypothetical_loss
     label: Hypothetical
@@ -121,7 +122,7 @@ metrics:
     type_params:
       measure: mishap_cost
     filter: |
-      {{ Dimension('mishap__is_catastrophic') }} = true
+      {{ Dimension('mishap__is_catastrophic') }} = 1
 
   - name: net_worth_mid
     label: LD Net Worth
@@ -138,7 +139,7 @@ metrics:
       denominator: net_worth_mid
 ```
 
-Realized + Hypothetical + Catastrophic = Total, as long as every catastrophic row has `loss_kind = 'realized'` (true today). Worth a dbt test.
+`total_mishap_loss` always includes every kept mishap, hypothetical included; `loss_kind` is only a slice, never a filter on the total.
 
 ---
 
@@ -148,7 +149,7 @@ Realized + Hypothetical + Catastrophic = Total, as long as every catastrophic ro
 mf query \
   --metrics realized_loss,hypothetical_loss,catastrophic_loss,total_mishap_loss,net_worth_mid,pct_mishap_to_net_worth \
   --group-by metric_time__year \
-  --where "{{ Dimension('year__is_show_airing') }} = true" \
+  --where "{{ Dimension('year__is_show_airing') }} = 1" \
   --order metric_time__year
 ```
 
@@ -181,9 +182,10 @@ The same `total_mishap_loss` that fills the Total column also drives the KPI til
 
 ## 7. Notes for the build
 
-- `dim_year` needs `year_start_date` (date) and net worth in dollars (`net_worth_adj_mid_usd = net_worth_adj_mid_musd * 1e6`), so the ratio comes out as a true fraction.
-- `is_catastrophic` comes from Sheet column X (added 2026-11-19), not a hardcoded `row_id` list. Today it's the house fire, the 2011 divorce and Latte Larry's.
-- Section 5 is a 2026-11-18 snapshot and is now stale (2017 is reviewed; 2011 realized includes rows 116–125). The Sheet's `Losses by Year` tab is the current reference: **$262,024,688** total as of 2026-11-19.
-- Time spine: `dim_date` (built). Rename `yearly_net_worth` / `dim_year` here to `dim_net_worth`, and `air_date` / `air_year` to `episode_date` / `episode_year`.
+- `dim_net_worth` has `year_start_date` (date) and net worth in dollars (`net_worth_adj_mid_usd = net_worth_adj_mid_musd * 1e6`), so the ratio comes out as a true fraction.
+- `is_catastrophic` comes from Sheet column X (1/0 on every row, added 2026-11-19), not a hardcoded `row_id` list. Today it's the house fire, the 2011 divorce and Latte Larry's. Flags are int64 1/0, so filters compare to `1` / `0`, not `true` / `false`.
+- Section 5 is a 2026-11-18 snapshot and is now stale (2017 is reviewed; 2011 realized includes rows 116–125). The current reference is the Sheet's `Losses by Year` tab, which `fct_mishap` reconciles to: **$262,024,688** across 101 kept rows as of 2026-11-19.
+- Time spine: `dim_date` in `models/core/` (`date_day` only).
 - `% of net worth` is meaningful **per year only**. Without `--group-by metric_time__year`, the semi-additive net worth takes the latest year, so a no-group-by query would divide all-time losses by 2024 net worth. Lock the dashboard to the yearly view (matches the brief's single-year rule).
-- Field names follow the brief; adjust to `CLAUDE.md` conventions once it's generated.
+- Season is on `dim_episode`, not `fct_mishap`, so the by-season view needs an episodes semantic model joined on an `episode` entity.
+- Field names match the built models (`CLAUDE.md` conventions).

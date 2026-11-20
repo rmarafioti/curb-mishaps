@@ -2,11 +2,11 @@
    Model, seed and source descriptions (with grain) stay inline in their own .yml. #}
 
 {% docs amount_stated %}
-1 when the amount is stated on screen or in a synopsis (amount_usd is filled), 0 when it is estimated.
+1 when the amount is stated on screen or in a synopsis (amount_stated_usd is filled), 0 when it is estimated.
 {% enddocs %}
 
-{% docs amount_usd %}
-Stated amount, in dollars of the year the episode aired. Only filled when amount_stated = 1.
+{% docs amount_stated_usd %}
+Stated amount (Sheet column amount_usd), in dollars of the year the episode aired. Only filled when amount_stated = 1.
 {% enddocs %}
 
 {% docs confidence %}
@@ -78,7 +78,7 @@ Child of loss_kind: purchase, payment, gift, donation, investment, bet, loan_unr
 {% enddocs %}
 
 {% docs mishap_cost %}
-Cost of the mishap in dollars of the year the episode aired (not inflation-adjusted): amount_usd when amount_stated = 1, else est_mid_usd. The dashboard default.
+Cost of the mishap in dollars of the year the episode aired (not inflation-adjusted): amount_stated_usd when amount_stated = 1, else est_mid_usd. The dashboard default.
 {% enddocs %}
 
 {% docs mishap_cost_2026 %}

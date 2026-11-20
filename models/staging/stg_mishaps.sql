@@ -27,7 +27,7 @@ source_mishaps as (
         nullif(lower(trim(review_status)), '')                  as review_status,
 
         -- amounts, in dollars of the year the episode aired (not inflation-adjusted)
-        {{ clean_usd('amount_usd') }}                           as amount_usd,
+        {{ clean_usd('amount_usd') }}                           as amount_stated_usd,
         cast(amount_stated as int64)                            as amount_stated,
         {{ clean_usd('est_low_usd') }}                          as est_low_usd,
         {{ clean_usd('est_mid_usd') }}                          as est_mid_usd,
