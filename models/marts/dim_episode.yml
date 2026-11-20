@@ -13,9 +13,6 @@ models:
       - name: season
         data_type: int64
         description: '{{ doc("season") }}'
-      - name: episode_in_season
-        data_type: int64
-        description: '{{ doc("episode_in_season") }}'
       - name: episode_title
         data_type: string
         description: '{{ doc("episode_title") }}'

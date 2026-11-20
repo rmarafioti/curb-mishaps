@@ -12,7 +12,6 @@ source_mishaps as (
 
         -- episode
         cast(season as int64)                                   as season,
-        cast(episode_in_season as int64)                        as episode_in_season,
         trim(title)                                             as episode_title,
         cast(trim(air_date) as date)                            as episode_date,
         extract(year from cast(trim(air_date) as date))         as episode_year,
@@ -23,7 +22,6 @@ source_mishaps as (
         nullif(lower(trim(loss_kind)), '')                      as loss_kind,
         nullif(lower(trim(loss_kind_category)), '')             as loss_kind_category,
         cast(is_catastrophic as int64)                          as is_catastrophic,
-        nullif(lower(trim(source)), '')                         as mishap_source,
         nullif(lower(trim(review_status)), '')                  as review_status,
 
         -- amounts, in dollars of the year the episode aired (not inflation-adjusted)

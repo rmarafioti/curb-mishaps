@@ -30,9 +30,9 @@ https://docs.google.com/spreadsheets/d/1-SbV6CB3GlgIQJPgsCssc2eStrgImUCeB2eXOGwo
 
 | Tab | Purpose | Becomes |
 |---|---|---|
-| `Mishaps` | One row per mishap (episodes with no mishap = one row, `has_mishap = 0`). Columns (restructured 2026-11-18): A–G episode (`row_id`, `episode_id`, `season`, `episode_in_season`, `title`, `air_date`, `air_year`; dbt uses neither `row_id` nor `air_year`, and parses `episode_year` from `air_date`); H `has_mishap` (1/0); I `description`; J `loss_kind` → K `loss_kind_category` (hierarchy); L `amount_usd` (only when stated); M `amount_stated` (1/0); N `needs_verification` (TRUE/FALSE, sheet-only, drop once review is done); O `source`; P–Q `review_status`, `review_notes`; **R–W `est_low_usd`, `est_mid_usd`, `est_high_usd`, `estimate_basis`, `confidence`, `estimate_source`** (filled by Claude for `keep` rows; `estimate_source` optional, nice-to-have); **X `is_catastrophic`** (1 on catastrophic rows, 0 on every other row; added 2026-11-19 so the flag travels with the row instead of a hardcoded `row_id` list); **Y `mishap_num`** (1, 2, 3... within an episode, 0 = no-mishap placeholder; assigned once, never renumbered; added 2026-11-19). Removed: `mishap_seq`, `direction` (all rows are losses), `estimated_amount_usd`, `source_url`. Pre-restructure version is in the Sheet's version history (backup tab deleted). Sheet row = `row_id` + 1. | BigQuery external table `curb_raw.mishaps` (live) → `stg_mishaps` → `fct_mishap` + `dim_episode` |
+| `Mishaps` | One row per mishap (episodes with no mishap = one row, `has_mishap = 0`). Columns (restructured 2026-11-18): A–G episode (`row_id`, `episode_id`, `season`, `episode_in_season`, `title`, `air_date`, `air_year`; dbt uses neither `row_id` nor `air_year`, and parses `episode_year` from `air_date`); H `has_mishap` (1/0); I `description`; J `loss_kind` → K `loss_kind_category` (hierarchy); L `amount_usd` (only when stated); M `amount_stated` (1/0); N `needs_verification` (TRUE/FALSE, sheet-only, drop once review is done); O `source`; P–Q `review_status`, `review_notes`; **R–W `est_low_usd`, `est_mid_usd`, `est_high_usd`, `estimate_basis`, `confidence`, `estimate_source`** (filled by Claude for estimated `keep` rows; R–T stay blank on stated rows, set 2026-11-20; `estimate_source` optional, nice-to-have); **X `is_catastrophic`** (1 on catastrophic rows, 0 on every other row; added 2026-11-19 so the flag travels with the row instead of a hardcoded `row_id` list); **Y `mishap_num`** (1, 2, 3... within an episode, 0 = no-mishap placeholder; assigned once, never renumbered; added 2026-11-19). Removed: `mishap_seq`, `direction` (all rows are losses), `estimated_amount_usd`, `source_url`. Pre-restructure version is in the Sheet's version history (backup tab deleted). Sheet row = `row_id` + 1. | BigQuery external table `curb_raw.mishaps` (live) → `stg_mishaps` → `fct_mishap` + `dim_episode` |
 | `Losses by Year` | Formula mockup of the year-by-year table (Realized / Hypothetical / Catastrophic / Total / net worth / %); each column labeled with its MetricFlow metric. Includes a reconciliation check. | — (reference for the semantic layer) |
-| `LD Net Worth` | 2000–2027: reported net worth low/mid/high ($M), basis (anchor/interpolated/projection), event, source; CPI-U annual average, CPI basis, multiplier to 2026 dollars; **`net_worth_adj_low/mid/high_musd` = reported + real 2007 divorce added back ($200M/$250M/$300M from 2007 on). Use the adj columns in metrics.** | seed `ld_net_worth_cpi` (only the columns the models use, plus `is_show_airing`; the tab was the working record, the CSV is now the source and is edited directly) → `stg_ld_net_worth` → `dim_net_worth` |
+| `LD Net Worth` | 2000–2027: reported net worth low/mid/high ($M), basis (anchor/interpolated/projection), event, source; CPI-U annual average, CPI basis, multiplier to 2026 dollars; **`net_worth_adj_low/mid/high_musd` = reported + real 2007 divorce added back ($200M/$250M/$300M from 2007 on). Use the adj columns in metrics.** | seed `ld_net_worth_cpi` (the tab's adj low/mid/high, basis, event, CPI and multiplier, plus `is_show_airing`; the models read only year, is_show_airing, the mid and the multiplier; the tab was the working record, the CSV is now the source and is edited directly) → `stg_ld_net_worth` → `dim_net_worth` |
 | `README` | Thesis, review rules, data principles. | — |
 | `Glossary` | Finance/insurance/stats terms with education-data equivalents. | — |
 
@@ -55,7 +55,7 @@ The Sheet is the source. **dbt reads the `Mishaps` tab live** through a BigQuery
   - **The dashboard explains this in a note** and separates the two sources of growth, so the reader can weigh them: (1) **frequency** — are there more mishaps per episode as the seasons go on? (count, no dollars involved); (2) **cost** — is each mishap pricier, and how much of that is just inflation? (nominal vs. 2026-dollar cost side by side; the gap between them is inflation, what's left is real growth).
 - **Pricing workflow:** Rich marks a row `keep` and leaves a note on how to price it → Claude fills R–W with a cited range. `pass`/`drop` rows get no price; `unsure` rows wait for Rich to re-watch on HBO Max.
 - **Hypothetical HBO show (row 23, "The Shrimp Incident"):** Rich's call — count it, priced as **1 full season (12 episodes)** at $50K/$150K/$500K per episode = **$600K / $1.8M / $6M** (2001 dollars), confidence low. It stays in the hypothetical bucket; even at the high end it's a small share of his net worth (that's part of the joke).
-- **Be transparent.** Dashboard shows the share of the total that is stated vs. estimated.
+- **Be transparent.** Uncertainty is shown through each estimate's confidence and low/high range (stated prices have no range). A % Stated KPI was dropped 2026-11-20: weighted by dollars, the estimated divorce swamps it.
 - **One divorce, counted once.** Curb's Larry *is* Larry David playing himself with his real money, so show losses can be applied to real net worth. To avoid double counting, the net worth series **adds back the real 2007 divorce** (`net_worth_adj_*` columns), and the show's **2011 Cheryl divorce is the only divorce**: a catastrophic mishap valued at the real settlement (low $200M / mid $250M / high $300M).
 - **Net Worth After Mishaps is single-year only.** `net_worth_adj` (that year) − that year's mishaps. Required single-select year filter, no "All years" — the metric is not cumulative.
 - **Catastrophic losses separate.** Divorce, house fire (S6 "Meet the Blacks"), Latte Larry's burning down (S10) go in a catastrophic bucket so they don't distort everyday mishap stats.
@@ -70,13 +70,13 @@ sources: sheets.mishaps (external table over the Mishaps tab, live)
 seeds:   ld_net_worth_cpi (the used columns of the LD Net Worth tab + is_show_airing)
 staging: stg_mishaps, stg_ld_net_worth
 core:    dim_date      (date_day only, 2000-01-01..2028-12-31; MetricFlow time spine)
-dims:    dim_episode   (episode_id, season, episode_in_season, episode_title, episode_date, episode_year)
-         dim_net_worth (year, is_show_airing, net_worth_basis, net_worth_event, cpi_index, to_2026_dollars_multiplier,
-                        year_start_date, net_worth_adj_low/mid/high_usd)
+dims:    dim_episode   (episode_id, season, episode_title, episode_date, episode_year)
+         dim_net_worth (year, is_show_airing, to_2026_dollars_multiplier, net_worth_adj_mid_usd)
 facts:   fct_mishap    (mishap_key, episode_id, mishap_num, episode_date, episode_year, description, loss_kind,
-                        loss_kind_category, is_catastrophic, mishap_source, amount_stated, amount_stated_usd, est_low/mid/high_usd,
+                        loss_kind_category, is_catastrophic, amount_stated, amount_stated_usd, est_low/mid/high_usd,
                         estimate_basis, confidence,
                         mishap_cost = if(amount_stated = 1, amount_stated_usd, est_mid_usd),
+                        mishap_cost_low / mishap_cost_high = same rule with est_low_usd / est_high_usd,
                         mishap_cost_2026 = mishap_cost × that year's to_2026_dollars_multiplier)
 later:   mart_forecast (Python output)
 ```
@@ -84,7 +84,7 @@ later:   mart_forecast (Python output)
 - No losses-by-year or losses-by-season marts: those tables come from `mf query` on the semantic layer (metrics live only in MetricFlow YAML).
 - Money and net worth columns are `float64`; flags are int64 1/0, never booleans.
 - **Key: `episode_id` + `mishap_num`** (`mishap_key` = surrogate of the two, the mishap's unique identifier), not `row_id` (row_id renumbers after review; see the row-ID bug above). A new mishap takes the next unused number in its episode; gaps from deleted rows stay.
-- **Dates:** `dim_date` (2000-01-01 to 2028-12-31, day grain, `date_day` only) is MetricFlow's time spine; MetricFlow builds year, quarter and month from it. Mishaps use `episode_date` and net worth uses `year_start_date` (Jan 1), so both line up on `metric_time__year`. `fct_mishap.episode_year` joins to `dim_net_worth.year` for the 2026-dollar multiplier.
+- **Dates:** `dim_date` (2000-01-01 to 2028-12-31, day grain, `date_day` only) is MetricFlow's time spine; MetricFlow builds year, quarter and month from it. Mishaps use `episode_date` and net worth uses `year_start_date` (Jan 1, defined in the semantic model as `expr: date(year, 1, 1)`, not a column), so both line up on `metric_time__year`. `fct_mishap.episode_year` joins to `dim_net_worth.year` for the 2026-dollar multiplier.
 - An episodes semantic model (on `dim_episode`) is needed for Mishaps per Episode.
 - **Median on BigQuery:** BigQuery has no exact median aggregate (`PERCENTILE_CONT` is window-only), so the Median metrics use `agg: percentile` with `use_approximate_percentile: true` (`APPROX_QUANTILES`); on ~100 rows the result is effectively exact.
 - Grain of `fct_mishap`: one row per mishap. `dim_net_worth` grain: one row per year. Join on `episode_year` (each season aired within one calendar year).
@@ -101,24 +101,22 @@ later:   mart_forecast (Python output)
 |---|---|---|
 | Total Mishap Loss | `sum(mishap_cost)` (stated, else est_mid; **year-of-event dollars**) | dashboard default; slice by `loss_kind` (realized / hypothetical). Running total by year; never subtracted from net worth |
 | Total Mishap Loss (2026 $) | `sum(mishap_cost_2026)` | shown beside the nominal total in the inflation note; feeds the cost trend and forecast |
-| Median Mishap Cost (2026 $) | `percentile(mishap_cost_2026, 0.5)` by season | severity trend with inflation removed |
+| Median Routine Mishap Cost (2026 $) | `percentile(mishap_cost_2026, 0.5)` where `is_catastrophic = 0`, by season | severity trend with inflation removed; catastrophic rows excluded in the metric itself |
 | Median Mishap Cost | `percentile(mishap_cost, 0.5)` | replaces Average (no outlier trimming needed); check percentile support on chosen warehouse |
-| Most Costly Mishap | `max(mishap_cost)` | pair with a Top 10 disasters table |
-| # Routine Mishaps | `count(mishap_key)` where `is_catastrophic = 0` | count, not sum |
-| # Big Losses | `count(mishap_key)` where `is_catastrophic = 1` | |
 | Net Worth After Mishaps | `net_worth_adj − total_loss` | **single year only**, both sides nominal (same year, no conversion); `net_worth` is semi-additive (`non_additive_dimension` on `metric_time`) |
 | % Mishap to Net Worth | `total_loss / net_worth_adj` | both sides nominal; semi-additive denominator, never summed |
 | Mishaps per Episode | `mishap_count / episode_count` | frequency trend (no dollars, unaffected by inflation); forecast frequency input |
-| % Stated | stated $ / total $ | data-honesty KPI |
 
 Dimensions: year, season, episode, `loss_kind` → `loss_kind_category`, `is_catastrophic`.
+
+Cut 2026-11-20 (slicing covers them): Most Costly Mishap (the Top 10 table is `total_mishap_loss` grouped by the `mishap` entity), # Routine Mishaps and # Big Losses (`mishap_count` grouped by `mishap__is_catastrophic`), and net worth low/high (the dashboard uses the mid estimate; the sources page shows the reported range). The built list is `models/marts/_metrics.yml`.
 
 **Dashboard inflation note:** a short panel explaining that amounts are in the dollars of the year they happened, plus three views, each answering one question:
 1. **More mishaps?** Mishaps per Episode by season. No dollars, so inflation can't affect it; the most trustworthy of the three.
 2. **Pricier mishaps?** Median Mishap Cost (2026 $) by season, catastrophic rows excluded. Label it as mostly estimated, or filter to stated rows (see caveat below).
 3. **How much is just prices rising?** Nominal vs. 2026-dollar cost per season; the gap between the lines is inflation.
 
-**Caveat (estimates have no built-in real trend):** many estimates were made by taking a current price and deflating it to the air year. Converted back to 2026 dollars, those rows return today's price, so their real cost is flat across seasons by construction. Only `stated` amounts carry a real cost signal. The % Stated KPI tells the reader how much to trust view 2.
+**Caveat (estimates have no built-in real trend):** many estimates were made by taking a current price and deflating it to the air year. Converted back to 2026 dollars, those rows return today's price, so their real cost is flat across seasons by construction. Only `stated` amounts carry a real cost signal; slice view 2 by `mishap__amount_stated` to see it on stated rows alone.
 
 Forecast lives in `mart_forecast` (season, median, p10, p90) produced by Python; semantic layer only exposes simple metrics on it.
 

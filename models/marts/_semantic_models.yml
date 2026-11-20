@@ -1,0 +1,127 @@
+semantic_models:
+
+  - name: mishaps
+    description: >
+      Grain: one row per kept mishap (fct_mishap). Costs are in dollars of the year the
+      episode aired; mishap_cost_2026 is the CPI-adjusted copy for the trend and forecast.
+    model: ref('fct_mishap')
+    defaults:
+      # the date MetricFlow puts these measures on when a query asks for metric_time
+      agg_time_dimension: episode_date
+    # entities are the join keys: MetricFlow joins semantic models that share an
+    # entity name, so no join is ever written by hand
+    entities:
+      - name: mishap
+        # primary: one row per mishap_key in this table
+        type: primary
+        expr: mishap_key
+      - name: episode
+        # foreign: many mishaps per episode; reaches season etc. in the episodes model
+        type: foreign
+        expr: episode_id
+      # not `year`: MetricFlow reserves time granularity names (day, month, year...)
+      - name: calendar_year
+        # foreign: many mishaps per year; reaches is_show_airing in the net_worth model
+        type: foreign
+        expr: episode_year
+    dimensions:
+      - name: episode_date
+        type: time
+        type_params:
+          # the column's own grain; MetricFlow rolls it up to month, quarter, year
+          time_granularity: day
+      - name: loss_kind
+        type: categorical
+      - name: loss_kind_category
+        type: categorical
+      - name: is_catastrophic
+        type: categorical
+      - name: amount_stated
+        type: categorical
+      - name: confidence
+        type: categorical
+      - name: description
+        type: categorical
+    # measures are the aggregations metrics are built from; a measure alone is not
+    # queryable, only metrics are
+    measures:
+      - name: mishap_cost
+        agg: sum
+      - name: mishap_cost_low
+        agg: sum
+      - name: mishap_cost_high
+        agg: sum
+      - name: mishap_cost_2026
+        agg: sum
+      - name: mishap_count
+        agg: count
+        expr: mishap_key
+      - name: mishap_cost_median
+        # BigQuery has no exact median aggregate; approximate is exact enough on ~100 rows
+        agg: percentile
+        expr: mishap_cost
+        agg_params:
+          percentile: 0.5
+          use_approximate_percentile: true
+      - name: mishap_cost_2026_median
+        agg: percentile
+        expr: mishap_cost_2026
+        agg_params:
+          percentile: 0.5
+          use_approximate_percentile: true
+
+  - name: episodes
+    description: >
+      Grain: one row per episode (dim_episode), including episodes with no mishap.
+      The denominator for Mishaps per Episode, and the home of season.
+    model: ref('dim_episode')
+    defaults:
+      agg_time_dimension: episode_date
+    entities:
+      - name: episode
+        type: primary
+        expr: episode_id
+    dimensions:
+      - name: episode_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: season
+        type: categorical
+      - name: episode_title
+        type: categorical
+    measures:
+      - name: episode_count
+        agg: count
+        expr: episode_id
+
+  - name: net_worth
+    description: >
+      Grain: one row per year (dim_net_worth), 2000-2027. Larry David's net worth with the
+      real 2007 divorce added back, in dollars. Semi-additive: never summed across years.
+    model: ref('dim_net_worth')
+    defaults:
+      agg_time_dimension: year_start_date
+    entities:
+      - name: calendar_year
+        type: primary
+        expr: year
+    dimensions:
+      - name: year_start_date
+        type: time
+        # not a column: MetricFlow needs a date (not an int year) to put net worth on
+        # metric_time. Jan 1 lines up with mishaps grouped by metric_time__year
+        expr: date(year, 1, 1)
+        type_params:
+          time_granularity: year
+      - name: is_show_airing
+        type: categorical
+    measures:
+      - name: net_worth_adj_mid
+        agg: sum
+        expr: net_worth_adj_mid_usd
+        # semi-additive: across several years, take the latest year's value instead of
+        # summing them (a balance, not a flow)
+        non_additive_dimension:
+          name: year_start_date
+          window_choice: max
