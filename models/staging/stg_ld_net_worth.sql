@@ -1,31 +1,24 @@
+-- Net worth and CPI by year, from the ld_net_worth_cpi seed (the columns of the
+-- Sheet's LD Net Worth tab that the models use). Renames them to model names;
+-- dim_net_worth converts $M to dollars and adds the time dimension.
+
 with
 
 source_net_worth as (
 
-    select * from {{ ref('ld_net_worth_cpi') }}
-
-),
-
-renamed as (
-
     select
         year,
-        net_worth_low_musd,
-        net_worth_mid_musd,
-        net_worth_high_musd,
+        is_show_airing,
         net_worth_adj_low_musd,
         net_worth_adj_mid_musd,
         net_worth_adj_high_musd,
-        real_divorce_addback_mid_musd,
-        basis as net_worth_basis,
-        event as net_worth_event,
-        source as net_worth_source,
-        cpi_u_annual_avg,
-        cpi_basis,
-        to_2026_dollars_multiplier
+        basis                                   as net_worth_basis,
+        event                                   as net_worth_event,
+        cpi_u_annual_avg                        as cpi_index,
+        to_2026_dollars_multiplier,
 
-    from source_net_worth
+    from {{ ref('ld_net_worth_cpi') }}
 
 )
 
-select * from renamed
+select * from source_net_worth

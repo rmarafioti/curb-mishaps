@@ -1,0 +1,16 @@
+models:
+  - name: dim_date
+    description: >
+      Grain: one row per calendar day, 2000-01-01 through 2028-12-31. Registered as
+      MetricFlow's time spine, which is what `metric_time` resolves to; MetricFlow
+      derives year, quarter and month from date_day. fct_mishap.episode_date joins to
+      date_day. Keep the range covering every date a metric or forecast uses.
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        data_type: date
+        description: '{{ doc("date_day") }}'
+        # required by MetricFlow: the time spine column must declare its grain;
+        # week, month, quarter and year are rolled up from it
+        granularity: day

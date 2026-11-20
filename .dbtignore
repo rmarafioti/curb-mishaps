@@ -1,0 +1,10 @@
+# docs-paths is the repo root so DEFINITIONS.md can live top level.
+# Keep dbt from reading any other markdown (or anything in tool folders).
+.venv/
+dbt_packages/
+target/
+logs/
+docs/
+web/
+*.md
+!/DEFINITIONS.md

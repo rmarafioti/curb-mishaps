@@ -23,6 +23,8 @@ models:
       columns: true
     staging:
       +materialized: view
+    core:
+      +materialized: table
     marts:
       +materialized: table
 
@@ -30,3 +32,5 @@ seeds:
   curb_mishaps:
     +persist_docs:
       relation: true
+
+docs-paths: ["."]  # only DEFINITIONS.md is read; everything else is excluded in .dbtignore

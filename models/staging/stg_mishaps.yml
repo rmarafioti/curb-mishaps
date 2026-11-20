@@ -1,0 +1,97 @@
+models:
+  - name: stg_mishaps
+    description: >
+      Grain: one row per Sheet row of the Mishaps tab, keyed on episode_id + mishap_num,
+      typed and cleaned. Keeps every review status and the has_mishap = 0
+      placeholder rows (dim_episode needs them); filtering to review_status = 'keep'
+      happens in fct_mishap. No row filter: a blank or keyless row fails the not_null
+      tests below. The Sheet-only working columns (row_id, air_year,
+      needs_verification, review_notes, estimate_source) are not brought in.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - episode_id
+              - mishap_num
+    columns:
+      - name: episode_id
+        data_type: int64
+        description: '{{ doc("episode_id") }}'
+        data_tests:
+          - not_null
+      - name: mishap_num
+        data_type: int64
+        description: '{{ doc("mishap_num") }}'
+        data_tests:
+          - not_null
+      - name: season
+        data_type: int64
+        description: '{{ doc("season") }}'
+      - name: episode_in_season
+        data_type: int64
+        description: '{{ doc("episode_in_season") }}'
+      - name: episode_title
+        data_type: string
+        description: '{{ doc("episode_title") }}'
+      - name: episode_date
+        data_type: date
+        description: '{{ doc("episode_date") }}'
+      - name: episode_year
+        data_type: int64
+        description: '{{ doc("episode_year") }}'
+      - name: has_mishap
+        data_type: int64
+        description: '{{ doc("has_mishap") }}'
+      - name: description
+        data_type: string
+        description: '{{ doc("mishap_description") }}'
+      - name: loss_kind
+        data_type: string
+        description: '{{ doc("loss_kind") }}'
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - realized
+                  - hypothetical
+      - name: loss_kind_category
+        data_type: string
+        description: '{{ doc("loss_kind_category") }}'
+      - name: is_catastrophic
+        data_type: int64
+        description: '{{ doc("is_catastrophic") }}'
+      - name: mishap_source
+        data_type: string
+        description: '{{ doc("mishap_source") }}'
+      - name: review_status
+        data_type: string
+        description: '{{ doc("review_status") }}'
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - keep
+                  - drop
+                  - pass
+                  - unsure
+      - name: amount_usd
+        data_type: float64
+        description: '{{ doc("amount_usd") }}'
+      - name: amount_stated
+        data_type: int64
+        description: '{{ doc("amount_stated") }}'
+      - name: est_low_usd
+        data_type: float64
+        description: '{{ doc("est_low_usd") }}'
+      - name: est_mid_usd
+        data_type: float64
+        description: '{{ doc("est_mid_usd") }}'
+      - name: est_high_usd
+        data_type: float64
+        description: '{{ doc("est_high_usd") }}'
+      - name: estimate_basis
+        data_type: string
+        description: '{{ doc("estimate_basis") }}'
+      - name: confidence
+        data_type: string
+        description: '{{ doc("confidence") }}'

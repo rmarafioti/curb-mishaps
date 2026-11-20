@@ -1,60 +1,42 @@
+-- One row per Sheet row of the Mishaps tab (live external table), typed and cleaned.
+-- Keeps every review status and the no-mishap placeholder rows, since dim_episode needs
+-- them; fct_mishap filters to kept mishaps. Sheet-only working columns are left out.
+
 with
 
 source_mishaps as (
 
-    select * from {{ source('sheets', 'mishaps') }}
-
-),
-
-renamed as (
-
     select
-        -- keys: episode_id + mishap_num is the natural key (both assigned once in the Sheet)
-        {{ dbt_utils.generate_surrogate_key(['episode_id', 'mishap_num']) }} as mishap_id,
-        safe_cast(episode_id as int64) as episode_id,
-        safe_cast(mishap_num as int64) as mishap_num,
-        safe_cast(row_id as int64) as sheet_row_id,
+        cast(episode_id as int64)                               as episode_id,
+        cast(mishap_num as int64)                               as mishap_num,
 
         -- episode
-        safe_cast(season as int64) as season,
-        safe_cast(episode_in_season as int64) as episode_in_season,
-        trim(title) as episode_title,
-        safe_cast(trim(air_date) as date) as episode_date,
+        cast(season as int64)                                   as season,
+        cast(episode_in_season as int64)                        as episode_in_season,
+        trim(title)                                             as episode_title,
+        cast(trim(air_date) as date)                            as episode_date,
+        extract(year from cast(trim(air_date) as date))         as episode_year,
 
         -- mishap
-        coalesce(safe_cast(has_mishap as int64) = 1, false) as has_mishap,
-        nullif(trim(description), '') as description,
-        nullif(lower(trim(loss_kind)), '') as loss_kind,
-        nullif(lower(trim(loss_kind_category)), '') as loss_kind_category,
-        coalesce(upper(trim(is_catastrophic)) = 'TRUE', false) as is_catastrophic,
-        nullif(lower(trim(source)), '') as mishap_source,
+        cast(has_mishap as int64)                               as has_mishap,
+        nullif(trim(description), '')                           as description,
+        nullif(lower(trim(loss_kind)), '')                      as loss_kind,
+        nullif(lower(trim(loss_kind_category)), '')             as loss_kind_category,
+        cast(is_catastrophic as int64)                          as is_catastrophic,
+        nullif(lower(trim(source)), '')                         as mishap_source,
+        nullif(lower(trim(review_status)), '')                  as review_status,
 
-        -- review
-        nullif(lower(trim(review_status)), '') as review_status,
-        nullif(trim(review_notes), '') as review_notes,
+        -- amounts, in dollars of the year the episode aired (not inflation-adjusted)
+        {{ clean_usd('amount_usd') }}                           as amount_usd,
+        cast(amount_stated as int64)                            as amount_stated,
+        {{ clean_usd('est_low_usd') }}                          as est_low_usd,
+        {{ clean_usd('est_mid_usd') }}                          as est_mid_usd,
+        {{ clean_usd('est_high_usd') }}                         as est_high_usd,
+        nullif(trim(estimate_basis), '')                        as estimate_basis,
+        nullif(lower(trim(confidence)), '')                     as confidence,
 
-        -- amounts (year-of-event dollars)
-        {{ clean_usd('amount_usd') }} as amount_usd,
-        safe_cast(amount_stated as int64) as amount_stated,
-        {{ clean_usd('est_low_usd') }} as est_low_usd,
-        {{ clean_usd('est_mid_usd') }} as est_mid_usd,
-        {{ clean_usd('est_high_usd') }} as est_high_usd,
-        nullif(trim(estimate_basis), '') as estimate_basis,
-        nullif(lower(trim(confidence)), '') as confidence
-
-    from source_mishaps
-    where episode_id is not null
-
-),
-
-with_year as (
-
-    select
-        *,
-        extract(year from episode_date) as episode_year
-
-    from renamed
+    from {{ source('sheets', 'mishaps') }}
 
 )
 
-select * from with_year
+select * from source_mishaps
