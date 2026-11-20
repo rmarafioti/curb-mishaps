@@ -2,6 +2,8 @@
 
 Shows how the year-by-year table is built: **no custom SQL**. Two semantic models, six metrics, one `mf query`. All amounts are in each year's own dollars (`mishap_cost`, mid estimate).
 
+> **Built (2026-11-20):** the real definitions are `models/marts/_semantic_models.yml` and `_metrics.yml`; they win where this mockup differs. Differences: the year entity is `calendar_year` (`year` is reserved in MetricFlow), the net worth model is `net_worth`, `hypothetical_loss` also excludes catastrophic rows (as the Sheet's tab does), and an `episodes` model adds season and Mishaps per Episode.
+
 ---
 
 ## 1. The table we want
@@ -64,8 +66,9 @@ semantic_models:
         type: primary
         expr: year
     dimensions:
-      - name: year_start_date    # date(year, 1, 1), built in dim_net_worth
+      - name: year_start_date    # not a column: MetricFlow computes it from year
         type: time
+        expr: date(year, 1, 1)
         type_params:
           time_granularity: year
       - name: is_show_airing     # int64 1/0, from the seed
@@ -149,7 +152,7 @@ metrics:
 mf query \
   --metrics realized_loss,hypothetical_loss,catastrophic_loss,total_mishap_loss,net_worth_mid,pct_mishap_to_net_worth \
   --group-by metric_time__year \
-  --where "{{ Dimension('year__is_show_airing') }} = 1" \
+  --where "{{ Dimension('calendar_year__is_show_airing') }} = 1" \
   --order metric_time__year
 ```
 
@@ -182,7 +185,7 @@ The same `total_mishap_loss` that fills the Total column also drives the KPI til
 
 ## 7. Notes for the build
 
-- `dim_net_worth` has `year_start_date` (date) and net worth in dollars (`net_worth_adj_mid_usd = net_worth_adj_mid_musd * 1e6`), so the ratio comes out as a true fraction.
+- The net worth semantic model derives `year_start_date` from `year` (`expr: date(year, 1, 1)`); `dim_net_worth` has net worth in dollars (`net_worth_adj_mid_usd = net_worth_adj_mid_musd * 1e6`), so the ratio comes out as a true fraction.
 - `is_catastrophic` comes from Sheet column X (1/0 on every row, added 2026-11-19), not a hardcoded `row_id` list. Today it's the house fire, the 2011 divorce and Latte Larry's. Flags are int64 1/0, so filters compare to `1` / `0`, not `true` / `false`.
 - Section 5 is a 2026-11-18 snapshot and is now stale (2017 is reviewed; 2011 realized includes rows 116–125). The current reference is the Sheet's `Losses by Year` tab, which `fct_mishap` reconciles to: **$262,024,688** across 101 kept rows as of 2026-11-19.
 - Time spine: `dim_date` in `models/core/` (`date_day` only).

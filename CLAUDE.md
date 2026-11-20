@@ -68,7 +68,7 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 - Staging: the source CTE (`source_<thing>`) selects only the columns used downstream, renamed, straight from `{{ source() }}` / `{{ ref() }}`. No `select *` import CTE. The Sheet keeps every column (unused external-table columns are dropped here); a seed we write ourselves holds only the columns the models use.
 - Lowercase keywords and functions, 4-space indent, explicit `as` for aliases.
 - Trailing comma after the last column in every column list (including the one before `from`); the final `select * from <cte>` has none. A convention, not linted (CV03 is off).
-- Aliases are padded out by hand and lined up in one column per select, far enough right to read cleanly, e.g. `basis                                   as net_worth_basis`. Not linted (LT01 is off); keep it tidy yourself.
+- Aliases are padded out by hand and lined up in one column per select, far enough right to read cleanly, e.g. `cast(season as int64)                                   as season`. Not linted (LT01 is off); keep it tidy yourself.
 - Sheet columns arrive as text, so staging casts every non-text column with plain `cast`, never `safe_cast`: a bad cell should fail the build with the value in the error, not turn into a silent null. Money columns use `{{ clean_usd() }}`, which strips `$` and `,` and keeps `safe_cast` inside the macro.
 - `safe_divide(numerator, denominator)`: check the argument order every time.
 - Wrap multi-condition `case` / `and` / `or` logic in parentheses; don't rely on precedence.
@@ -81,7 +81,7 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 - Every `.sql` model and every seed `.csv` gets its own `.yml` with the same name, next to it (`fct_mishap.sql` + `fct_mishap.yml`). Never combine models in one file. `_sources.yml` for sources.
 - Give every column a `data_type`.
 - **Model, seed and source descriptions are inline in their .yml** and start with the grain (`Grain: one row per ...`), so a reviewer sees what the model is without leaving the file.
-- **Column descriptions are never inline.** Each is a `{% docs %}` block in the top-level `DEFINITIONS.md`, referenced as `description: '{{ doc("name") }}'`. Name blocks after the column; prefix when the same name means different things (e.g. `net_worth_year_start_date`). `docs-paths` is the repo root and `.dbtignore` excludes every other `.md`, so don't put `{% docs %}` blocks anywhere else.
+- **Column descriptions are never inline.** Each is a `{% docs %}` block in the top-level `DEFINITIONS.md`, referenced as `description: '{{ doc("name") }}'`. Name blocks after the column; prefix when the same name means different things (e.g. `net_worth_year`). `docs-paths` is the repo root and `.dbtignore` excludes every other `.md`, so don't put `{% docs %}` blocks anywhere else.
 - Generic tests use `data_tests:` with `arguments:` (dbt 1.10+ syntax).
 - Lists in model YAML are block style (one `- item` per line), never inline `['a', 'b']`.
 - **Test the grain, not every column.** A single-column grain gets `unique` + `not_null` on that column; a multi-column grain gets one model-level `dbt_utils.unique_combination_of_columns` (never use it for one column). No blanket `unique` / `not_null` / `relationships` / `accepted_values` per column. Add a column test only when it catches a Sheet error that would otherwise silently change a number (e.g. a typo in `review_status = 'keep'` dropping a row). Put it on the column the metrics actually use (`fct_mishap.mishap_cost`, not the staging inputs behind it). No comments on tests; they should read as self-explanatory. Generated tables with no human input (`dim_date`, built by `dbt_utils.date_spine`) get no tests.
@@ -98,7 +98,8 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 - `loss_kind` (realized | hypothetical) → `loss_kind_category` (12 categories; see `stg_mishaps.yml`).
 - `needs_verification` and `estimate_source` are Sheet-only working columns; they never leave staging.
 - Each season aired within one calendar year, so `episode_year` is safe as the join to net worth.
-- In the semantic layer, don't pre-join net worth onto mishap rows. Give `dim_net_worth` a `year_start_date` time dimension (year grain, `non_additive_dimension`) and let MetricFlow align it with mishaps on `metric_time__year`.
+- In the semantic layer, don't pre-join net worth onto mishap rows. The net worth semantic model defines a `year_start_date` time dimension with `expr: date(year, 1, 1)` (year grain, `non_additive_dimension`; the column is not in `dim_net_worth`) and MetricFlow aligns it with mishaps on `metric_time__year`.
+- Stated rows have only `amount_stated_usd`; estimated rows have only `est_low/mid/high_usd` (tested on `fct_mishap`). `mishap_cost_low` / `mishap_cost_high` give the range: the stated price on stated rows, else the low / high estimate.
 
 ## Gotchas
 
