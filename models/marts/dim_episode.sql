@@ -10,6 +10,7 @@ episode_list as (
     select distinct
         episode_id,
         season,
+        episode_in_season,
         episode_title,
         episode_date,
         episode_year,

@@ -1,0 +1,90 @@
+# The dashboard's chart list. Each saved query is one chart's request to MetricFlow:
+# which metrics, grouped and filtered how; sorting is left to the page.
+# scripts/export_metrics.py runs every saved query here against prod and writes one JSON
+# file per query to web/data/. Adding a chart means adding a saved query, never SQL.
+#
+# MetricFlow syntax used here:
+#   TimeDimension('metric_time', 'year')   metric_time rolled up to the year
+#   Dimension('<entity>__<dimension>')     a dimension, reached through its entity
+#   Entity('<entity>')                     one row per entity (e.g. per mishap)
+
+saved_queries:
+
+  - name: kpis
+    label: Headline numbers
+    description: All-time totals for the KPI tiles.
+    query_params:
+      metrics:
+        - total_mishap_loss
+        - total_mishap_loss_low
+        - total_mishap_loss_high
+        - total_mishap_loss_2026
+        - mishap_count
+        - median_mishap_cost
+
+  - name: losses_by_year
+    label: Losses by year vs. net worth
+    description: >
+      The year table: losses by kind against that year's net worth, for the 12 years a
+      season aired.
+    query_params:
+      metrics:
+        - realized_loss
+        - hypothetical_loss
+        - catastrophic_loss
+        - total_mishap_loss
+        - net_worth_mid
+        - pct_mishap_to_net_worth
+        - net_worth_after_mishaps
+      group_by:
+        - TimeDimension('metric_time', 'year')
+      where:
+        - "{{ Dimension('calendar_year__is_show_airing') }} = 1"
+
+  - name: losses_by_season
+    label: Losses by season
+    description: Total loss, frequency and routine severity per season.
+    query_params:
+      metrics:
+        - total_mishap_loss
+        - mishap_count
+        - episode_count
+        - mishaps_per_episode
+        - median_routine_mishap_cost_2026
+      group_by:
+        - Dimension('episode__season')
+
+  - name: losses_by_category
+    label: Losses by category
+    description: Total loss and mishap count per loss category.
+    query_params:
+      metrics:
+        - total_mishap_loss
+        - mishap_count
+      group_by:
+        - Dimension('mishap__loss_kind')
+        - Dimension('mishap__loss_kind_category')
+
+  - name: mishap_list
+    label: Every mishap
+    description: >
+      One row per kept mishap: what happened, its cost and how it was priced. The page
+      sorts it for the top 10 disasters and picks out the rows behind a year, season or
+      category (dbt does not support order_by or limit on saved queries yet).
+    query_params:
+      metrics:
+        - total_mishap_loss
+      group_by:
+        - Entity('mishap')
+        - Dimension('mishap__description')
+        - Dimension('mishap__loss_kind')
+        - Dimension('mishap__loss_kind_category')
+        - Dimension('mishap__is_catastrophic')
+        - Dimension('mishap__estimate_basis')
+        - Dimension('episode__season')
+        - Dimension('episode__episode_in_season')
+        - Dimension('episode__episode_title')
+        # air date (x position on the mishap timeline) and its year (picks the rows
+        # behind a year in the year table)
+        - TimeDimension('metric_time', 'day')
+        - TimeDimension('metric_time', 'year')

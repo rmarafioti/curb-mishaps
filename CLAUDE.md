@@ -35,10 +35,11 @@ models/
   intermediate/ int_<thing>.sql + .yml, only when a step is reused or too big for one model
   core/         shared dims: dim_date (calendar + MetricFlow time spine) + dim_date.yml
   marts/        dim_episode, dim_net_worth, fct_mishap, each with its own .yml;
-                _semantic_models.yml, _metrics.yml
+                _semantic_models.yml, _metrics.yml, _saved_queries.yml (the chart list)
 seeds/          ld_net_worth_cpi.csv + ld_net_worth_cpi.yml
 DEFINITIONS.md  column definitions as {% docs %} blocks (top level; see .dbtignore)
 macros/         small helpers (clean_usd)
+scripts/        export_metrics.py: every saved query → web/data/<name>.json (from prod)
 docs/           PROJECT_BRIEF.md, SETUP.md, mockups
 web/            Next.js app (later)
 ```
@@ -56,6 +57,8 @@ dbt build -s +fct_mishap                    # one model and its parents
 sqlfluff lint models/                       # lint; `sqlfluff fix models/` to autofix
 mf validate-configs                         # semantic layer checks
 mf query --metrics total_mishap_loss --group-by metric_time__year
+mf query --saved-query losses_by_year         # one chart's request, as defined in YAML
+python scripts/export_metrics.py            # all saved queries → web/data/*.json, from prod
 ```
 
 Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf validate-configs` green (once metrics exist).
@@ -133,4 +136,6 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 2. ~~`dim_net_worth`, `dim_episode`, `fct_mishap`; reconciled to $262,024,688 (101 rows)~~ (done, PR #1)
 3. ~~`_semantic_models.yml`, `_metrics.yml`: 3 semantic models, 15 metrics~~ (done, PR #3)
 4. ~~Reconcile `mf query` output to BigQuery and the Sheet's `Losses by Year` tab~~ (done 2026-11-20, every metric matched by hand; total $262,024,688)
-5. Export script (`mf query --csv`) → `web/` Next.js page (after all data is in)
+5. ~~Export script: saved queries (`_saved_queries.yml`) → `scripts/export_metrics.py` → `web/data/*.json`~~ (done)
+6. `web/` Next.js page: reads `web/data/*.json` at build time; sorting and formatting only, no metric logic
+7. Forecast (Python → seed → semantic model), after the Sheet is finished
