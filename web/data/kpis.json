@@ -1,0 +1,49 @@
+{
+  "name": "kpis",
+  "label": "Headline numbers",
+  "description": "All-time totals for the KPI tiles.",
+  "metrics": [
+    {
+      "name": "total_mishap_loss",
+      "label": "Total Mishap Loss",
+      "description": "Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
+    },
+    {
+      "name": "total_mishap_loss_low",
+      "label": "Total Mishap Loss (low)",
+      "description": "Low end of the total's range. Stated prices count at their price."
+    },
+    {
+      "name": "total_mishap_loss_high",
+      "label": "Total Mishap Loss (high)",
+      "description": "High end of the total's range. Stated prices count at their price."
+    },
+    {
+      "name": "total_mishap_loss_2026",
+      "label": "Total Mishap Loss (2026 $)",
+      "description": "total_mishap_loss with each mishap converted to 2026 dollars by CPI."
+    },
+    {
+      "name": "mishap_count",
+      "label": "Mishaps",
+      "description": "Number of kept mishaps."
+    },
+    {
+      "name": "median_mishap_cost",
+      "label": "Median Mishap Cost",
+      "description": "The typical mishap: the lower median cost across the mishaps in each group of the query (all of them, or per year or season when grouped by one). With an even number of mishaps it is the lower of the middle two, not their average, so it is always a real mishap's cost. Each mishap is valued in dollars of the year its episode aired (not inflation-adjusted)."
+    }
+  ],
+  "rows": [
+    {
+      "total_mishap_loss": 262024688,
+      "total_mishap_loss_low": 203369645,
+      "total_mishap_loss_high": 347864340,
+      "total_mishap_loss_2026": 387154503.44,
+      "mishap_count": 101,
+      "median_mishap_cost": 600
+    }
+  ],
+  "exported_at": "2026-11-20T21:22:55+00:00",
+  "source": "curb_prod"
+}

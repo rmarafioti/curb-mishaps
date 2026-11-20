@@ -1,0 +1,93 @@
+{
+  "name": "losses_by_category",
+  "label": "Losses by category",
+  "description": "Total loss and mishap count per loss category.",
+  "metrics": [
+    {
+      "name": "total_mishap_loss",
+      "label": "Total Mishap Loss",
+      "description": "Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
+    },
+    {
+      "name": "mishap_count",
+      "label": "Mishaps",
+      "description": "Number of kept mishaps."
+    }
+  ],
+  "rows": [
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "purchase",
+      "total_mishap_loss": 12680,
+      "mishap_count": 9
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "fine_fee",
+      "total_mishap_loss": 132060,
+      "mishap_count": 6
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "property_damage",
+      "total_mishap_loss": 5036355,
+      "mishap_count": 21
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "property_lost",
+      "total_mishap_loss": 250240290,
+      "mishap_count": 11
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "payment",
+      "total_mishap_loss": 74243,
+      "mishap_count": 23
+    },
+    {
+      "mishap__loss_kind": "hypothetical",
+      "mishap__loss_kind_category": "lost_opportunity",
+      "total_mishap_loss": 5160330,
+      "mishap_count": 9
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "gift",
+      "total_mishap_loss": 1360,
+      "mishap_count": 6
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "donation",
+      "total_mishap_loss": 1039500,
+      "mishap_count": 5
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "investment",
+      "total_mishap_loss": 300000,
+      "mishap_count": 2
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "cash_lost",
+      "total_mishap_loss": 1010,
+      "mishap_count": 2
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "loan_unrepaid",
+      "total_mishap_loss": 21060,
+      "mishap_count": 4
+    },
+    {
+      "mishap__loss_kind": "realized",
+      "mishap__loss_kind_category": "bet",
+      "total_mishap_loss": 5800,
+      "mishap_count": 3
+    }
+  ],
+  "exported_at": "2026-11-20T21:22:55+00:00",
+  "source": "curb_prod"
+}
