@@ -25,8 +25,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main className="page">
             {children}
             <footer className="footer">
-              Data exported from {kpis.source} on {dateOf(kpis.exported_at)}. Amounts are in the
-              dollars of the year each episode aired; estimates use the mid of a researched range.
+              <span>
+                Data exported from {kpis.source} on {dateOf(kpis.exported_at)}. Amounts are in the
+                dollars of the year each episode aired; estimates use the mid of a researched range.
+              </span>
+              <span>Best viewed on a desktop or laptop: the charts are wide.</span>
             </footer>
           </main>
         </FiltersProvider>

@@ -5,6 +5,8 @@
 import kpisJson from "@/data/kpis.json";
 import mishapJson from "@/data/mishap_list.json";
 import dentJson from "@/data/net_worth_dent.json";
+import seasonJson from "@/data/losses_by_season.json";
+import yearJson from "@/data/losses_by_year.json";
 
 export type MetricInfo = { name: string; label: string; description: string };
 
@@ -79,9 +81,26 @@ export type KpiRow = {
   median_mishap_cost: number;
 };
 
+export type SeasonRow = {
+  episode__season: string;
+  total_mishap_loss: number;
+  mishap_count: number;
+  episode_count: number;
+  mishaps_per_episode: number;
+};
+
+export type YearRow = {
+  metric_time__year: string;
+  total_mishap_loss: number;
+  net_worth_mid: number;
+  pct_mishap_to_net_worth: number;
+};
+
 export const kpis = kpisJson as unknown as Export<KpiRow>;
 export const mishapList = mishapJson as unknown as Export<Mishap>;
 export const netWorthDent = dentJson as unknown as Export<DentRow>;
+export const lossesBySeason = seasonJson as unknown as Export<SeasonRow>;
+export const lossesByYear = yearJson as unknown as Export<YearRow>;
 
 // --- row picking and sorting (presentation only) --------------------------------------
 
@@ -107,6 +126,12 @@ export function usdCompact(value: number): string {
 
 /** $262,024,688 */
 export const usdFull = (value: number) => `$${Math.round(value).toLocaleString("en-US")}`;
+
+/** $333M (whole millions, for chart labels) */
+export const usdMillions = (value: number) => `$${Math.round(value / 1e6).toLocaleString("en-US")}M`;
+
+/** a share (0.42085) as a percent: 42.1% */
+export const percent = (share: number) => `${(share * 100).toFixed(1)}%`;
 
 /** S8 E1 */
 export const episodeCode = (row: Mishap) =>
