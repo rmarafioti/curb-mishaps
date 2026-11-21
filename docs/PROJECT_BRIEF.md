@@ -50,14 +50,15 @@ The Sheet is the source. **dbt reads the `Mishaps` tab live** through a BigQuery
 - **Rough is fine.** Unstated amounts get `est_low / est_mid / est_high` + confidence. Don't agonize over small items.
 - **Price in the year it happened.** Estimates are in dollars of the year the episode aired (`mishap_cost`, nominal). When the reference price is current (e.g. a 2026 repair quote), deflate it by CPI to the year the episode aired before entering it. dbt also keeps a CPI-converted copy (`mishap_cost_2026`) — see "Two kinds of dollars" below.
 - **Two kinds of dollars (decided 2026-11-18).**
-  - **Nominal (`mishap_cost`) is the dashboard default.** Totals, by season, by category, top 10 and every net worth comparison use the year's own dollars. Net worth is also nominal, so same-year comparisons need no conversion. Net worth is never reduced by a cumulative total.
-  - **2026 dollars (`mishap_cost_2026`) are for the trend and the forecast.** Inflation alone makes later mishaps look pricier; converting removes that so the trend shows real change, and the forecast projects from there.
-  - **The dashboard explains this in a note** and separates the two sources of growth, so the reader can weigh them: (1) **frequency** — are there more mishaps per episode as the seasons go on? (count, no dollars involved); (2) **cost** — is each mishap pricier, and how much of that is just inflation? (nominal vs. 2026-dollar cost side by side; the gap between them is inflation, what's left is real growth).
+  - **Nominal (`mishap_cost`) is the only kind on the dashboard.** Totals, by season, by category, top 10 and every net worth comparison use the year's own dollars. Net worth is also nominal, so same-year comparisons need no conversion. Net worth is never reduced by a cumulative total, with one labeled exception: the "dent" chart (below).
+  - **2026 dollars (`mishap_cost_2026`) are for the forecast only** (projecting the seasons after the show ended; settled 2026-11-20). Converting removes inflation so the forecast projects real change. They never appear on the dashboard: no 2026-dollar KPI, column or chart.
+  - **The forecast tab explains the inflation step** in its own write-up (frequency, cost in 2026 dollars, catastrophic risk); the other tabs need no inflation note.
 - **Pricing workflow:** Rich marks a row `keep` and leaves a note on how to price it → Claude fills R–W with a cited range. `pass`/`drop` rows get no price; `unsure` rows wait for Rich to re-watch on HBO Max.
 - **Hypothetical HBO show (row 23, "The Shrimp Incident"):** Rich's call — count it, priced as **1 full season (12 episodes)** at $50K/$150K/$500K per episode = **$600K / $1.8M / $6M** (2001 dollars), confidence low. It stays in the hypothetical bucket; even at the high end it's a small share of his net worth (that's part of the joke).
 - **Be transparent.** Uncertainty is shown through each estimate's confidence and low/high range (stated prices have no range). A % Stated KPI was dropped 2026-11-20: weighted by dollars, the estimated divorce swamps it.
 - **One divorce, counted once.** Curb's Larry *is* Larry David playing himself with his real money, so show losses can be applied to real net worth. To avoid double counting, the net worth series **adds back the real 2007 divorce** (`net_worth_adj_*` columns), and the show's **2011 Cheryl divorce is the only divorce**: a catastrophic mishap valued at the real settlement (low $200M / mid $250M / high $300M).
 - **Net Worth After Mishaps is single-year only.** `net_worth_adj` (that year) − that year's mishaps. Required single-select year filter, no "All years" — the metric is not cumulative.
+- **The dent chart (agreed 2026-11-20) is the one running subtraction.** `net_worth_after_mishaps_to_date` = that year's real net worth − `cumulative_mishap_loss` (every mishap up to that year), one point per year 2000–2024, shown under the mishap timeline beside the real net-worth line. It answers "how much did the mishaps dent him" and is labeled as what he'd have if the character's losses were real, never as his actual net worth. It adds up losses in each year's own dollars; the chart note says so.
 - **Catastrophic losses separate.** Divorce, house fire (S6 "Meet the Blacks"), Latte Larry's burning down (S10) go in a catastrophic bucket so they don't distort everyday mishap stats.
 - **Realized vs. hypothetical.** `loss_kind = realized` (money/property actually lost) vs. `hypothetical` (missed income: shelved musical, lost car-periscope investment, Prius sold under market).
 
@@ -78,7 +79,7 @@ facts:   fct_mishap    (mishap_key, episode_id, mishap_num, episode_date, episod
                         mishap_cost = if(amount_stated = 1, amount_stated_usd, est_mid_usd),
                         mishap_cost_low / mishap_cost_high = same rule with est_low_usd / est_high_usd,
                         mishap_cost_2026 = mishap_cost × that year's to_2026_dollars_multiplier)
-later:   mart_forecast (Python output)
+later:   forecast seed (Python output: one row per forecast season) + its semantic model
 ```
 
 - No losses-by-year or losses-by-season marts: those tables come from `mf query` on the semantic layer (metrics live only in MetricFlow YAML).
@@ -100,8 +101,8 @@ later:   mart_forecast (Python output)
 | Metric | Definition | Notes |
 |---|---|---|
 | Total Mishap Loss | `sum(mishap_cost)` (stated, else est_mid; **year-of-event dollars**) | dashboard default; slice by `loss_kind` (realized / hypothetical). Running total by year; never subtracted from net worth |
-| Total Mishap Loss (2026 $) | `sum(mishap_cost_2026)` | shown beside the nominal total in the inflation note; feeds the cost trend and forecast |
-| Median Routine Mishap Cost (2026 $) | `percentile(mishap_cost_2026, 0.5)` where `is_catastrophic = 0`, by season | severity trend with inflation removed; catastrophic rows excluded in the metric itself |
+| Total Mishap Loss (2026 $) | `sum(mishap_cost_2026)` | forecast input only; not shown on the dashboard |
+| Median Routine Mishap Cost (2026 $) | `percentile(mishap_cost_2026, 0.5)` where `is_catastrophic = 0`, by season | forecast severity input (inflation removed); catastrophic rows excluded in the metric itself; not shown on the dashboard |
 | Median Mishap Cost | `percentile(mishap_cost, 0.5)` | replaces Average (no outlier trimming needed); check percentile support on chosen warehouse |
 | Net Worth After Mishaps | `net_worth_adj − total_loss` | **single year only**, both sides nominal (same year, no conversion); `net_worth` is semi-additive (`non_additive_dimension` on `metric_time`) |
 | % Mishap to Net Worth | `total_loss / net_worth_adj` | both sides nominal; semi-additive denominator, never summed |
@@ -111,14 +112,11 @@ Dimensions: year, season, episode, `loss_kind` → `loss_kind_category`, `is_cat
 
 Cut 2026-11-20 (slicing covers them): Most Costly Mishap (the Top 10 table is `total_mishap_loss` grouped by the `mishap` entity), # Routine Mishaps and # Big Losses (`mishap_count` grouped by `mishap__is_catastrophic`), and net worth low/high (the dashboard uses the mid estimate; the sources page shows the reported range). The built list is `models/marts/_metrics.yml`.
 
-**Dashboard inflation note:** a short panel explaining that amounts are in the dollars of the year they happened, plus three views, each answering one question:
-1. **More mishaps?** Mishaps per Episode by season. No dollars, so inflation can't affect it; the most trustworthy of the three.
-2. **Pricier mishaps?** Median Mishap Cost (2026 $) by season, catastrophic rows excluded. Label it as mostly estimated, or filter to stated rows (see caveat below).
-3. **How much is just prices rising?** Nominal vs. 2026-dollar cost per season; the gap between the lines is inflation.
+**Forecast inputs (not dashboard views):** mishaps per episode by season (frequency, no dollars); the routine median in 2026 dollars by season (severity, inflation removed; mostly estimated, see the caveat); catastrophic odds per season.
 
-**Caveat (estimates have no built-in real trend):** many estimates were made by taking a current price and deflating it to the air year. Converted back to 2026 dollars, those rows return today's price, so their real cost is flat across seasons by construction. Only `stated` amounts carry a real cost signal; slice view 2 by `mishap__amount_stated` to see it on stated rows alone.
+**Caveat (estimates have no built-in real trend):** many estimates were made by taking a current price and deflating it to the air year. Converted back to 2026 dollars, those rows return today's price, so their real cost is flat across seasons by construction. Only `stated` amounts carry a real cost signal; slice the severity input by `mishap__amount_stated` to see it on stated rows alone.
 
-Forecast lives in `mart_forecast` (season, median, p10, p90) produced by Python; semantic layer only exposes simple metrics on it.
+Forecast output is a seed CSV written by the Python script (one row per forecast season: season, year, median, p10, p90, in that year's dollars), loaded with `dbt seed`; a semantic model exposes simple metrics on it and a saved query feeds the Forecast tab.
 
 ---
 
@@ -130,7 +128,7 @@ Frequency–severity model, insurance style:
 - **Severity (routine mishaps):** cost per mishap — lognormal; summarize with the **median**, which ignores how big the outliers are (a $250M loss counts the same as a $300 one, as one value above the middle). Test whether costs grow over seasons **in 2026 dollars** (nominal would show a false upward trend from inflation alone). Run the trend test on `stated` rows, or report it as mostly estimated (see caveat in section 4).
 - **Catastrophic:** modeled separately as rare events with a per-season probability. This is where the tails go: a forecast of total dollars can't ignore big losses, so routine (median cost × count) and catastrophic (probability × size) are added together. Nothing is double counted or dropped.
 - **Decomposition for the dashboard note:** growth in nominal loss per season = frequency change × real cost change × inflation. Report each piece so the reader sees how much is "more mishaps" vs. "pricier mishaps" vs. "prices rising."
-- **Forecast:** Monte Carlo — "if the show kept going to the present," simulate missing seasons (2025–2027), CPI-projected, report median + 80% band. Realized and hypothetical modeled separately.
+- **Forecast (scope settled 2026-11-21):** "if the show had kept going": **one season a year** after Season 12 (2024), so **Season 13 = 2025 and Season 14 = 2026, stopping at 2026** (the real show had gaps; one a year is the stated what-if assumption and the page says so). Fit the trends in 2026 dollars (inflation removed), Monte Carlo each forecast season (median + 80% band), then convert each season to **its own air year's dollars** with the real CPI multipliers already in the seed (2025 full-year CPI; 2026 Jan–Oct average until BLS publishes the annual figure). No CPI is assumed: nothing past 2026. Realized and hypothetical modeled separately. Possible tie-in: extend the dent chart's Net Worth After Mishaps through 2025–2026 with the forecast band (net worth is in the seed through 2027).
 - Keep it modest and honest; the semantic layer is the star.
 
 ---

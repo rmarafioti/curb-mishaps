@@ -143,7 +143,7 @@ metrics:
   # --- Net worth (semi-additive: single-year only) -----------------------------------
 
   - name: net_worth_mid
-    label: LD Net Worth
+    label: "LD's Net Worth"
     type: simple
     description: >
       Larry David's net worth that year: the central (mid) estimate from reported figures
@@ -162,7 +162,7 @@ metrics:
       denominator: net_worth_mid
 
   - name: net_worth_after_mishaps
-    label: Net Worth After Mishaps
+    label: Net Worth After That Year's Mishaps
     description: >
       That year's net worth minus that year's total mishap loss. Single-year only: query
       it grouped by metric_time__year.
@@ -173,3 +173,37 @@ metrics:
       metrics:
         - name: net_worth_mid
         - name: total_mishap_loss
+
+  # --- Running dent: the character's losses taken out of the real net worth -------------
+  # The one place mishaps are subtracted as a running total (an exception to the brief's
+  # single-year rule, agreed 2026-11-20). Labeled so no one reads it as Larry David's
+  # real net worth.
+
+  - name: cumulative_mishap_loss
+    label: Financial Loss
+    description: >
+      Running total of every kept mishap from the first episode up to and including each
+      period, in each year's own dollars.
+    # cumulative: adds up the measure from the start of the data to each period of
+    # metric_time, instead of summing only that period
+    type: cumulative
+    type_params:
+      measure:
+        name: mishap_cost
+        fill_nulls_with: 0
+      cumulative_type_params:
+        # grouped by year, report the running total as of the year's last day (the
+        # default, first, would leave out that year's own mishaps)
+        period_agg: last
+
+  - name: net_worth_after_mishaps_to_date
+    label: Net Worth After Mishaps
+    description: >
+      That year's real net worth minus every mishap up to and including that year: what
+      he'd have if the character's losses were real. Query it grouped by metric_time__year.
+    type: derived
+    type_params:
+      expr: net_worth_mid - cumulative_mishap_loss
+      metrics:
+        - name: net_worth_mid
+        - name: cumulative_mishap_loss
