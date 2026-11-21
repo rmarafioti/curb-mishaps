@@ -88,3 +88,18 @@ saved_queries:
         # behind a year in the year table)
         - TimeDimension('metric_time', 'day')
         - TimeDimension('metric_time', 'year')
+
+  - name: net_worth_dent
+    label: The dent in his net worth
+    description: >
+      Real net worth each year next to what he'd have if every mishap so far came out of
+      it, 2000-2024 (every year, so the line runs through the years between seasons).
+    query_params:
+      metrics:
+        - net_worth_mid
+        - cumulative_mishap_loss
+        - net_worth_after_mishaps_to_date
+      group_by:
+        - TimeDimension('metric_time', 'year')
+      where:
+        - "{{ TimeDimension('metric_time', 'year') }} <= '2024-01-01'"

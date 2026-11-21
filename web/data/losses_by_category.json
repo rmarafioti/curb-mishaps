@@ -88,6 +88,455 @@
       "mishap_count": 3
     }
   ],
-  "exported_at": "2026-11-20T21:22:55+00:00",
+  "filterable_metrics": [
+    "total_mishap_loss",
+    "mishap_count"
+  ],
+  "slices": {
+    "episode__season": [
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "purchase",
+        "episode__season": "5",
+        "total_mishap_loss": 320,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "fine_fee",
+        "episode__season": "2",
+        "total_mishap_loss": 35,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "6",
+        "total_mishap_loss": 5000075,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "11",
+        "total_mishap_loss": 70,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "purchase",
+        "episode__season": "1",
+        "total_mishap_loss": 330,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "3",
+        "total_mishap_loss": 150,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "4",
+        "total_mishap_loss": 815,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "2",
+        "total_mishap_loss": 550,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "7",
+        "total_mishap_loss": 520,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "11",
+        "total_mishap_loss": 2815,
+        "mishap_count": 4
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "purchase",
+        "episode__season": "9",
+        "total_mishap_loss": 930,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "1",
+        "total_mishap_loss": 180,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "2",
+        "total_mishap_loss": 250,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "gift",
+        "episode__season": "3",
+        "total_mishap_loss": 460,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "gift",
+        "episode__season": "1",
+        "total_mishap_loss": 200,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "9",
+        "total_mishap_loss": 39175,
+        "mishap_count": 6
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "9",
+        "total_mishap_loss": 3300,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "7",
+        "total_mishap_loss": 300,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "2",
+        "total_mishap_loss": 535,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "11",
+        "total_mishap_loss": 1300,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "12",
+        "total_mishap_loss": 1200,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "4",
+        "total_mishap_loss": 5450,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "purchase",
+        "episode__season": "2",
+        "total_mishap_loss": 450,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "1",
+        "total_mishap_loss": 5300,
+        "mishap_count": 3
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "10",
+        "total_mishap_loss": 214000,
+        "mishap_count": 3
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "3",
+        "total_mishap_loss": 1900,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "10",
+        "total_mishap_loss": 22000,
+        "mishap_count": 3
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "10",
+        "total_mishap_loss": 3000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "5",
+        "total_mishap_loss": 4450,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "10",
+        "total_mishap_loss": 25000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "purchase",
+        "episode__season": "6",
+        "total_mishap_loss": 10000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "7",
+        "total_mishap_loss": 27293,
+        "mishap_count": 4
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "fine_fee",
+        "episode__season": "10",
+        "total_mishap_loss": 130250,
+        "mishap_count": 3
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "4",
+        "total_mishap_loss": 100000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "investment",
+        "episode__season": "3",
+        "total_mishap_loss": 300000,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "9",
+        "total_mishap_loss": 750250,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "8",
+        "total_mishap_loss": 2500000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "2",
+        "total_mishap_loss": 1800000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "6",
+        "total_mishap_loss": 1000000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "8",
+        "total_mishap_loss": 250000000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "4",
+        "total_mishap_loss": 760,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "cash_lost",
+        "episode__season": "12",
+        "total_mishap_loss": 10,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "1",
+        "total_mishap_loss": 530,
+        "mishap_count": 2
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "payment",
+        "episode__season": "6",
+        "total_mishap_loss": 50,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "loan_unrepaid",
+        "episode__season": "8",
+        "total_mishap_loss": 60,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "gift",
+        "episode__season": "4",
+        "total_mishap_loss": 100,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "fine_fee",
+        "episode__season": "9",
+        "total_mishap_loss": 275,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "gift",
+        "episode__season": "7",
+        "total_mishap_loss": 300,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "gift",
+        "episode__season": "8",
+        "total_mishap_loss": 300,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "5",
+        "total_mishap_loss": 300,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "3",
+        "total_mishap_loss": 500,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "10",
+        "total_mishap_loss": 500,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "purchase",
+        "episode__season": "12",
+        "total_mishap_loss": 650,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "cash_lost",
+        "episode__season": "10",
+        "total_mishap_loss": 1000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "fine_fee",
+        "episode__season": "1",
+        "total_mishap_loss": 1500,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "2",
+        "total_mishap_loss": 4000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__loss_kind_category": "lost_opportunity",
+        "episode__season": "5",
+        "total_mishap_loss": 5000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "loan_unrepaid",
+        "episode__season": "2",
+        "total_mishap_loss": 5000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "2",
+        "total_mishap_loss": 5000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "loan_unrepaid",
+        "episode__season": "11",
+        "total_mishap_loss": 6000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "loan_unrepaid",
+        "episode__season": "6",
+        "total_mishap_loss": 10000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "8",
+        "total_mishap_loss": 10000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "5",
+        "total_mishap_loss": 20000,
+        "mishap_count": 1
+      }
+    ]
+  },
+  "exported_at": "2026-11-21T00:34:05+00:00",
   "source": "curb_prod"
 }

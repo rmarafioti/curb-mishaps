@@ -6,21 +6,34 @@ the rows, plus each metric's label and description from the semantic manifest, s
 page shows names defined once in YAML. No numbers are computed here. Re-parses the
 default (dev) target at the end so later mf queries point at dev again.
 
+Filters: for each saved query that shows totals, also runs it once per combination of
+the dashboard's filter dimensions (FILTER_DIMENSIONS) it doesn't already group by, and
+stores those rows under "slices". The page shows the slice matching the active filters,
+so every filtered number is still computed by MetricFlow. Only metrics built purely from
+the mishaps semantic model can be sliced (net worth and episodes have no category or
+loss kind); the rest are listed as not filterable and the page shows them unfiltered.
+
 Run from the repo root with the venv active:  python scripts/export_metrics.py
 """
 
 import csv
 import json
+import re
 import subprocess
 import sys
 import tempfile
 from datetime import datetime, timezone
+from itertools import combinations
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "target" / "semantic_manifest.json"
 OUT_DIR = ROOT / "web" / "data"
 PROD_SCHEMA = "curb_prod"
+
+# the dashboard's filters, in the order the page shows them
+FILTER_DIMENSIONS = ["episode__season", "mishap__loss_kind_category", "mishap__loss_kind"]
+SLICEABLE_MODEL = "mishaps"
 
 
 def run(*args):
@@ -46,18 +59,63 @@ def to_number(value):
     return int(number) if number.is_integer() else number
 
 
-def export(saved_query, metric_info, exported_at):
-    metric_names = saved_query["query_params"]["metrics"]
+def query(metric_names, mf_args):
+    """Run one mf query to CSV and return its rows, metric columns as numbers."""
     with tempfile.TemporaryDirectory() as tmp:
         csv_path = Path(tmp) / "out.csv"
-        run("mf", "query", "--saved-query", saved_query["name"], "--csv", str(csv_path))
+        run("mf", "query", *mf_args, "--csv", str(csv_path))
         with csv_path.open(newline="") as f:
             rows = list(csv.DictReader(f))
-
-    # metric columns become numbers; dimension columns stay text, as MetricFlow returned them
+    # dimension columns stay text, as MetricFlow returned them
     for row in rows:
         for name in metric_names:
             row[name] = to_number(row[name])
+    return rows
+
+
+def cli_name(group_by):
+    """TimeDimension('metric_time', 'year') -> metric_time__year; Dimension('a') -> a."""
+    names = re.findall(r"'([^']+)'", group_by)
+    return "__".join(names)
+
+
+def sliceable_metrics(manifest):
+    """Metrics whose every input measure lives in the mishaps semantic model."""
+    mishap_measures = {
+        measure["name"]
+        for model in manifest["semantic_models"] if model["name"] == SLICEABLE_MODEL
+        for measure in model["measures"]
+    }
+    return {
+        metric["name"]
+        for metric in manifest["metrics"]
+        if {m["name"] for m in metric["type_params"]["input_measures"]} <= mishap_measures
+    }
+
+
+def slices(saved_query, sliceable):
+    """Rows for every combination of filter dimensions the saved query doesn't group by."""
+    params = saved_query["query_params"]
+    group_by = [cli_name(g) for g in params["group_by"]]
+    if "mishap" in group_by:
+        return [], {}  # one row per mishap: the page filters these rows directly
+    metric_names = [m for m in params["metrics"] if m in sliceable]
+    extra = [d for d in FILTER_DIMENSIONS if d not in group_by]
+    wheres = [w["where_sql_template"] for w in (params["where"] or {}).get("where_filters", [])]
+    result = {}
+    for size in range(1, len(extra) + 1):
+        for dims in combinations(extra, size):
+            mf_args = ["--metrics", ",".join(metric_names), "--group-by", ",".join(group_by + list(dims))]
+            for where in wheres:
+                mf_args += ["--where", where]
+            result["+".join(dims)] = query(metric_names, mf_args)
+    return metric_names, result
+
+
+def export(saved_query, metric_info, sliceable, exported_at):
+    metric_names = saved_query["query_params"]["metrics"]
+    rows = query(metric_names, ["--saved-query", saved_query["name"]])
+    filterable, sliced = slices(saved_query, sliceable)
 
     output = {
         "name": saved_query["name"],
@@ -65,12 +123,14 @@ def export(saved_query, metric_info, exported_at):
         "description": saved_query["description"],
         "metrics": [metric_info[name] for name in metric_names],
         "rows": rows,
+        "filterable_metrics": filterable,
+        "slices": sliced,
         "exported_at": exported_at,
         "source": PROD_SCHEMA,
     }
     path = OUT_DIR / f"{saved_query['name']}.json"
     path.write_text(json.dumps(output, indent=2) + "\n")
-    print(f"{path.relative_to(ROOT)}: {len(rows)} rows")
+    print(f"{path.relative_to(ROOT)}: {len(rows)} rows, {len(sliced)} filter slices")
 
 
 def main():
@@ -87,8 +147,9 @@ def main():
             }
             for metric in manifest["metrics"]
         }
+        sliceable = sliceable_metrics(manifest)
         for saved_query in manifest["saved_queries"]:
-            export(saved_query, metric_info, exported_at)
+            export(saved_query, metric_info, sliceable, exported_at)
     finally:
         run("dbt", "parse")
 
