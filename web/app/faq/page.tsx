@@ -74,6 +74,9 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
             at <Figure>{usdFull(costliestSeason.total_mishap_loss)}</Figure> over {costliestSeason.mishap_count} mishaps.
             Season {cheapestSeason.episode__season} was the cheapest
             at <Figure>{usdFull(cheapestSeason.total_mishap_loss)}</Figure> over {cheapestSeason.mishap_count} mishaps.
+            {cheapestSeason.episode__season === "12" && (
+              <> Season 12 is still being reviewed, though, so it may not stay the cheapest.</>
+            )}
           </p>
         ),
         see: { href: "/costs-by-season", label: "Mishap Costs by Season (Season filter)" },

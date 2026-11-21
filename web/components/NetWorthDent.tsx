@@ -120,13 +120,20 @@ export default function NetWorthDent({ rows, seasonOf, highlightYear }: Props) {
               </text>
             </g>
           ))}
-          {X_TICKS.map((year) => (
+          {/* axis years; one too close to a highlighted season's year makes way for its label */}
+          {X_TICKS.filter((year) => highlightYear === undefined || Math.abs(year - highlightYear) > 1).map((year) => (
             <text key={year} className="tick" x={x(year)} y={HEIGHT - PAD.bottom + 20} textAnchor="middle">{year}</text>
           ))}
 
+          {/* the filtered season's year: an outlined band and its year in yellow on the axis */}
           {highlightYear !== undefined && (
-            <rect className="year-band" x={x(highlightYear) - PLOT_W / (LAST - FIRST) / 2} y={PAD.top}
-                  width={PLOT_W / (LAST - FIRST)} height={PLOT_H} />
+            <>
+              <rect className="year-band" x={x(highlightYear) - PLOT_W / (LAST - FIRST) / 2} y={PAD.top}
+                    width={PLOT_W / (LAST - FIRST)} height={PLOT_H} />
+              <text className="year-band-label" x={x(highlightYear)} y={HEIGHT - PAD.bottom + 20} textAnchor="middle">
+                {highlightYear}
+              </text>
+            </>
           )}
 
           {/* the loss band: translucent Curb yellow at LD's Net Worth, fading out toward the

@@ -6,9 +6,12 @@
 import { type Mishap, byNumber, episodeCode, pickMishaps, usdFull } from "@/lib/data";
 import { useFilters } from "@/lib/filters";
 
-// Each pricing note opens with how it was priced ("catastrophic.", "assumption:",
-// "reference:", "category default:", "stated"); that lead word becomes a colored pill and
-// the rest stays as the note. Text splitting only.
+// Each pricing note opens with how it was priced ("assumption:", "reference:", "category
+// default:", "stated"); that lead word becomes the pricing-method pill and the rest stays as
+// the note. Catastrophic is a separate flag after the title ("*Catastrophic", text, not a
+// pill, so it doesn't read as a pricing method), from the data's is_catastrophic flag
+// (older notes that open with "catastrophic." get no method pill).
+// Text splitting only.
 const BASIS_KINDS = ["catastrophic", "assumption", "reference", "category default", "stated"];
 
 function splitBasis(basis: string): { kind?: string; note: string } {
@@ -52,11 +55,17 @@ export default function TopDisasters() {
                     <tr key={m.mishap}>
                       <td className="rank">{i + 1}</td>
                       <td className="t-title">
-                        <span className="mishap-title">{m.mishap__description}</span>
+                        <span className="mishap-title">
+                          {m.mishap__description}
+                          {/* the flag comes from the data, not the note's wording */}
+                          {m.mishap__is_catastrophic === "1" && <span className="cat-flag">Catastrophic</span>}
+                        </span>
                         {basis.note && <span className="basis">{basis.note}</span>}
                       </td>
                       <td className="t-pill">
-                        {basis.kind && <span className={`pill pill-${basis.kind.replace(" ", "-")}`}>{basis.kind}</span>}
+                        {basis.kind && basis.kind !== "catastrophic" && (
+                          <span className={`pill pill-${basis.kind.replace(" ", "-")}`}>{basis.kind}</span>
+                        )}
                       </td>
                       <td className="nowrap t-episode">{episodeCode(m)} · {m.episode__episode_title}</td>
                       <td className="num top-cost">{usdFull(m.total_mishap_loss)}</td>

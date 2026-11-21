@@ -13,10 +13,10 @@ export type MetricInfo = { name: string; label: string; description: string };
 // --- filters ---------------------------------------------------------------------------
 
 /** The dashboard's filters; same names and order as FILTER_DIMENSIONS in the export script. */
-export const FILTER_DIMS = ["episode__season", "mishap__loss_kind"] as const;
+export const FILTER_DIMS = ["episode__season", "mishap__loss_kind", "mishap__is_catastrophic"] as const;
 export type FilterDim = (typeof FILTER_DIMS)[number];
 export type Filters = Record<FilterDim, string>; // "" = all
-export const NO_FILTERS: Filters = { episode__season: "", mishap__loss_kind: "" };
+export const NO_FILTERS: Filters = { episode__season: "", mishap__loss_kind: "", mishap__is_catastrophic: "" };
 type Dims = Partial<Record<FilterDim, string>>;
 
 type Export<Row> = {

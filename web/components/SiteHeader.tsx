@@ -114,6 +114,19 @@ export default function SiteHeader() {
                 </select>
               </label>
             )}
+            {filterDims.includes("mishap__is_catastrophic") && (
+              <label>
+                Mishaps
+                {/* the catastrophic flag (divorce, house fire, Latte Larry's): see the totals
+                    with or without them */}
+                <select value={filters.mishap__is_catastrophic}
+                        onChange={(e) => setFilters({ ...filters, mishap__is_catastrophic: e.target.value })}>
+                  <option value="">All mishaps</option>
+                  <option value="0">Everyday only</option>
+                  <option value="1">Catastrophic only</option>
+                </select>
+              </label>
+            )}
             {isFiltered(filters) && (
               <button type="button" className="clear" onClick={() => setFilters(NO_FILTERS)}>Clear filters</button>
             )}

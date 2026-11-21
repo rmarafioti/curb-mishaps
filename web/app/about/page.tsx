@@ -89,13 +89,24 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     ),
   },
   {
+    step: "Validation",
+    detail: (
+      <>
+        Before any chart was built, every metric was checked by hand: MetricFlow&apos;s answers
+        against the warehouse and against the source Sheet&apos;s own year-by-year totals, down to the
+        dollar. dbt tests catch duplicate mishaps and missing costs on every build, and each release
+        to production must match development before the site reads it.
+      </>
+    ),
+  },
+  {
     step: "AI-assisted dashboard",
     detail: (
       <>
         The site was built with Claude. AI is non-deterministic: ask twice and you can get two
         different pages. The numbers are not: the page only reads values the semantic layer
         produced, and only sorts, picks and formats them. It never writes its own query or does its
-        own math, so it can&apos;t be confidently wrong about a figure.
+        own math, so it can&apos;t invent its own version of a figure.
       </>
     ),
   },
@@ -138,12 +149,14 @@ export default function Page() {
         </p>
         <p>
           Once every metric is defined in one place and wired to the dashboard, the page practically
-          builds itself, and every number on it is true to the warehouse, with no hand-written
+          builds itself, and every number on it traces back to the warehouse, with no hand-written
           queries behind any chart.
         </p>
         <p>
           That matters most with AI. An AI that writes its own SQL can be confidently wrong. An AI
-          that asks a governed semantic layer can only give answers that were already agreed on.
+          that asks a governed semantic layer gives answers that match the agreed definitions. In
+          this project, every metric was checked by hand against the warehouse and the source Sheet before
+          anything was built on it.
         </p>
       </section>
 
