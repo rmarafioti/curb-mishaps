@@ -1,0 +1,229 @@
+/* Tokens: colors from the Curb final-season poster (ocean navy, sky blue, Curb yellow, ice
+   white). One theme for everyone (the dark, poster look), whatever the system setting.
+   Chart series passed the palette validator against the navy surface: pure Curb yellow is
+   too bright for marks, so marks use an amber gold and the yellow is kept for big text. */
+:root {
+  color-scheme: dark;
+  --page: #0b1f33;       /* deep ocean navy */
+  --surface: #13283c;
+  --ink: #eef5fa;        /* ice white */
+  --ink-secondary: #b7c9d8;
+  --ink-muted: #7f95a8;
+  --heading: #f5c400;    /* Curb yellow: titles and the big total */
+  --accent: #f5c400;     /* active tab */
+  --grid: #1f3a52;
+  --axis: #2e4c66;
+  --border: rgba(238, 245, 250, 0.1);
+  --series-1: #3a88d2;   /* sky blue */
+  --series-2: #c28400;   /* amber gold: Curb yellow stepped down for chart marks */
+  --track: #1f3a52;
+  --raised: #1a3550;     /* tooltips: a step lighter than the cards they float over */
+  --field: #21405e;      /* filter dropdowns: a step lighter than the navbar */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- layout --------------------------------------------------------------------------- */
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* never wider than the screen; wide tables scroll inside */
+  gap: 24px;
+}
+
+.masthead { display: grid; gap: 8px; padding-bottom: 8px; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; font-weight: 650; }
+.lede { color: var(--ink-secondary); max-width: 60ch; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+h2 { font-size: 1.15rem; font-weight: 600; }
+.card-sub { color: var(--ink-secondary); font-size: 0.9rem; }
+.placeholder { border-style: dashed; }
+.footer { color: var(--ink-muted); font-size: 0.8rem; }
+
+/* --- filter row --------------------------------------------------------------------------- */
+
+/* navbar: tabs row (collapses on scroll down) over the filter row (always shown) */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--surface); /* same as the cards, a step lighter than the page */
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35); /* lifts it off the page */
+  transition: transform 0.2s ease;
+}
+/* the gap between tabs and filters belongs to the tabs row, so it collapses with it */
+.tabs-row { padding-bottom: 14px; }
+.header-spacer { height: 133px; } /* until the header is measured after load */
+.tabs {
+  overflow: hidden;
+  min-height: 0;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-wrap: wrap; /* narrow screens: tabs wrap instead of scrolling, so the row can collapse */
+  align-items: center;
+  column-gap: 4px;
+}
+.brand { font-weight: 650; margin-right: 16px; padding: 14px 0; white-space: nowrap; }
+.tab {
+  color: var(--ink-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 14px 12px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); border-bottom-width: 3px; }
+
+.filter-row {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 10px 16px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+.filter-row label { display: grid; gap: 4px; font-size: 0.8rem; color: var(--ink-secondary); }
+.filter-row select, .clear {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: var(--field);
+  border: 1px solid rgba(238, 245, 250, 0.22);
+  border-radius: 8px;
+  padding: 7px 10px;
+  min-width: 170px;
+}
+.clear { min-width: 0; cursor: pointer; color: var(--ink-secondary); }
+.empty { color: var(--ink-secondary); }
+
+/* --- KPI tiles -------------------------------------------------------------------------- */
+
+.kpis { display: grid; grid-template-columns: 2fr repeat(2, 1fr); gap: 12px; }
+@media (max-width: 720px) { .kpis { grid-template-columns: 1fr 1fr; } .hero { grid-column: 1 / -1; } }
+.hero, .tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+}
+.kpi-label { color: var(--ink-secondary); font-size: 0.85rem; }
+.hero-value { font-size: 3.5rem; font-weight: 650; line-height: 1.05; }
+.tile-value { font-size: 2.75rem; font-weight: 600; line-height: 1.05; }
+.kpi-sub { color: var(--ink-muted); font-size: 0.8rem; }
+
+/* --- charts ----------------------------------------------------------------------------- */
+
+.chart { display: grid; gap: 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--ink-secondary); }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+.plot-scroll { overflow-x: auto; overflow-y: visible; padding-top: 4px; }
+.plot { position: relative; }
+.timeline-line { fill: none; stroke: var(--ink-muted); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.6; }
+.dent-real { fill: none; stroke: var(--ink-muted); stroke-width: 2; stroke-linejoin: round; }
+.dent-after { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-linejoin: round; }
+.dent-gap { stroke: none; }
+.loss-fade-top { stop-color: var(--heading); stop-opacity: 0.16; }
+.loss-fade-bottom { stop-color: var(--heading); stop-opacity: 0; }
+.year-band { fill: var(--ink); opacity: 0.06; pointer-events: none; }
+.legend-line { width: 16px; height: 2px; border-radius: 1px; }
+.legend-line.real { background: var(--ink-muted); }
+.legend-line.after { background: var(--series-1); }
+.legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
+.legend-swatch.gap { background: linear-gradient(rgba(245, 196, 0, 0.55), rgba(245, 196, 0, 0.08)); }
+.crosshair { stroke: var(--axis); stroke-width: 1; pointer-events: none; }
+.plot svg { width: 100%; height: auto; display: block; overflow: visible; }
+.grid { stroke: var(--grid); stroke-width: 1; }
+.axis { stroke: var(--axis); stroke-width: 1; }
+.tick { fill: var(--ink-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.dot { stroke: var(--surface); stroke-width: 2; transition: r 0.1s; }
+.hit { fill: transparent; cursor: pointer; outline: none; }
+.hit:focus-visible { stroke: var(--ink); stroke-width: 1.5; }
+.direct-label { fill: var(--ink-secondary); font-size: 12px; }
+.note { color: var(--ink-muted); font-size: 0.8rem; }
+
+.tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  width: max-content;
+  max-width: min(340px, 80vw);
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
+  padding: 10px 12px;
+  display: grid;
+  gap: 2px;
+  pointer-events: none;
+  z-index: 2;
+}
+.tooltip-value { font-size: 1.05rem; color: var(--heading); } /* Curb yellow, like the big total */
+.tooltip-row { display: grid; grid-template-columns: 16px auto auto; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--ink-secondary); }
+.tooltip-row strong { color: var(--heading); text-align: right; padding-left: 12px; font-variant-numeric: tabular-nums; }
+.tooltip-title { font-weight: 500; }
+.tooltip-meta { color: var(--ink-secondary); font-size: 0.8rem; }
+.tooltip-basis { color: var(--ink-muted); font-size: 0.78rem; margin-top: 4px; }
+
+/* --- tables ----------------------------------------------------------------------------- */
+
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th { text-align: left; color: var(--ink-secondary); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--axis); }
+td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nowrap { white-space: nowrap; }
+.basis { display: block; color: var(--ink-muted); font-size: 0.78rem; margin-top: 2px; }
+
+.table-view summary { cursor: pointer; color: var(--ink-secondary); font-size: 0.88rem; }
+.table-view[open] summary { margin-bottom: 8px; }
+
+/* --- prose pages (forecast, about) ----------------------------------------------------- */
+
+.prose p, .prose li { color: var(--ink-secondary); max-width: 72ch; }
+.prose ul { padding-left: 20px; display: grid; gap: 6px; }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+/* --- display face: Libre Franklin (Franklin Gothic revival) for titles and KPI figures --- */
+
+h1, .hero-value { font-family: var(--font-display), system-ui, sans-serif; font-weight: 900; letter-spacing: -0.01em; color: var(--heading); }
+h2, .tile-value, .brand { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; }
+
+/* --- scrollbars: navy to match (page and the timeline's sideways scroll) -------------- */
+
+html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--page); }
+::-webkit-scrollbar-thumb { background: #345a7a; border-radius: 6px; border: 2px solid var(--page); }
+::-webkit-scrollbar-thumb:hover { background: #4a7296; }
