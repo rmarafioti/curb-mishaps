@@ -19,6 +19,9 @@
   --track: #1f3a52;
   --raised: #1a3550;     /* tooltips: a step lighter than the cards they float over */
   --field: #21405e;      /* filter dropdowns: a step lighter than the navbar */
+  --pill-catastrophic: #f0715c; /* coral: catastrophic mishaps (Top 10 pills) */
+  --pill-reference: #6cb0f0;    /* lighter sky blue, readable as small text on navy */
+  --link: #8cc6f7;              /* text links: pale sky blue, ~8:1 on the navy cards (the chart blue is too dark for text) */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -58,7 +61,9 @@ h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; font-weight: 650;
 h2 { font-size: 1.15rem; font-weight: 600; }
 .card-sub { color: var(--ink-secondary); font-size: 0.9rem; }
 .placeholder { border-style: dashed; }
-.footer { color: var(--ink-muted); font-size: 0.8rem; }
+.footer { color: var(--ink-muted); font-size: 0.8rem; display: grid; gap: 4px; }
+.screen-note { color: var(--ink-secondary); font-size: 0.85rem; }
+.screen-note::before { content: "*"; color: var(--heading); font-weight: 700; margin-right: 4px; } /* gold asterisk marks the note */
 
 /* --- filter row --------------------------------------------------------------------------- */
 
@@ -89,7 +94,16 @@ h2 { font-size: 1.15rem; font-weight: 600; }
   align-items: center;
   column-gap: 4px;
 }
-.brand { font-weight: 650; margin-right: 16px; padding: 14px 0; white-space: nowrap; }
+.brand {
+  font-weight: 650;
+  margin-right: 16px;
+  padding: 14px 0;
+  white-space: nowrap;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.brand[aria-current="page"] { color: var(--heading); }
 .tab {
   color: var(--ink-secondary);
   text-decoration: none;
@@ -98,7 +112,33 @@ h2 { font-size: 1.15rem; font-weight: 600; }
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
-.tab:hover { color: var(--ink); }
+.tab-list { display: contents; } /* desktop: the tabs sit in the row as before */
+/* hamburger (phones only): three Curb-yellow bars that turn into an X when open */
+.menu-toggle {
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.menu-bars, .menu-bars::before, .menu-bars::after {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--heading);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.menu-bars { position: relative; }
+.menu-bars::before, .menu-bars::after { content: ""; position: absolute; left: 0; }
+.menu-bars::before { top: -7px; }
+.menu-bars::after { top: 7px; }
+.menu-toggle[aria-expanded="true"] .menu-bars { background: transparent; }
+.menu-toggle[aria-expanded="true"] .menu-bars::before { transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .menu-bars::after { transform: translateY(-7px) rotate(-45deg); }
 .tab[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); border-bottom-width: 3px; }
 
 .filter-row {
@@ -120,6 +160,14 @@ h2 { font-size: 1.15rem; font-weight: 600; }
   border-radius: 8px;
   padding: 7px 10px;
   min-width: 170px;
+}
+/* the dropdown arrow in Curb yellow (#f5c400, --heading; a data URI can't read a var) */
+.filter-row select {
+  appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23f5c400' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
 }
 .clear { min-width: 0; cursor: pointer; color: var(--ink-secondary); }
 .empty { color: var(--ink-secondary); }
@@ -152,14 +200,14 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 .plot-scroll { overflow-x: auto; overflow-y: visible; padding-top: 4px; }
 .plot { position: relative; }
 .timeline-line { fill: none; stroke: var(--ink-muted); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.6; }
-.dent-real { fill: none; stroke: var(--ink-muted); stroke-width: 2; stroke-linejoin: round; }
+.dent-real { fill: none; stroke: var(--series-2); /* amber gold, as on the timeline */ stroke-width: 2; stroke-linejoin: round; }
 .dent-after { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-linejoin: round; }
 .dent-gap { stroke: none; }
 .loss-fade-top { stop-color: var(--heading); stop-opacity: 0.16; }
 .loss-fade-bottom { stop-color: var(--heading); stop-opacity: 0; }
 .year-band { fill: var(--ink); opacity: 0.06; pointer-events: none; }
 .legend-line { width: 16px; height: 2px; border-radius: 1px; }
-.legend-line.real { background: var(--ink-muted); }
+.legend-line.real { background: var(--series-2); }
 .legend-line.after { background: var(--series-1); }
 .legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
 .legend-swatch.gap { background: linear-gradient(rgba(245, 196, 0, 0.55), rgba(245, 196, 0, 0.08)); }
@@ -172,6 +220,8 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 .hit { fill: transparent; cursor: pointer; outline: none; }
 .hit:focus-visible { stroke: var(--ink); stroke-width: 1.5; }
 .direct-label { fill: var(--ink-secondary); font-size: 12px; }
+.nw-mark { fill: var(--series-2); pointer-events: none; }
+.nw-label { fill: var(--ink-secondary); font-size: 11px; font-variant-numeric: tabular-nums; pointer-events: none; }
 .note { color: var(--ink-muted); font-size: 0.8rem; }
 
 .tooltip {
@@ -206,14 +256,226 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .nowrap { white-space: nowrap; }
 .basis { display: block; color: var(--ink-muted); font-size: 0.78rem; margin-top: 2px; }
 
-.table-view summary { cursor: pointer; color: var(--ink-secondary); font-size: 0.88rem; }
-.table-view[open] summary { margin-bottom: 8px; }
+/* Top 10: rank and mishap in the display face; how it was priced as a colored pill */
+.rank { font-family: var(--font-display), system-ui, sans-serif; font-weight: 900; font-size: 1.15rem; line-height: 1.35; color: var(--heading); text-align: right; width: 2.5ch; }
+/* desktop: Episode and Cost only as wide as their content, so spare width goes to the
+   left-hand columns and Episode sits next to Cost (phones restack the row) */
+@media (min-width: 641px) {
+  .top10 .t-episode, .top10 .top-cost, .top10 th:nth-child(4), .top10 th:nth-child(5) { width: 1%; }
+  .top10 .t-episode { padding-right: 32px; }
+}
+.top-cost { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
+.mishap-title { display: block; font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
+.pill {
+  display: inline-block;
+  margin-top: 1px; /* lines up with the first line of the mishap title */
+  padding: 1px 9px;
+  white-space: nowrap;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+}
+.pill-catastrophic { color: var(--pill-catastrophic); background: rgba(240, 113, 92, 0.14); }
+.pill-assumption { color: var(--heading); background: rgba(245, 196, 0, 0.12); }
+.pill-reference { color: var(--pill-reference); background: rgba(108, 176, 240, 0.14); }
+.pill-category-default, .pill-stated { color: var(--ink-secondary); background: rgba(238, 245, 250, 0.08); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* open/close rows (FAQ answers as <details>, the mishap table's toggle button): our own
+   Curb-yellow arrow, turning down when open, in place of the browser's marker */
+.disclosure > summary, .disclosure-toggle { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 12px; }
+.disclosure > summary::-webkit-details-marker { display: none; }
+.disclosure > summary::before, .disclosure-toggle::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--heading);
+  border-bottom: 2px solid var(--heading);
+  transform: rotate(-45deg); /* points right */
+  transition: transform 0.15s ease;
+}
+.disclosure[open] > summary::before, .disclosure-toggle[aria-expanded="true"]::before { transform: rotate(45deg); } /* points down */
+
+/* the table's toggle on the left, its pager on the right of the same line, so the
+   buttons never move with the rows' height */
+.table-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; min-height: 34px; }
+.table-view .table-scroll { margin-top: 8px; }
+/* styled like the card's h2 so the table is easy to spot */
+.disclosure-toggle {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+}
+
+.pager { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; }
+.pager button {
+  font: inherit;
+  color: var(--ink);
+  background: var(--field);
+  border: 1px solid rgba(238, 245, 250, 0.22);
+  border-radius: 8px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.pager button:disabled { opacity: 0.4; cursor: default; }
+.pager-arrow { color: var(--heading); font-weight: 700; }
+.pager-status { color: var(--ink-secondary); font-variant-numeric: tabular-nums; }
+
+/* --- FAQ -------------------------------------------------------------------------------- */
+
+.faq { gap: 0; }
+.faq h2 { margin-bottom: 8px; }
+.faq-item { border-top: 1px solid var(--grid); }
+.faq-item > summary { padding: 14px 0; font-weight: 500; align-items: flex-start; }
+/* the arrow sits on the question's first line, even when the question wraps */
+.faq-item > summary::before { margin-top: 0.5em; }
+.faq-answer { padding: 0 0 16px 22px; display: grid; gap: 8px; color: var(--ink-secondary); max-width: 76ch; }
+.faq-figure { color: var(--heading); font-weight: 700; font-variant-numeric: tabular-nums; }
+.faq-see { font-size: 0.85rem; color: var(--ink-muted); }
+.faq-see a, .faq-see a:visited { color: var(--link); }
+
+/* --- home ------------------------------------------------------------------------------- */
+
+/* hero: room to breathe above the cards; a grid so the art can sit beside the copy later */
+.home-hero { display: grid; align-items: center; gap: 32px; padding: 32px 0 24px; }
+.home-hero-copy { display: grid; gap: 16px; }
+.home-hero h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); line-height: 1.05; }
+/* hero copy (home intro, page subheaders): the display face, white, a step down from the title */
+.hero-lede {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  line-height: 1.3;
+  color: var(--ink);
+  max-width: 34ch;
+}
+
+.explore { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.explore-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  align-content: start; /* short cards keep their lines together, not spread to the row height */
+  gap: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.explore-card:focus-visible { border-color: var(--heading); }
+.explore-title { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.2; }
+.explore-tagline { color: var(--heading); font-weight: 600; } /* the LD-voice line, Curb yellow */
+.explore-blurb { color: var(--ink-secondary); font-size: 0.9rem; }
 
 /* --- prose pages (forecast, about) ----------------------------------------------------- */
 
 .prose p, .prose li { color: var(--ink-secondary); max-width: 72ch; }
 .prose ul { padding-left: 20px; display: grid; gap: 6px; }
+/* About: the author, photo beside the bio (stacks on narrow screens); no card, just page space */
+.author-section { padding: 16px 0 8px; }
+.author { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 24px; }
+.author-photo {
+  width: 192px;
+  height: 192px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* the file is a square crop around the face, so it centers as is */
+  border: 3px solid var(--heading);
+  flex: none;
+}
+.author-text { display: grid; gap: 10px; min-width: 0; }
+/* author links: logo + label; the logo takes the link color (and turns yellow on hover) */
+.icon-link { display: inline-flex; align-items: center; }
+.link-icon { width: 20px; height: 20px; fill: currentColor; flex: none; }
+.icon-link .link-icon { width: 30px; height: 30px; } /* logo-only links: the logo is the link */
+/* About: the repo line after the build steps, GitHub logo beside it */
+/* sized and spaced like a numbered step (28px mark, text at the steps' indent), in Curb
+   yellow like the step circles */
+.repo-link { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+.repo-link .link-icon { width: 28px; height: 28px; color: var(--heading); }
+.prose ul.link-row { list-style: none; padding-left: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; } /* About: author links */
+.prose ul.roomy { gap: 14px; } /* longer, multi-line points (About: Data collection) */
+/* highlights in the long list: bold in the text's own soft tone (like the show titles), not bright white;
+   named terms (stated, reference, high...) also italic */
+.prose ul.roomy strong { color: inherit; font-weight: 700; }
+.prose ul.roomy li > strong:first-child { color: var(--ink); } /* each point's lead-in, white: the one bright spot per bullet */
+.prose ul.roomy em { color: inherit; font-weight: 700; font-style: italic; }
 .prose strong { color: var(--ink); font-weight: 600; }
+.prose h3 { font-size: 1rem; font-weight: 600; margin-top: 8px; }
+.prose a, .prose a:visited { color: var(--link); text-underline-offset: 2px; }
+.prose em { color: var(--ink); font-style: normal; font-weight: 500; } /* named terms: stated, low, ... */
+/* show titles: italic and heavier so they stand out, in the text's soft tone (not bright white) */
+cite { font-style: italic; font-weight: 700; color: inherit; }
+
+/* About: the mission statement, in the hero voice */
+.mission {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  line-height: 1.35;
+  color: var(--heading) !important;
+}
+
+/* About: the build pipeline as numbered steps joined by a line */
+.pipeline { list-style: none; padding: 0 !important; counter-reset: step; display: grid; gap: 0 !important; }
+.pipeline li {
+  counter-increment: step;
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 0 0 18px 44px;
+  max-width: 76ch;
+}
+.pipeline li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--page);
+  border: 2px solid var(--heading);
+  color: var(--heading);
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+.pipeline li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 30px;
+  bottom: 2px;
+  width: 2px;
+  background: var(--axis);
+}
+.pipeline-step { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; color: var(--ink); line-height: 28px; }
+.pipeline-detail { color: var(--ink-secondary); }
+
+.code {
+  background: var(--page);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ink);
+  /* full card width, so the YAML fits without a scrollbar (still scrolls on a phone) */
+}
 
 /* --- display face: Libre Franklin (Franklin Gothic revival) for titles and KPI figures --- */
 
@@ -227,3 +489,118 @@ html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
 ::-webkit-scrollbar-track { background: var(--page); }
 ::-webkit-scrollbar-thumb { background: #345a7a; border-radius: 6px; border: 2px solid var(--page); }
 ::-webkit-scrollbar-thumb:hover { background: #4a7296; }
+
+.phone-only { display: none; }
+
+/* --- phones (≤ 640px) ---------------------------------------------------------------- */
+
+
+@media (max-width: 640px) {
+  /* navbar: brand + hamburger; the tabs open as a panel over the page, under the header */
+  .tabs { flex-wrap: nowrap; justify-content: space-between; }
+  .tabs-row { padding-bottom: 4px; position: relative; } /* the menu drops from the brand bar, over the filters */
+  .menu-toggle { display: grid; }
+  .tab-list {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+    padding: 4px 16px 12px;
+  }
+  .tab-list.open { display: flex; }
+  .tab-list .tab { padding: 12px 0; border-bottom: 1px solid var(--grid); font-size: 1rem; }
+  .tab-list .tab:last-child { border-bottom: none; }
+  .tab-list .tab[aria-current="page"] { border-bottom-color: var(--grid); color: var(--heading); }
+
+  /* filters: the dropdowns share the first row half and half; "Clear filters" wraps to its
+     own line below when it appears, instead of squeezing them */
+  .filter-row { flex-wrap: wrap; padding-top: 6px; }
+  .filter-row label { flex: 1 1 calc(50% - 6px); min-width: 0; }
+  .filter-row .clear { flex: none; }
+  .filter-row select { min-width: 0; width: 100%; }
+
+  /* KPI tiles: never wider than the screen, figures scale down to fit */
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-value { font-size: clamp(2.4rem, 12vw, 3.5rem); }
+  .tile-value { font-size: clamp(1.5rem, 7.5vw, 2.75rem); }
+
+  .card { padding: 18px; }
+
+  /* charts: never squeezed to the phone's width (unreadable); drawn at full size (1:1 with
+     their viewBox, so text is its real size) and scrolled sideways */
+  .plot-timeline { min-width: var(--plot-w); }
+  .plot-wide { min-width: 960px; } /* the dent chart's viewBox width */
+
+  /* "best on a larger screen" notes, phones only */
+  .phone-only { display: block; }
+
+
+  /* Top 10: each mishap as a block instead of a 5-column row:
+     rank | title + note
+          | pill .... cost
+          | episode */
+  .top10 thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .top10, .top10 tbody { display: block; }
+  .top10 tr {
+    display: grid;
+    grid-template-columns: 2.2ch minmax(0, 1fr) auto;
+    grid-template-areas: "rank title title" ". pill cost" ". episode episode";
+    column-gap: 10px;
+    row-gap: 6px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--grid);
+  }
+  .top10 td { display: block; padding: 0; border: none; }
+  .top10 .rank { grid-area: rank; text-align: left; width: auto; }
+  .top10 .t-title { grid-area: title; }
+  .top10 .t-pill { grid-area: pill; align-self: center; }
+  .top10 .top-cost { grid-area: cost; align-self: center; }
+  .top10 .t-episode { grid-area: episode; white-space: normal; color: var(--ink-secondary); font-size: 0.85rem; }
+
+  /* the full mishap list: each mishap as a block instead of a 4-column row, so it fits:
+     what happened ........... cost
+     date · episode */
+  .mishap-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .mishap-table, .mishap-table tbody { display: block; }
+  .mishap-table tr {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "what what cost" "date episode episode";
+    column-gap: 10px;
+    row-gap: 4px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--grid);
+  }
+  .mishap-table td { display: block; padding: 0; border: none; }
+  .mishap-table .m-what { grid-area: what; color: var(--ink); }
+  .mishap-table .m-cost { grid-area: cost; }
+  .mishap-table .m-date, .mishap-table .m-episode { font-size: 0.82rem; color: var(--ink-secondary); }
+  .mishap-table .m-date { grid-area: date; }
+  .mishap-table .m-episode { grid-area: episode; overflow: hidden; text-overflow: ellipsis; }
+  .pager { width: 100%; justify-content: space-between; }
+}
+
+
+/* --- hover effects: only on devices with a real pointer ------------------------------- */
+/* touch screens fire :hover on tap and leave it stuck, so these apply only where hover works */
+@media (hover: hover) {
+  .brand:hover { color: var(--heading); }
+  .tab:hover { color: var(--ink); }
+  .disclosure-toggle:hover { color: var(--heading); }
+  .faq-item > summary:hover { color: var(--heading); }
+  .faq-see a:hover { color: var(--heading); }
+  .explore-card:hover { border-color: var(--heading); }
+  .prose a:hover { color: var(--heading); }
+}
+/* text for one kind of device: mouse hints vs. touch hints */
+.touch-only { display: none; }
+@media (hover: none) {
+  .hover-only { display: none; }
+  .touch-only { display: inline; }
+}

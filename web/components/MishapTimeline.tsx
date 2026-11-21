@@ -70,7 +70,10 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
       </div>
 
       <div className="plot-scroll">
-        <div className="plot" style={{ minWidth: width > MIN_WIDTH ? width : undefined }}>
+        {/* desktop: fits the card unless there are too many points; phones: always drawn at
+            full size and scrolled sideways (--plot-w), so a filtered season stays readable */}
+        <div className="plot plot-timeline"
+             style={{ minWidth: width > MIN_WIDTH ? width : undefined, ["--plot-w" as string]: `${width}px` }}>
           <svg viewBox={`0 0 ${width} ${HEIGHT}`} role="img" aria-label="Every mishap in the order it aired, by cost">
             {Y_TICKS.map((tick, i) => (
               <g key={tick}>
@@ -126,7 +129,8 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
             })}
 
             {/* hit targets: a bit bigger than each dot (easier to land on), focusable for
-                keyboard users; the details show only while one is hovered or focused */}
+                keyboard users; the details show only while one is hovered with a mouse or
+                focused from the keyboard (touch screens don't hover, so taps are ignored) */}
             {mishaps.map((m, i) => (
               <circle
                 key={`hit-${m.mishap}`}
@@ -136,9 +140,9 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
                 r={STEP / 2}
                 tabIndex={0}
                 aria-label={`${m.mishap__description}, ${usdFull(m.total_mishap_loss)}, ${episodeCode(m)} ${m.episode__episode_title}`}
-                onPointerEnter={() => setActive(i)}
+                onPointerEnter={(e) => e.pointerType === "mouse" && setActive(i)}
                 onPointerLeave={() => setActive(null)}
-                onFocus={() => setActive(i)}
+                onFocus={(e) => e.currentTarget.matches(":focus-visible") && setActive(i)}
                 onBlur={() => setActive(null)}
               />
             ))}

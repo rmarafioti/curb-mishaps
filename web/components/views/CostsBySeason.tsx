@@ -3,8 +3,9 @@
 // Tab 1, Mishap Costs by Season: the headline numbers, every mishap on the timeline, and
 // the same mishaps as a table. Numbers come from the export; this only picks and formats.
 
+import MishapTable from "@/components/MishapTable";
 import MishapTimeline from "@/components/MishapTimeline";
-import { dateOf, episodeCode, kpis, label, pick, pickMishaps, usdCompact, usdFull } from "@/lib/data";
+import { kpis, label, pick, pickMishaps, usdCompact } from "@/lib/data";
 import { useFilters } from "@/lib/filters";
 
 export default function CostsBySeason() {
@@ -46,28 +47,12 @@ export default function CostsBySeason() {
 
       <section className="card">
         <h2>Every mishap, 2000–2024</h2>
-        <p className="card-sub">Hover or tab to a dot to see what happened and how it was priced.</p>
+        <p className="card-sub">
+          <span className="hover-only">Hover or tab to a dot to see what happened and how it was priced.</span>
+          <span className="touch-only">Swipe sideways through all 12 seasons; every mishap is listed below.</span>
+        </p>
         <MishapTimeline mishaps={mishaps} />
-        <details className="table-view">
-          <summary>Show all {mishaps.length} mishaps as a table</summary>
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr><th>Aired</th><th>Episode</th><th>What happened</th><th className="num">Cost</th></tr>
-              </thead>
-              <tbody>
-                {mishaps.map((m) => (
-                  <tr key={m.mishap}>
-                    <td className="nowrap">{dateOf(m.metric_time__day)}</td>
-                    <td className="nowrap">{episodeCode(m)} · {m.episode__episode_title}</td>
-                    <td>{m.mishap__description}</td>
-                    <td className="num">{usdFull(m.total_mishap_loss)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </details>
+        <MishapTable key={`${filters.episode__season}|${filters.mishap__loss_kind}`} mishaps={mishaps} />
       </section>
     </>
   );

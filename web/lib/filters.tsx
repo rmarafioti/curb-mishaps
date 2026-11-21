@@ -1,19 +1,11 @@
 "use client";
 
-// The pages (tabs), the filters each one offers, and the filter state the navbar and the
-// page share. Filters reset whenever the route changes: each view starts unfiltered.
+// The filter state the navbar and the page share (the pages and their filters are in
+// lib/pages.ts). Filters reset whenever the route changes: each view starts unfiltered.
 
 import { createContext, useContext, useState } from "react";
 import { usePathname } from "next/navigation";
-import { type FilterDim, type Filters, NO_FILTERS } from "@/lib/data";
-
-export const PAGES: { href: string; label: string; filters: FilterDim[] }[] = [
-  { href: "/", label: "Mishap Costs by Season", filters: ["episode__season", "mishap__loss_kind"] },
-  { href: "/top-10", label: "Top 10 Disasters", filters: ["episode__season", "mishap__loss_kind"] },
-  { href: "/net-worth", label: "Net Worth to Mishaps by Year", filters: ["episode__season"] },
-  { href: "/forecast", label: "Forecast 2025–2026", filters: [] },
-  { href: "/about", label: "About", filters: [] },
-];
+import { type Filters, NO_FILTERS } from "@/lib/data";
 
 type FilterState = { filters: Filters; setFilters: (filters: Filters) => void };
 const FilterContext = createContext<FilterState>({ filters: NO_FILTERS, setFilters: () => {} });

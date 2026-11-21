@@ -3,7 +3,7 @@
 
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Forecast 2025–2026 · Curb Mishaps" };
+export const metadata: Metadata = { title: "Forecast · Curb Mishaps" };
 
 export default function Page() {
   return (
