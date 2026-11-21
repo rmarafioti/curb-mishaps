@@ -2,10 +2,11 @@
 
 // Tab 3, Net Worth vs. Mishaps: his real net worth against what he'd have if every mishap
 // so far were real. KPI tiles show one year's three figures (2024, or the filtered season's
-// year); the season filter also highlights that year on the chart. Picks rows only.
+// year). A season tile shows what the picked season cost him (from the year table), or a
+// prompt to pick one; picking a season also highlights its year on the chart. Picks rows only.
 
 import NetWorthDent from "@/components/NetWorthDent";
-import { label, mishapList, netWorthDent, usdCompact, yearOf } from "@/lib/data";
+import { label, lossesByYear, mishapList, netWorthDent, percent, usdCompact, usdFull, yearOf } from "@/lib/data";
 import { useFilters } from "@/lib/filters";
 
 // each season aired in one year
@@ -18,6 +19,10 @@ export default function NetWorthByYear() {
   const seasonYear = filters.episode__season ? SEASON_YEAR.get(filters.episode__season) : undefined;
   const kpiYear = seasonYear ?? LAST_YEAR;
   const row = netWorthDent.rows.find((r) => Number(yearOf(r.metric_time__year)) === kpiYear);
+  // the picked season's own year, from the year table: what that season cost him
+  const seasonRow = seasonYear === undefined
+    ? undefined
+    : lossesByYear.rows.find((r) => Number(yearOf(r.metric_time__year)) === seasonYear);
 
   return (
     <>
@@ -47,6 +52,28 @@ export default function NetWorthByYear() {
           </div>
         </section>
       )}
+
+      {/* always there: what the picked season cost him, or a prompt to pick one */}
+      <section className="card season-callout" aria-label="What one season cost him">
+        {seasonRow ? (
+          <>
+            <span className="kpi-label">
+              Season {filters.episode__season} ({seasonYear}): {label(lossesByYear, "total_mishap_loss")}
+            </span>
+            <span className="tile-value">{usdFull(seasonRow.total_mishap_loss)}</span>
+            <span className="kpi-sub">
+              {percent(seasonRow.pct_mishap_to_net_worth)}{" "}
+              {/* the metric label is "% of Net Worth"; the figure already carries the % */}
+              {label(lossesByYear, "pct_mishap_to_net_worth").replace(/^%\s*/, "").toLowerCase()} that year
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="kpi-label">What did one season cost him?</span>
+            <span className="kpi-sub">Pick a season above to see its total and its share of his net worth that year.</span>
+          </>
+        )}
+      </section>
 
       <section className="card">
         <h2>{netWorthDent.label}</h2>

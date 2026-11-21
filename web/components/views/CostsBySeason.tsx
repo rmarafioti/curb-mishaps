@@ -52,7 +52,7 @@ export default function CostsBySeason() {
           <span className="touch-only">Swipe sideways through all 12 seasons; every mishap is listed below.</span>
         </p>
         <MishapTimeline mishaps={mishaps} />
-        <MishapTable key={`${filters.episode__season}|${filters.mishap__loss_kind}`} mishaps={mishaps} />
+        <MishapTable key={Object.values(filters).join("|")} mishaps={mishaps} />
       </section>
     </>
   );

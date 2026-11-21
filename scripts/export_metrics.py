@@ -32,8 +32,17 @@ OUT_DIR = ROOT / "web" / "data"
 PROD_SCHEMA = "curb_prod"
 
 # the dashboard's filters, in the order the page shows them
-FILTER_DIMENSIONS = ["episode__season", "mishap__loss_kind_category", "mishap__loss_kind"]
+FILTER_DIMENSIONS = [
+    "episode__season",
+    "mishap__loss_kind_category",
+    "mishap__loss_kind",
+    "mishap__is_catastrophic",  # "Everyday only": the totals without the divorce, fire and Latte Larry's
+]
 SLICEABLE_MODEL = "mishaps"
+# saved queries whose page never filters them: export the rows only, no slices (the dent
+# chart's slices were ~1.4 MB that every visitor downloaded for nothing). Remove a name here
+# to make that chart filterable again.
+UNSLICED_QUERIES = {"net_worth_dent"}
 
 
 def run(*args):
@@ -99,6 +108,8 @@ def slices(saved_query, sliceable):
     group_by = [cli_name(g) for g in params["group_by"]]
     if "mishap" in group_by:
         return [], {}  # one row per mishap: the page filters these rows directly
+    if saved_query["name"] in UNSLICED_QUERIES:
+        return [], {}
     metric_names = [m for m in params["metrics"] if m in sliceable]
     extra = [d for d in FILTER_DIMENSIONS if d not in group_by]
     wheres = [w["where_sql_template"] for w in (params["where"] or {}).get("where_filters", [])]

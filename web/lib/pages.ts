@@ -14,10 +14,10 @@ type Page = {
 };
 
 export const PAGES: Page[] = [
-  { href: "/costs-by-season", label: "Mishap Costs by Season", filters: ["episode__season", "mishap__loss_kind"],
+  { href: "/costs-by-season", label: "Mishap Costs by Season", filters: ["episode__season", "mishap__loss_kind", "mishap__is_catastrophic"],
     tagline: "What's the damage?!",
     blurb: "Every mishap on a timeline, the total bill, and the full list." },
-  { href: "/top-10", label: "Top 10 Disasters", filters: ["episode__season", "mishap__loss_kind"],
+  { href: "/top-10", label: "Top 10 Disasters", filters: ["episode__season", "mishap__loss_kind", "mishap__is_catastrophic"],
     tagline: "The biggest losers.",
     blurb: "The ten most expensive mishaps, and how each was priced." },
   { href: "/net-worth", label: "Net Worth vs. Mishaps", filters: ["episode__season"],
