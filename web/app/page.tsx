@@ -31,7 +31,7 @@ export default function Page() {
       </header>
 
       <section className="card build-strip" aria-label="The idea behind it">
-        <p className="card-sub">
+        <p className="build-lead">
           The numbers on the dashboard pages all come from one method, defining each metric in the
           dbt semantic layer that sits on top of the data warehouse.
         </p>
