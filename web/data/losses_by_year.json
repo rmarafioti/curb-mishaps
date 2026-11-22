@@ -21,7 +21,7 @@
     {
       "name": "total_mishap_loss",
       "label": "Total Mishap Loss",
-      "description": "Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
+      "description": "Every kept mishap, realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
     },
     {
       "name": "net_worth_mid",
@@ -6195,6 +6195,6 @@
       }
     ]
   },
-  "exported_at": "2026-11-21T23:29:53+00:00",
+  "exported_at": "2026-11-22T14:25:51+00:00",
   "source": "curb_prod"
 }

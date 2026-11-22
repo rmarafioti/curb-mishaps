@@ -1,12 +1,12 @@
 year,is_show_airing,basis,event,cpi_u_annual_avg,to_2026_dollars_multiplier,net_worth_adj_low_musd,net_worth_adj_mid_musd,net_worth_adj_high_musd
-2000,1,anchor,Post-1998 Seinfeld syndication windfall ($250M pre-tax) on top of ~$30M prior fortune; low end assumes ~50% tax,172.2,1.923,150,280,300
+2000,1,anchor,Post-1998 Seinfeld syndication windfall ($250M pre-tax) on top of about $30M prior fortune; low end assumes about 50% tax,172.2,1.923,150,280,300
 2001,1,interpolated,,177.1,1.870,200,333,350
 2002,1,interpolated,,179.9,1.841,250,387,400
 2003,0,interpolated,,184,1.800,300,440,450
 2004,1,interpolated,,188.9,1.753,350,493,500
 2005,1,interpolated,,195.3,1.696,400,547,550
-2006,0,anchor,Pre-divorce peak: est. ~$600M (June 2007 reports),201.6,1.643,450,600,600
-2007,1,anchor,"Divorce from Laurie David: fortune est. ~$600M before split, then halved",207.342,1.597,450,550,700
+2006,0,anchor,"Pre-divorce peak, est. about $600M (June 2007 reports)",201.6,1.643,450,600,600
+2007,1,anchor,"Divorce from Laurie David. Fortune est. about $600M before the split, then halved",207.342,1.597,450,550,700
 2008,0,interpolated,,215.303,1.538,462,562,712
 2009,1,interpolated,,214.537,1.544,475,575,725
 2010,0,interpolated,,218.056,1.519,488,588,738
@@ -14,16 +14,16 @@ year,is_show_airing,basis,event,cpi_u_annual_avg,to_2026_dollars_multiplier,net_
 2012,0,interpolated,,229.594,1.442,512,612,762
 2013,0,interpolated,,232.957,1.422,525,625,775
 2014,0,interpolated,,236.736,1.399,538,638,788
-2015,0,anchor,Reported ~$400M; Larry confirms 'my wife took half of it',237.017,1.397,550,650,800
+2015,0,anchor,Reported about $400M; Larry confirms 'my wife took half of it',237.017,1.397,550,650,800
 2016,0,interpolated,,240.007,1.380,562,650,806
 2017,1,interpolated,,245.12,1.351,575,650,812
 2018,0,interpolated,,251.107,1.319,588,650,819
-2019,0,anchor,Netflix Seinfeld deal: est. $100-125M+ apiece to Larry and Jerry (pre-tax),255.657,1.295,600,650,825
+2019,0,anchor,"Netflix Seinfeld deal, est. $100-125M+ apiece to Larry and Jerry (pre-tax)",255.657,1.295,600,650,825
 2020,1,interpolated,,258.811,1.280,600,650,821
 2021,1,interpolated,,270.97,1.222,600,650,818
 2022,0,interpolated,,292.655,1.132,600,650,814
 2023,0,interpolated,,304.702,1.087,600,650,811
 2024,1,interpolated,,313.689,1.056,600,650,807
 2025,0,interpolated,,321.943,1.029,600,650,804
-2026,0,anchor,Celebrity Net Worth: $400M (updated Mar 2026); other sources up to ~$500M,331.18,1.000,600,650,800
+2026,0,anchor,Celebrity Net Worth puts it at $400M (updated Mar 2026); other sources up to about $500M,331.18,1.000,600,650,800
 2027,0,projection,Held flat at 2026 estimate,341.115,0.971,600,650,800

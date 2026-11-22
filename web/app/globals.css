@@ -80,8 +80,9 @@ h2 { font-size: 1.15rem; font-weight: 600; }
   transition: transform 0.2s ease;
 }
 /* the gap between tabs and filters belongs to the tabs row, so it collapses with it */
-.tabs-row { padding-bottom: 14px; }
-.header-spacer { height: 133px; } /* until the header is measured after load */
+/* the extra top padding balances the gap below, so the tabs sit centered in their row */
+.tabs-row { padding-top: 1rem; padding-bottom: 14px; }
+.header-spacer { height: 149px; } /* until the header is measured after load */
 .tabs {
   overflow: hidden;
   min-height: 0;
@@ -250,6 +251,9 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 .tooltip-row strong { color: var(--heading); text-align: right; padding-left: 12px; font-variant-numeric: tabular-nums; }
 .tooltip-title { font-weight: 500; }
 .tooltip-meta { color: var(--ink-secondary); font-size: 0.8rem; }
+/* low – mid – high; the mid (the cost we count) in Curb yellow */
+.tooltip-range { font-size: 0.82rem; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tooltip-mid { background: none; color: var(--heading); font-weight: 700; }
 .tooltip-basis { color: var(--ink-muted); font-size: 0.78rem; margin-top: 4px; }
 
 /* --- tables ----------------------------------------------------------------------------- */
@@ -364,7 +368,8 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 /* hero: room to breathe above the cards; a grid so the art can sit beside the copy later */
 .home-hero { display: grid; align-items: center; gap: 32px; padding: 32px 0 24px; }
 .home-hero-copy { display: grid; gap: 16px; }
-.home-hero h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); line-height: 1.05; }
+/* tighter than the other titles (-0.01em), closer to the show's own title card */
+.home-hero h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); line-height: 1.05; letter-spacing: -0.03em; }
 /* hero copy (home intro, page subheaders): the display face, white, a step down from the title */
 .hero-lede {
   font-family: var(--font-display), system-ui, sans-serif;
@@ -402,6 +407,15 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .shortcut a, .build-strip a { color: var(--link); text-underline-offset: 2px; }
 
 /* home: the build pipeline in one line, steps joined by yellow arrows */
+/* the lead-in under the mission line: Curb font in white, a step below the yellow mission */
+.build-lead {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0;
+}
 .build-strip .mission { margin: 0; }
 .build-strip .pipeline-inline { margin-top: 4px; }
 .pipeline-inline { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 0; }
@@ -437,6 +451,7 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .icon-link { display: inline-flex; align-items: center; }
 .link-icon { width: 20px; height: 20px; fill: currentColor; flex: none; }
 .icon-link .link-icon { width: 30px; height: 30px; } /* logo-only links: the logo is the link */
+.icon-link .mail-icon { width: 33px; height: 33px; } /* the envelope is shorter than it is wide, so a touch bigger to match the logos' weight */
 /* About: the repo line after the build steps, GitHub logo beside it */
 /* sized and spaced like a numbered step (28px mark, text at the steps' indent), in Curb
    yellow like the step circles */
@@ -537,7 +552,7 @@ html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
 @media (max-width: 640px) {
   /* navbar: brand + hamburger; the tabs open as a panel over the page, under the header */
   .tabs { flex-wrap: nowrap; justify-content: space-between; }
-  .tabs-row { padding-bottom: 4px; position: relative; } /* the menu drops from the brand bar, over the filters */
+  .tabs-row { padding-top: 0; padding-bottom: 4px; position: relative; } /* the menu drops from the brand bar, over the filters */
   .menu-toggle { display: grid; }
   .tab-list {
     display: none;

@@ -3,6 +3,17 @@
 
 import Link from "next/link";
 import { PAGES } from "@/lib/pages";
+import { AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
+// structured data for search engines: the site and who made it
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  author: { "@type": "Person", name: AUTHOR.name, sameAs: [AUTHOR.linkedin, AUTHOR.github] },
+};
 
 // the build, in order; it ends in any consumer of the metrics (this dashboard, a BI tool, an
 // AI answering questions). The full walkthrough is on About.
@@ -19,6 +30,11 @@ const SAMPLE_QUESTIONS = [
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        // escape "<" so the JSON can't close the script tag
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD).replace(/</g, "\\u003c") }}
+      />
       {/* hero: title and intro now; the art goes in a second column later */}
       <header className="home-hero">
         <div className="home-hero-copy">
@@ -31,12 +47,15 @@ export default function Page() {
       </header>
 
       <section className="card build-strip" aria-label="The idea behind it">
-        <p className="mission">Define a metric once. Use it everywhere.</p>
+        <p className="mission">How it&apos;s built. Define a metric once, use it everywhere.</p>
+        <p className="build-lead">
+          The numbers on the dashboard pages all come from one method, defining each metric in the
+          dbt semantic layer that sits on top of the data warehouse.
+        </p>
         <p className="card-sub">
-          Every number on this site is defined once, by name, and read straight from the semantic
-          layer, so the dashboard, the answers and any AI asking the data all get the same figure.
-          The site itself never does its own math. Get the full story{" "}
-          <Link href="/about">here</Link>.
+          Each metric has one name and one definition, so the dashboard, the answers and any AI
+          asking the data all get the same figure. The site itself never does its own math. Get
+          the full story <Link href="/about">here</Link>.
         </p>
         <ol className="pipeline-inline" aria-label="The build, step by step">
           {PIPELINE.map((step, i) => (

@@ -14,7 +14,7 @@ metrics:
   - name: total_mishap_loss
     label: Total Mishap Loss
     description: >
-      Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always
+      Every kept mishap, realized + hypothetical + catastrophic. Hypothetical losses always
       count; loss_kind is only a slice.
     type: simple
     type_params:

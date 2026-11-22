@@ -68,12 +68,16 @@ saved_queries:
   - name: mishap_list
     label: Every mishap
     description: >
-      One row per kept mishap: what happened, its cost and how it was priced. The page
-      sorts it for the top 10 disasters and picks out the rows behind a year, season or
-      category (dbt does not support order_by or limit on saved queries yet).
+      One row per kept mishap: what happened, its cost, its low-mid-high price range and
+      how it was priced. The page sorts it for the top 10 disasters and picks out the rows
+      behind a year, season or category (dbt does not support order_by or limit on saved
+      queries yet).
     query_params:
       metrics:
         - total_mishap_loss
+        # the price range on the timeline tooltip (low = high on stated prices)
+        - total_mishap_loss_low
+        - total_mishap_loss_high
       group_by:
         - Entity('mishap')
         - Dimension('mishap__description')

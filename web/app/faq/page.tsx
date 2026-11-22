@@ -3,13 +3,18 @@
 // data refresh. Ordered like the tabs: losses, net worth, then the forecast.
 
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import {
   NO_FILTERS, byNumber, episodeCode, kpis, lossesBySeason, lossesByYear, mishapList, netWorthDent,
   percent, pick, usdCompact, usdFull, yearOf,
 } from "@/lib/data";
 
-export const metadata: Metadata = { title: "We've Got Answers · Curb Mishaps" };
+export const metadata: Metadata = pageMetadata(
+  "/faq",
+  "We've Got Answers",
+  "Plain answers about what Larry's mishaps cost him across Curb Your Enthusiasm, read straight from the dashboard's metrics.",
+);
 
 type Faq = { question: string; answer: React.ReactNode; see?: { href: string; label: string } };
 
@@ -45,11 +50,11 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
         answer: (
           <>
             <p>
-              <Figure>{usdFull(realized.total_mishap_loss)}</Figure> is realized: money or property he
+              <Figure>{usdFull(realized.total_mishap_loss)}</Figure> is realized, money or property he
               actually lost, across {realized.mishap_count} mishaps.
             </p>
             <p>
-              <Figure>{usdFull(hypothetical.total_mishap_loss)}</Figure> is hypothetical: income he missed
+              <Figure>{usdFull(hypothetical.total_mishap_loss)}</Figure> is hypothetical, income he missed
               out on, across {hypothetical.mishap_count} mishaps. Both count toward the total.
             </p>
           </>
@@ -60,7 +65,7 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
         question: "What does a typical mishap cost?",
         answer: (
           <p>
-            <Figure>{usdFull(total.median_mishap_cost)}</Figure>. That&apos;s the median: half his mishaps
+            <Figure>{usdFull(total.median_mishap_cost)}</Figure>. That&apos;s the median. Half his mishaps
             cost less, half cost more. A few disasters make the total huge, but most mishaps are small
             change. (With an even number of mishaps, it&apos;s the lower of the middle two.)
           </p>
@@ -112,7 +117,7 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
         question: "Which year hurt the most?",
         answer: (
           <p>
-            {yearOf(worstYear.metric_time__year)}: that year&apos;s mishaps cost {usdFull(worstYear.total_mishap_loss)},
+            {yearOf(worstYear.metric_time__year)}. That year&apos;s mishaps cost {usdFull(worstYear.total_mishap_loss)},
             or <Figure>{percent(worstYear.pct_mishap_to_net_worth)}</Figure> of his net worth that year.
           </p>
         ),
@@ -135,14 +140,14 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
       },
       {
         question: "If so, how many realized and hypothetical mishaps would Seasons 13 and 14 bring?",
-        answer: <p>Coming with the forecast: an expected count of each kind for Season 13 (2025) and Season 14 (2026).</p>,
+        answer: <p>Coming with the forecast. It gives an expected count of each kind for Season 13 (2025) and Season 14 (2026).</p>,
         see: { href: "/forecast", label: "Forecast" },
       },
       {
         question: "What's the chance of a catastrophic mishap in 2025 or 2026?",
         answer: (
           <p>
-            Coming with the forecast: the chance of a divorce-sized disaster in any one season, based on
+            Coming with the forecast. It gives the chance of a divorce-sized disaster in any one season, based on
             how often one has happened in the 12 real seasons.
           </p>
         ),
@@ -152,7 +157,7 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
         question: "What would each forecast season cost, and both together?",
         answer: (
           <p>
-            Coming with the forecast: an expected bill with a range for each season, in the dollars of
+            Coming with the forecast. It gives an expected bill with a range for each season, in the dollars of
             the year it would have aired, plus the two-season total.
           </p>
         ),

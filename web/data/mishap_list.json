@@ -1,12 +1,22 @@
 {
   "name": "mishap_list",
   "label": "Every mishap",
-  "description": "One row per kept mishap: what happened, its cost and how it was priced. The page sorts it for the top 10 disasters and picks out the rows behind a year, season or category (dbt does not support order_by or limit on saved queries yet).\n",
+  "description": "One row per kept mishap: what happened, its cost, its low-mid-high price range and how it was priced. The page sorts it for the top 10 disasters and picks out the rows behind a year, season or category (dbt does not support order_by or limit on saved queries yet).\n",
   "metrics": [
     {
       "name": "total_mishap_loss",
       "label": "Total Mishap Loss",
-      "description": "Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
+      "description": "Every kept mishap, realized + hypothetical + catastrophic. Hypothetical losses always count; loss_kind is only a slice."
+    },
+    {
+      "name": "total_mishap_loss_low",
+      "label": "Total Mishap Loss (low)",
+      "description": "Low end of the total's range. Stated prices count at their price."
+    },
+    {
+      "name": "total_mishap_loss_high",
+      "label": "Total Mishap Loss (high)",
+      "description": "High end of the total's range. Stated prices count at their price."
     }
   ],
   "rows": [
@@ -22,7 +32,9 @@
       "episode__season": "5",
       "episode__episode_in_season": "3",
       "episode__episode_title": "The Christ Nail",
-      "total_mishap_loss": 20
+      "total_mishap_loss": 20,
+      "total_mishap_loss_low": 20,
+      "total_mishap_loss_high": 20
     },
     {
       "metric_time__day": "2001-11-11 00:00:00",
@@ -36,7 +48,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Shaq",
-      "total_mishap_loss": 35
+      "total_mishap_loss": 35,
+      "total_mishap_loss_low": 30,
+      "total_mishap_loss_high": 50
     },
     {
       "metric_time__day": "2002-11-10 00:00:00",
@@ -50,7 +64,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Mary, Joseph and Larry",
-      "total_mishap_loss": 50
+      "total_mishap_loss": 50,
+      "total_mishap_loss_low": 50,
+      "total_mishap_loss_high": 50
     },
     {
       "metric_time__day": "2004-01-25 00:00:00",
@@ -64,7 +80,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Weatherman",
-      "total_mishap_loss": 65
+      "total_mishap_loss": 65,
+      "total_mishap_loss_low": 50,
+      "total_mishap_loss_high": 100
     },
     {
       "metric_time__day": "2021-12-19 00:00:00",
@@ -78,7 +96,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Igor, Gregor, & Timor",
-      "total_mishap_loss": 70
+      "total_mishap_loss": 70,
+      "total_mishap_loss_low": 40,
+      "total_mishap_loss_high": 150
     },
     {
       "metric_time__day": "2007-10-21 00:00:00",
@@ -92,7 +112,9 @@
       "episode__season": "6",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The TiVo Guy",
-      "total_mishap_loss": 75
+      "total_mishap_loss": 75,
+      "total_mishap_loss_low": 40,
+      "total_mishap_loss_high": 150
     },
     {
       "metric_time__day": "2000-12-10 00:00:00",
@@ -106,7 +128,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Affirmative Action",
-      "total_mishap_loss": 80
+      "total_mishap_loss": 80,
+      "total_mishap_loss_low": 40,
+      "total_mishap_loss_high": 200
     },
     {
       "metric_time__day": "2021-12-26 00:00:00",
@@ -120,7 +144,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "10",
       "episode__episode_title": "The Mormon Advantage",
-      "total_mishap_loss": 90
+      "total_mishap_loss": 90,
+      "total_mishap_loss_low": 60,
+      "total_mishap_loss_high": 150
     },
     {
       "metric_time__day": "2002-10-20 00:00:00",
@@ -134,7 +160,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Special Section",
-      "total_mishap_loss": 100
+      "total_mishap_loss": 100,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 100
     },
     {
       "metric_time__day": "2017-10-22 00:00:00",
@@ -148,7 +176,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "4",
       "episode__episode_title": "Running with the Bulls",
-      "total_mishap_loss": 100
+      "total_mishap_loss": 100,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 100
     },
     {
       "metric_time__day": "2009-11-08 00:00:00",
@@ -162,7 +192,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Officer Krupke",
-      "total_mishap_loss": 120
+      "total_mishap_loss": 120,
+      "total_mishap_loss_low": 60,
+      "total_mishap_loss_high": 250
     },
     {
       "metric_time__day": "2017-12-03 00:00:00",
@@ -176,7 +208,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Fatwa!",
-      "total_mishap_loss": 130
+      "total_mishap_loss": 130,
+      "total_mishap_loss_low": 70,
+      "total_mishap_loss_high": 275
     },
     {
       "metric_time__day": "2001-11-04 00:00:00",
@@ -190,7 +224,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The Doll",
-      "total_mishap_loss": 150
+      "total_mishap_loss": 150,
+      "total_mishap_loss_low": 50,
+      "total_mishap_loss_high": 400
     },
     {
       "metric_time__day": "2002-10-06 00:00:00",
@@ -204,7 +240,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Nanny from Hell",
-      "total_mishap_loss": 160
+      "total_mishap_loss": 160,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 250
     },
     {
       "metric_time__day": "2021-10-24 00:00:00",
@@ -218,7 +256,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "1",
       "episode__episode_title": "The Five-Foot Fence",
-      "total_mishap_loss": 175
+      "total_mishap_loss": 175,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2000-10-22 00:00:00",
@@ -232,7 +272,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Ted and Mary",
-      "total_mishap_loss": 180
+      "total_mishap_loss": 180,
+      "total_mishap_loss_low": 70,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2000-12-03 00:00:00",
@@ -246,7 +288,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Beloved Aunt",
-      "total_mishap_loss": 200
+      "total_mishap_loss": 200,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 350
     },
     {
       "metric_time__day": "2001-11-18 00:00:00",
@@ -260,7 +304,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "9",
       "episode__episode_title": "The Baptism",
-      "total_mishap_loss": 250
+      "total_mishap_loss": 250,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2000-10-22 00:00:00",
@@ -274,7 +320,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Ted and Mary",
-      "total_mishap_loss": 250
+      "total_mishap_loss": 250,
+      "total_mishap_loss_low": 150,
+      "total_mishap_loss_high": 400
     },
     {
       "metric_time__day": "2017-11-05 00:00:00",
@@ -288,7 +336,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Accidental Text on Purpose",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 800
     },
     {
       "metric_time__day": "2009-09-27 00:00:00",
@@ -302,7 +352,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Vehicular Fellatio",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 150,
+      "total_mishap_loss_high": 600
     },
     {
       "metric_time__day": "2009-10-18 00:00:00",
@@ -316,7 +368,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "5",
       "episode__episode_title": "Denise Handicap",
-      "total_mishap_loss": 400
+      "total_mishap_loss": 400,
+      "total_mishap_loss_low": 200,
+      "total_mishap_loss_high": 600
     },
     {
       "metric_time__day": "2001-10-07 00:00:00",
@@ -330,7 +384,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "3",
       "episode__episode_title": "Trick or Treat",
-      "total_mishap_loss": 400
+      "total_mishap_loss": 400,
+      "total_mishap_loss_low": 200,
+      "total_mishap_loss_high": 800
     },
     {
       "metric_time__day": "2001-10-07 00:00:00",
@@ -344,7 +400,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "3",
       "episode__episode_title": "Trick or Treat",
-      "total_mishap_loss": 420
+      "total_mishap_loss": 420,
+      "total_mishap_loss_low": 150,
+      "total_mishap_loss_high": 2700
     },
     {
       "metric_time__day": "2004-02-08 00:00:00",
@@ -358,7 +416,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Car Pool Lane",
-      "total_mishap_loss": 450
+      "total_mishap_loss": 450,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 700
     },
     {
       "metric_time__day": "2001-11-18 00:00:00",
@@ -372,7 +432,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "9",
       "episode__episode_title": "The Baptism",
-      "total_mishap_loss": 450
+      "total_mishap_loss": 450,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 800
     },
     {
       "metric_time__day": "2021-11-14 00:00:00",
@@ -386,7 +448,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Watermelon",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 200,
+      "total_mishap_loss_high": 1200
     },
     {
       "metric_time__day": "2024-02-04 00:00:00",
@@ -400,7 +464,9 @@
       "episode__season": "12",
       "episode__episode_in_season": "1",
       "episode__episode_title": "Atlanta",
-      "total_mishap_loss": 600
+      "total_mishap_loss": 600,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 1200
     },
     {
       "metric_time__day": "2024-02-11 00:00:00",
@@ -414,7 +480,9 @@
       "episode__season": "12",
       "episode__episode_in_season": "2",
       "episode__episode_title": "The Lawn Jockey",
-      "total_mishap_loss": 600
+      "total_mishap_loss": 600,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 2400
     },
     {
       "metric_time__day": "2021-12-19 00:00:00",
@@ -428,7 +496,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Igor, Gregor, & Timor",
-      "total_mishap_loss": 750
+      "total_mishap_loss": 750,
+      "total_mishap_loss_low": 250,
+      "total_mishap_loss_high": 2000
     },
     {
       "metric_time__day": "2004-01-18 00:00:00",
@@ -442,7 +512,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "3",
       "episode__episode_title": "The Blind Date",
-      "total_mishap_loss": 750
+      "total_mishap_loss": 750,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 1500
     },
     {
       "metric_time__day": "2017-10-22 00:00:00",
@@ -456,7 +528,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "4",
       "episode__episode_title": "Running with the Bulls",
-      "total_mishap_loss": 800
+      "total_mishap_loss": 800,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 1800
     },
     {
       "metric_time__day": "2021-10-31 00:00:00",
@@ -470,7 +544,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Angel Muffin",
-      "total_mishap_loss": 800
+      "total_mishap_loss": 800,
+      "total_mishap_loss_low": 350,
+      "total_mishap_loss_high": 1500
     },
     {
       "metric_time__day": "2020-02-23 00:00:00",
@@ -484,7 +560,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Surprise Party",
-      "total_mishap_loss": 1000
+      "total_mishap_loss": 1000,
+      "total_mishap_loss_low": 700,
+      "total_mishap_loss_high": 1250
     },
     {
       "metric_time__day": "2000-11-26 00:00:00",
@@ -498,7 +576,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "7",
       "episode__episode_title": "AAMCO",
-      "total_mishap_loss": 1300
+      "total_mishap_loss": 1300,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 2600
     },
     {
       "metric_time__day": "2000-11-12 00:00:00",
@@ -512,7 +592,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "5",
       "episode__episode_title": "Interior Decorator",
-      "total_mishap_loss": 1500
+      "total_mishap_loss": 1500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 4000
     },
     {
       "metric_time__day": "2021-11-14 00:00:00",
@@ -526,7 +608,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Watermelon",
-      "total_mishap_loss": 1800
+      "total_mishap_loss": 1800,
+      "total_mishap_loss_low": 800,
+      "total_mishap_loss_high": 4000
     },
     {
       "metric_time__day": "2002-10-27 00:00:00",
@@ -540,7 +624,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The Corpse-Sniffing Dog",
-      "total_mishap_loss": 1900
+      "total_mishap_loss": 1900,
+      "total_mishap_loss_low": 750,
+      "total_mishap_loss_high": 3750
     },
     {
       "metric_time__day": "2000-10-29 00:00:00",
@@ -554,7 +640,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "3",
       "episode__episode_title": "Porno Gil",
-      "total_mishap_loss": 2500
+      "total_mishap_loss": 2500,
+      "total_mishap_loss_low": 1000,
+      "total_mishap_loss_high": 8000
     },
     {
       "metric_time__day": "2005-10-02 00:00:00",
@@ -568,7 +656,9 @@
       "episode__season": "5",
       "episode__episode_in_season": "2",
       "episode__episode_title": "The Bowtie",
-      "total_mishap_loss": 2950
+      "total_mishap_loss": 2950,
+      "total_mishap_loss_low": 1800,
+      "total_mishap_loss_high": 5900
     },
     {
       "metric_time__day": "2020-02-09 00:00:00",
@@ -582,7 +672,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "4",
       "episode__episode_title": "You're Not Going to Get Me to Say Anything Bad About Mickey",
-      "total_mishap_loss": 3000
+      "total_mishap_loss": 3000,
+      "total_mishap_loss_low": 1500,
+      "total_mishap_loss_high": 6000
     },
     {
       "metric_time__day": "2020-03-08 00:00:00",
@@ -596,7 +688,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Elizabeth, Margaret and Larry",
-      "total_mishap_loss": 3000
+      "total_mishap_loss": 3000,
+      "total_mishap_loss_low": 1000,
+      "total_mishap_loss_high": 7500
     },
     {
       "metric_time__day": "2017-12-03 00:00:00",
@@ -610,7 +704,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Fatwa!",
-      "total_mishap_loss": 3000
+      "total_mishap_loss": 3000,
+      "total_mishap_loss_low": 1000,
+      "total_mishap_loss_high": 10000
     },
     {
       "metric_time__day": "2020-01-26 00:00:00",
@@ -624,7 +720,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Side Sitting",
-      "total_mishap_loss": 4000
+      "total_mishap_loss": 4000,
+      "total_mishap_loss_low": 1500,
+      "total_mishap_loss_high": 10000
     },
     {
       "metric_time__day": "2004-03-14 00:00:00",
@@ -638,7 +736,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Opening Night",
-      "total_mishap_loss": 5000
+      "total_mishap_loss": 5000,
+      "total_mishap_loss_low": 2000,
+      "total_mishap_loss_high": 10000
     },
     {
       "metric_time__day": "2007-10-07 00:00:00",
@@ -652,7 +752,9 @@
       "episode__season": "6",
       "episode__episode_in_season": "5",
       "episode__episode_title": "The Freak Book",
-      "total_mishap_loss": 10000
+      "total_mishap_loss": 10000,
+      "total_mishap_loss_low": 6000,
+      "total_mishap_loss_high": 18000
     },
     {
       "metric_time__day": "2020-03-15 00:00:00",
@@ -666,7 +768,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Beep Panic",
-      "total_mishap_loss": 15000
+      "total_mishap_loss": 15000,
+      "total_mishap_loss_low": 5000,
+      "total_mishap_loss_high": 40000
     },
     {
       "metric_time__day": "2017-10-08 00:00:00",
@@ -680,7 +784,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "2",
       "episode__episode_title": "The Pickle Gambit",
-      "total_mishap_loss": 15000
+      "total_mishap_loss": 15000,
+      "total_mishap_loss_low": 5000,
+      "total_mishap_loss_high": 45000
     },
     {
       "metric_time__day": "2020-03-15 00:00:00",
@@ -694,7 +800,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Beep Panic",
-      "total_mishap_loss": 18000
+      "total_mishap_loss": 18000,
+      "total_mishap_loss_low": 12000,
+      "total_mishap_loss_high": 25000
     },
     {
       "metric_time__day": "2017-10-08 00:00:00",
@@ -708,7 +816,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "2",
       "episode__episode_title": "The Pickle Gambit",
-      "total_mishap_loss": 21000
+      "total_mishap_loss": 21000,
+      "total_mishap_loss_low": 8000,
+      "total_mishap_loss_high": 42000
     },
     {
       "metric_time__day": "2020-02-02 00:00:00",
@@ -722,7 +832,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "3",
       "episode__episode_title": "Artificial Fruit",
-      "total_mishap_loss": 25000
+      "total_mishap_loss": 25000,
+      "total_mishap_loss_low": 5000,
+      "total_mishap_loss_high": 100000
     },
     {
       "metric_time__day": "2009-11-01 00:00:00",
@@ -736,7 +848,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The Black Swan",
-      "total_mishap_loss": 26273
+      "total_mishap_loss": 26273,
+      "total_mishap_loss_low": 7020,
+      "total_mishap_loss_high": 40000
     },
     {
       "metric_time__day": "2020-01-26 00:00:00",
@@ -750,7 +864,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Side Sitting",
-      "total_mishap_loss": 30000
+      "total_mishap_loss": 30000,
+      "total_mishap_loss_low": 10000,
+      "total_mishap_loss_high": 75000
     },
     {
       "metric_time__day": "2004-02-01 00:00:00",
@@ -764,7 +880,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "5",
       "episode__episode_title": "The 5 Wood",
-      "total_mishap_loss": 100000
+      "total_mishap_loss": 100000,
+      "total_mishap_loss_low": 50000,
+      "total_mishap_loss_high": 155000
     },
     {
       "metric_time__day": "2020-03-22 00:00:00",
@@ -778,7 +896,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "10",
       "episode__episode_title": "The Spite Store",
-      "total_mishap_loss": 100000
+      "total_mishap_loss": 100000,
+      "total_mishap_loss_low": 25000,
+      "total_mishap_loss_high": 500000
     },
     {
       "metric_time__day": "2002-09-15 00:00:00",
@@ -792,7 +912,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "1",
       "episode__episode_title": "Chet's Shirt",
-      "total_mishap_loss": 150000
+      "total_mishap_loss": 150000,
+      "total_mishap_loss_low": 50000,
+      "total_mishap_loss_high": 375000
     },
     {
       "metric_time__day": "2002-11-17 00:00:00",
@@ -806,7 +928,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "10",
       "episode__episode_title": "The Grand Opening",
-      "total_mishap_loss": 150000
+      "total_mishap_loss": 150000,
+      "total_mishap_loss_low": 50000,
+      "total_mishap_loss_high": 375000
     },
     {
       "metric_time__day": "2020-03-22 00:00:00",
@@ -820,7 +944,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "10",
       "episode__episode_title": "The Spite Store",
-      "total_mishap_loss": 195000
+      "total_mishap_loss": 195000,
+      "total_mishap_loss_low": 90000,
+      "total_mishap_loss_high": 400000
     },
     {
       "metric_time__day": "2017-12-03 00:00:00",
@@ -834,7 +960,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Fatwa!",
-      "total_mishap_loss": 750000
+      "total_mishap_loss": 750000,
+      "total_mishap_loss_low": 100000,
+      "total_mishap_loss_high": 3000000
     },
     {
       "metric_time__day": "2007-09-16 00:00:00",
@@ -848,7 +976,9 @@
       "episode__season": "6",
       "episode__episode_in_season": "2",
       "episode__episode_title": "The Anonymous Donor",
-      "total_mishap_loss": 1000000
+      "total_mishap_loss": 1000000,
+      "total_mishap_loss_low": 1000000,
+      "total_mishap_loss_high": 1000000
     },
     {
       "metric_time__day": "2001-10-14 00:00:00",
@@ -862,7 +992,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Shrimp Incident",
-      "total_mishap_loss": 1800000
+      "total_mishap_loss": 1800000,
+      "total_mishap_loss_low": 600000,
+      "total_mishap_loss_high": 6000000
     },
     {
       "metric_time__day": "2011-08-28 00:00:00",
@@ -876,7 +1008,9 @@
       "episode__season": "8",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Car Periscope",
-      "total_mishap_loss": 2500000
+      "total_mishap_loss": 2500000,
+      "total_mishap_loss_low": 250000,
+      "total_mishap_loss_high": 25000000
     },
     {
       "metric_time__day": "2007-09-09 00:00:00",
@@ -890,7 +1024,9 @@
       "episode__season": "6",
       "episode__episode_in_season": "1",
       "episode__episode_title": "Meet the Blacks",
-      "total_mishap_loss": 5000000
+      "total_mishap_loss": 5000000,
+      "total_mishap_loss_low": 1000000,
+      "total_mishap_loss_high": 10500000
     },
     {
       "metric_time__day": "2011-07-10 00:00:00",
@@ -904,7 +1040,9 @@
       "episode__season": "8",
       "episode__episode_in_season": "1",
       "episode__episode_title": "The Divorce",
-      "total_mishap_loss": 250000000
+      "total_mishap_loss": 250000000,
+      "total_mishap_loss_low": 200000000,
+      "total_mishap_loss_high": 300000000
     },
     {
       "metric_time__day": "2024-02-04 00:00:00",
@@ -918,7 +1056,9 @@
       "episode__season": "12",
       "episode__episode_in_season": "1",
       "episode__episode_title": "Atlanta",
-      "total_mishap_loss": 10
+      "total_mishap_loss": 10,
+      "total_mishap_loss_low": 10,
+      "total_mishap_loss_high": 10
     },
     {
       "metric_time__day": "2004-03-14 00:00:00",
@@ -932,7 +1072,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Opening Night",
-      "total_mishap_loss": 10
+      "total_mishap_loss": 10,
+      "total_mishap_loss_low": 10,
+      "total_mishap_loss_high": 10
     },
     {
       "metric_time__day": "2009-11-15 00:00:00",
@@ -946,7 +1088,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "9",
       "episode__episode_title": "The Table Read",
-      "total_mishap_loss": 20
+      "total_mishap_loss": 20,
+      "total_mishap_loss_low": 20,
+      "total_mishap_loss_high": 20
     },
     {
       "metric_time__day": "2000-11-12 00:00:00",
@@ -960,7 +1104,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "5",
       "episode__episode_title": "Interior Decorator",
-      "total_mishap_loss": 30
+      "total_mishap_loss": 30,
+      "total_mishap_loss_low": 30,
+      "total_mishap_loss_high": 30
     },
     {
       "metric_time__day": "2007-09-23 00:00:00",
@@ -974,7 +1120,9 @@
       "episode__season": "6",
       "episode__episode_in_season": "3",
       "episode__episode_title": "The Ida Funkhouser Roadside Memorial",
-      "total_mishap_loss": 50
+      "total_mishap_loss": 50,
+      "total_mishap_loss_low": 50,
+      "total_mishap_loss_high": 50
     },
     {
       "metric_time__day": "2011-07-31 00:00:00",
@@ -988,7 +1136,9 @@
       "episode__season": "8",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Smiley Face",
-      "total_mishap_loss": 60
+      "total_mishap_loss": 60,
+      "total_mishap_loss_low": 60,
+      "total_mishap_loss_high": 60
     },
     {
       "metric_time__day": "2017-10-01 00:00:00",
@@ -1002,7 +1152,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "1",
       "episode__episode_title": "Foisted!",
-      "total_mishap_loss": 75
+      "total_mishap_loss": 75,
+      "total_mishap_loss_low": 75,
+      "total_mishap_loss_high": 75
     },
     {
       "metric_time__day": "2004-01-11 00:00:00",
@@ -1016,7 +1168,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "2",
       "episode__episode_title": "Ben's Birthday Party",
-      "total_mishap_loss": 100
+      "total_mishap_loss": 100,
+      "total_mishap_loss_low": 100,
+      "total_mishap_loss_high": 100
     },
     {
       "metric_time__day": "2001-11-11 00:00:00",
@@ -1030,7 +1184,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Shaq",
-      "total_mishap_loss": 115
+      "total_mishap_loss": 115,
+      "total_mishap_loss_low": 115,
+      "total_mishap_loss_high": 115
     },
     {
       "metric_time__day": "2020-02-09 00:00:00",
@@ -1044,7 +1200,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "4",
       "episode__episode_title": "You're Not Going to Get Me to Say Anything Bad About Mickey",
-      "total_mishap_loss": 250
+      "total_mishap_loss": 250,
+      "total_mishap_loss_low": 250,
+      "total_mishap_loss_high": 250
     },
     {
       "metric_time__day": "2017-11-19 00:00:00",
@@ -1058,7 +1216,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "8",
       "episode__episode_title": "Never Wait for Seconds!",
-      "total_mishap_loss": 250
+      "total_mishap_loss": 250,
+      "total_mishap_loss_low": 250,
+      "total_mishap_loss_high": 250
     },
     {
       "metric_time__day": "2017-10-15 00:00:00",
@@ -1072,7 +1232,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "3",
       "episode__episode_title": "A Disturbance in the Kitchen",
-      "total_mishap_loss": 275
+      "total_mishap_loss": 275,
+      "total_mishap_loss_low": 275,
+      "total_mishap_loss_high": 275
     },
     {
       "metric_time__day": "2005-09-25 00:00:00",
@@ -1086,7 +1248,9 @@
       "episode__season": "5",
       "episode__episode_in_season": "1",
       "episode__episode_title": "The Larry David Sandwich",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2011-08-14 00:00:00",
@@ -1100,7 +1264,9 @@
       "episode__season": "8",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Hero",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2005-11-27 00:00:00",
@@ -1114,7 +1280,9 @@
       "episode__season": "5",
       "episode__episode_in_season": "9",
       "episode__episode_title": "The Korean Bookie",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2002-09-29 00:00:00",
@@ -1128,7 +1296,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "3",
       "episode__episode_title": "Club Soda and Salt",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2009-10-11 00:00:00",
@@ -1142,7 +1312,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "4",
       "episode__episode_title": "The Hot Towel",
-      "total_mishap_loss": 300
+      "total_mishap_loss": 300,
+      "total_mishap_loss_low": 300,
+      "total_mishap_loss_high": 300
     },
     {
       "metric_time__day": "2002-11-10 00:00:00",
@@ -1156,7 +1328,9 @@
       "episode__season": "3",
       "episode__episode_in_season": "9",
       "episode__episode_title": "Mary, Joseph and Larry",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2017-12-03 00:00:00",
@@ -1170,7 +1344,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Fatwa!",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2009-11-01 00:00:00",
@@ -1184,7 +1360,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The Black Swan",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2000-11-19 00:00:00",
@@ -1198,7 +1376,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Wire",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2020-03-01 00:00:00",
@@ -1212,7 +1392,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The Ugly Section",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2009-11-22 00:00:00",
@@ -1226,7 +1408,9 @@
       "episode__season": "7",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Seinfeld",
-      "total_mishap_loss": 500
+      "total_mishap_loss": 500,
+      "total_mishap_loss_low": 500,
+      "total_mishap_loss_high": 500
     },
     {
       "metric_time__day": "2024-02-11 00:00:00",
@@ -1240,7 +1424,9 @@
       "episode__season": "12",
       "episode__episode_in_season": "2",
       "episode__episode_title": "The Lawn Jockey",
-      "total_mishap_loss": 650
+      "total_mishap_loss": 650,
+      "total_mishap_loss_low": 650,
+      "total_mishap_loss_high": 650
     },
     {
       "metric_time__day": "2004-02-08 00:00:00",
@@ -1254,7 +1440,9 @@
       "episode__season": "4",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Car Pool Lane",
-      "total_mishap_loss": 750
+      "total_mishap_loss": 750,
+      "total_mishap_loss_low": 750,
+      "total_mishap_loss_high": 750
     },
     {
       "metric_time__day": "2020-02-02 00:00:00",
@@ -1268,7 +1456,9 @@
       "episode__season": "10",
       "episode__episode_in_season": "3",
       "episode__episode_title": "Artificial Fruit",
-      "total_mishap_loss": 1000
+      "total_mishap_loss": 1000,
+      "total_mishap_loss_low": 1000,
+      "total_mishap_loss_high": 1000
     },
     {
       "metric_time__day": "2005-11-27 00:00:00",
@@ -1282,7 +1472,9 @@
       "episode__season": "5",
       "episode__episode_in_season": "9",
       "episode__episode_title": "The Korean Bookie",
-      "total_mishap_loss": 1500
+      "total_mishap_loss": 1500,
+      "total_mishap_loss_low": 1500,
+      "total_mishap_loss_high": 1500
     },
     {
       "metric_time__day": "2000-11-12 00:00:00",
@@ -1296,7 +1488,9 @@
       "episode__season": "1",
       "episode__episode_in_season": "5",
       "episode__episode_title": "Interior Decorator",
-      "total_mishap_loss": 1500
+      "total_mishap_loss": 1500,
+      "total_mishap_loss_low": 1500,
+      "total_mishap_loss_high": 1500
     },
     {
       "metric_time__day": "2017-11-26 00:00:00",
@@ -1310,7 +1504,9 @@
       "episode__season": "9",
       "episode__episode_in_season": "9",
       "episode__episode_title": "The Shucker",
-      "total_mishap_loss": 2500
+      "total_mishap_loss": 2500,
+      "total_mishap_loss_low": 2500,
+      "total_mishap_loss_high": 2500
     },
     {
       "metric_time__day": "2001-10-21 00:00:00",
@@ -1324,7 +1520,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "5",
       "episode__episode_title": "The Thong",
-      "total_mishap_loss": 4000
+      "total_mishap_loss": 4000,
+      "total_mishap_loss_low": 4000,
+      "total_mishap_loss_high": 4000
     },
     {
       "metric_time__day": "2001-10-28 00:00:00",
@@ -1338,7 +1536,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Acupuncturist",
-      "total_mishap_loss": 5000
+      "total_mishap_loss": 5000,
+      "total_mishap_loss_low": 5000,
+      "total_mishap_loss_high": 5000
     },
     {
       "metric_time__day": "2001-10-28 00:00:00",
@@ -1352,7 +1552,9 @@
       "episode__season": "2",
       "episode__episode_in_season": "6",
       "episode__episode_title": "The Acupuncturist",
-      "total_mishap_loss": 5000
+      "total_mishap_loss": 5000,
+      "total_mishap_loss_low": 5000,
+      "total_mishap_loss_high": 5000
     },
     {
       "metric_time__day": "2005-12-04 00:00:00",
@@ -1366,7 +1568,9 @@
       "episode__season": "5",
       "episode__episode_in_season": "10",
       "episode__episode_title": "The End",
-      "total_mishap_loss": 5000
+      "total_mishap_loss": 5000,
+      "total_mishap_loss_low": 5000,
+      "total_mishap_loss_high": 5000
     },
     {
       "metric_time__day": "2021-10-24 00:00:00",
@@ -1380,7 +1584,9 @@
       "episode__season": "11",
       "episode__episode_in_season": "1",
       "episode__episode_title": "The Five-Foot Fence",
-      "total_mishap_loss": 6000
+      "total_mishap_loss": 6000,
+      "total_mishap_loss_low": 6000,
+      "total_mishap_loss_high": 6000
     },
     {
       "metric_time__day": "2011-09-11 00:00:00",
@@ -1394,7 +1600,9 @@
       "episode__season": "8",
       "episode__episode_in_season": "10",
       "episode__episode_title": "Larry vs. Michael J. Fox",
-      "total_mishap_loss": 10000
+      "total_mishap_loss": 10000,
+      "total_mishap_loss_low": 10000,
+      "total_mishap_loss_high": 10000
     },
     {
       "metric_time__day": "2007-10-21 00:00:00",
@@ -1408,7 +1616,9 @@
       "episode__season": "6",
       "episode__episode_in_season": "7",
       "episode__episode_title": "The TiVo Guy",
-      "total_mishap_loss": 10000
+      "total_mishap_loss": 10000,
+      "total_mishap_loss_low": 10000,
+      "total_mishap_loss_high": 10000
     },
     {
       "metric_time__day": "2005-11-20 00:00:00",
@@ -1422,11 +1632,13 @@
       "episode__season": "5",
       "episode__episode_in_season": "8",
       "episode__episode_title": "The Ski Lift",
-      "total_mishap_loss": 20000
+      "total_mishap_loss": 20000,
+      "total_mishap_loss_low": 20000,
+      "total_mishap_loss_high": 20000
     }
   ],
   "filterable_metrics": [],
   "slices": {},
-  "exported_at": "2026-11-21T23:29:53+00:00",
+  "exported_at": "2026-11-22T14:25:51+00:00",
   "source": "curb_prod"
 }

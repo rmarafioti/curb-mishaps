@@ -6,7 +6,7 @@
 // how it was priced. Positions only; every value comes from mishap_list.json.
 
 import { useState } from "react";
-import { type Mishap, dateOf, episodeCode, titleCase, usdFull, yearOf } from "@/lib/data";
+import { type Mishap, dateOf, episodeCode, splitBasis, titleCase, usdCompact, usdFull, yearOf } from "@/lib/data";
 
 const MIN_WIDTH = 960;
 const STEP = 16; // px between points at full width; the chart scrolls sideways past MIN_WIDTH
@@ -49,6 +49,7 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
   const path = mishaps.map((m, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(m.total_mishap_loss)}`).join(" ");
 
   const current = active !== null ? mishaps[active] : null;
+  const basis = current?.mishap__estimate_basis ? splitBasis(current.mishap__estimate_basis) : null;
   const across = active !== null ? x(active) / width : 0;
   const down = current ? y(current.total_mishap_loss) / HEIGHT : 0;
   // the tooltip opens beside the dot: to the right, or to the left near the right edge; it
@@ -166,8 +167,18 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
                 {titleCase(current.mishap__loss_kind)} · {titleCase(current.mishap__loss_kind_category)}
                 {current.mishap__is_catastrophic === "1" ? " · Catastrophic" : ""}
               </span>
-              {current.mishap__estimate_basis && (
-                <span className="tooltip-basis">How we priced it: {current.mishap__estimate_basis}</span>
+              {/* estimates only (a stated price has no range); the mid is the cost we count */}
+              {current.total_mishap_loss_low !== current.total_mishap_loss_high && (
+                <span className="tooltip-range">
+                  Price range: {usdCompact(current.total_mishap_loss_low)} –{" "}
+                  <mark className="tooltip-mid">{usdCompact(current.total_mishap_loss)}</mark> –{" "}
+                  {usdCompact(current.total_mishap_loss_high)}
+                </span>
+              )}
+              {basis && (
+                <span className="tooltip-basis">
+                  How we priced it: {basis.kind ? `${titleCase(basis.kind)}. ${basis.note}` : basis.note}
+                </span>
               )}
             </div>
           )}
