@@ -3,6 +3,17 @@
 
 import Link from "next/link";
 import { PAGES } from "@/lib/pages";
+import { AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
+// structured data for search engines: the site and who made it
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  author: { "@type": "Person", name: AUTHOR.name, sameAs: [AUTHOR.linkedin, AUTHOR.github] },
+};
 
 // the build, in order; it ends in any consumer of the metrics (this dashboard, a BI tool, an
 // AI answering questions). The full walkthrough is on About.
@@ -19,6 +30,11 @@ const SAMPLE_QUESTIONS = [
 export default function Page() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        // escape "<" so the JSON can't close the script tag
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD).replace(/</g, "\\u003c") }}
+      />
       {/* hero: title and intro now; the art goes in a second column later */}
       <header className="home-hero">
         <div className="home-hero-copy">

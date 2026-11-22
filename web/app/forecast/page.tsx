@@ -2,8 +2,13 @@
 // season a year after 2024, through 2026.
 
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Forecast · Curb Mishaps" };
+export const metadata: Metadata = pageMetadata(
+  "/forecast",
+  "Forecast",
+  "What two more seasons of Curb Your Enthusiasm, in 2025 and 2026, would likely have cost Larry. Coming soon.",
+);
 
 export default function Page() {
   return (

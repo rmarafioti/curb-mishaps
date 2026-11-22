@@ -3,13 +3,18 @@
 // data refresh. Ordered like the tabs: losses, net worth, then the forecast.
 
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import {
   NO_FILTERS, byNumber, episodeCode, kpis, lossesBySeason, lossesByYear, mishapList, netWorthDent,
   percent, pick, usdCompact, usdFull, yearOf,
 } from "@/lib/data";
 
-export const metadata: Metadata = { title: "We've Got Answers · Curb Mishaps" };
+export const metadata: Metadata = pageMetadata(
+  "/faq",
+  "We've Got Answers",
+  "Plain answers about what Larry's mishaps cost him across Curb Your Enthusiasm, read straight from the dashboard's metrics.",
+);
 
 type Faq = { question: string; answer: React.ReactNode; see?: { href: string; label: string } };
 
