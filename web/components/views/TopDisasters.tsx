@@ -3,23 +3,12 @@
 // Tab 2, Top 10 Disasters: the ten most expensive mishaps matching the filters, with how
 // each was priced. Sorting and picking only.
 
-import { type Mishap, byNumber, episodeCode, pickMishaps, usdFull } from "@/lib/data";
+import { type Mishap, byNumber, episodeCode, pickMishaps, splitBasis, usdFull } from "@/lib/data";
 import { useFilters } from "@/lib/filters";
 
-// Each pricing note opens with how it was priced ("assumption:", "reference:", "category
-// default:", "stated"); that lead word becomes the pricing-method pill and the rest stays as
-// the note. Catastrophic is a separate flag after the title ("*Catastrophic", text, not a
-// pill, so it doesn't read as a pricing method), from the data's is_catastrophic flag
-// (older notes that open with "catastrophic." get no method pill).
-// Text splitting only.
-const BASIS_KINDS = ["catastrophic", "assumption", "reference", "category default", "stated"];
-
-function splitBasis(basis: string): { kind?: string; note: string } {
-  const kind = BASIS_KINDS.find((k) => basis.toLowerCase().startsWith(k));
-  if (!kind) return { note: basis };
-  const note = basis.slice(kind.length).replace(/^[.:]\s*/, "");
-  return { kind, note: note.charAt(0).toUpperCase() + note.slice(1) };
-}
+// The pricing note's lead word (splitBasis) becomes the pricing-method pill. Catastrophic is
+// a separate flag after the title (text, not a pill, so it doesn't read as a pricing
+// method), from the data's is_catastrophic flag.
 
 export default function TopDisasters() {
   const { filters } = useFilters();
@@ -63,7 +52,7 @@ export default function TopDisasters() {
                         {basis.note && <span className="basis">{basis.note}</span>}
                       </td>
                       <td className="t-pill">
-                        {basis.kind && basis.kind !== "catastrophic" && (
+                        {basis.kind && (
                           <span className={`pill pill-${basis.kind.replace(" ", "-")}`}>{basis.kind}</span>
                         )}
                       </td>

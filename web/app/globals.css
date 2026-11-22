@@ -250,6 +250,9 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 .tooltip-row strong { color: var(--heading); text-align: right; padding-left: 12px; font-variant-numeric: tabular-nums; }
 .tooltip-title { font-weight: 500; }
 .tooltip-meta { color: var(--ink-secondary); font-size: 0.8rem; }
+/* low – mid – high; the mid (the cost we count) in Curb yellow */
+.tooltip-range { font-size: 0.82rem; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.tooltip-mid { background: none; color: var(--heading); font-weight: 700; }
 .tooltip-basis { color: var(--ink-muted); font-size: 0.78rem; margin-top: 4px; }
 
 /* --- tables ----------------------------------------------------------------------------- */

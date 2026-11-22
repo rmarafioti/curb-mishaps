@@ -11,18 +11,18 @@ export default function Page() {
       <header className="masthead">
         <h1>If the show had kept going…</h1>
         <p className="lede">
-          What two more seasons, one a year after 2024, would likely have cost him: Season 13 in
+          What two more seasons, one a year after 2024, would likely have cost him, Season 13 in
           2025 and Season 14 in 2026.
         </p>
       </header>
 
       <section className="card placeholder prose">
         <h2>Coming once every episode has been reviewed</h2>
-        <p>The forecast follows three trends across the 12 real seasons:</p>
+        <p>The forecast follows three trends across the 12 real seasons.</p>
         <ul>
-          <li><strong>How often:</strong> mishaps per episode, season by season.</li>
-          <li><strong>How costly:</strong> the typical everyday mishap, with inflation taken out so rising prices don&apos;t pass for a trend.</li>
-          <li><strong>How catastrophic:</strong> the chance of a divorce-sized disaster in any one season.</li>
+          <li><strong>How often.</strong> Mishaps per episode, season by season.</li>
+          <li><strong>How costly.</strong> The typical everyday mishap, with inflation taken out so rising prices don&apos;t pass for a trend.</li>
+          <li><strong>How catastrophic.</strong> The chance of a divorce-sized disaster in any one season.</li>
         </ul>
         <p>
           Each forecast season gets an expected bill with a range, priced in the dollars of the year

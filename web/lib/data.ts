@@ -64,7 +64,22 @@ export type Mishap = {
   episode__episode_in_season: string;
   episode__episode_title: string;
   total_mishap_loss: number;
+  total_mishap_loss_low: number;
+  total_mishap_loss_high: number;
 };
+
+// Each pricing note opens with how it was priced ("assumption:", "reference:", "category
+// default:", "stated"); that lead word becomes the pricing method and the rest stays as the
+// note. Older notes that open with "catastrophic." get no method (the flag comes from
+// is_catastrophic). Text splitting only.
+const BASIS_KINDS = ["catastrophic", "assumption", "reference", "category default", "stated"];
+
+export function splitBasis(basis: string): { kind?: string; note: string } {
+  const kind = BASIS_KINDS.find((k) => basis.toLowerCase().startsWith(k));
+  if (!kind) return { note: basis };
+  const note = basis.slice(kind.length).replace(/^[.:]\s*/, "");
+  return { kind: kind === "catastrophic" ? undefined : kind, note: note.charAt(0).toUpperCase() + note.slice(1) };
+}
 
 export type DentRow = {
   metric_time__year: string;

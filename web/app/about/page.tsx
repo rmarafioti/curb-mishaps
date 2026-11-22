@@ -17,7 +17,7 @@ const total = kpis.rows[0];
 const METRIC_YAML = `- name: total_mishap_loss
   label: Total Mishap Loss
   description: >
-    Every kept mishap: realized + hypothetical + catastrophic. Hypothetical losses always
+    Every kept mishap, realized + hypothetical + catastrophic. Hypothetical losses always
     count; loss_kind is only a slice.
   type: simple
   type_params:
@@ -31,7 +31,8 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     detail: (
       <>
         Every episode of all 12 seasons, checked against Wikipedia, the Curb fan wiki and IMDb plot
-        synopses, and re-watched where memory was fuzzy. Each money-losing moment became a row, and
+        synopses, and re-watched to validate the situations those online sources describe. Each
+        money-losing moment became a row, and
         each unstated cost was researched and priced.
       </>
     ),
@@ -40,20 +41,20 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     step: "Google Sheet",
     detail: (
       <>
-        The source of truth: one row per mishap, each marked keep, drop or unsure by a human
+        The source of truth, with one row per mishap, each marked keep, drop or unsure by a human
         reviewer, with its price, how it was priced, a confidence level and a source.
       </>
     ),
   },
   {
     step: "BigQuery",
-    detail: <>The warehouse reads the Sheet live as an external table. No exports or copy-paste: an edit in the Sheet reaches the warehouse on the next build.</>,
+    detail: <>The warehouse reads the Sheet live as an external table. No exports or copy-paste. An edit in the Sheet reaches the warehouse on the next build.</>,
   },
   {
     step: "dbt staging",
     detail: (
       <>
-        Cleaning: every column is renamed and cast to its proper type. A bad cell fails the build
+        Every column is cleaned, renamed and cast to its proper type. A bad cell fails the build
         with the value in the error instead of quietly becoming a blank, and tests check the data
         before anything is built on it.
       </>
@@ -63,8 +64,8 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     step: "dbt star schema",
     detail: (
       <>
-        Modeling: one fact table of mishaps, joined to dimensions for episodes, net worth by year
-        and the calendar. This is where the rules live: which rows count, which price to use.
+        One fact table of mishaps, joined to dimensions for episodes, net worth by year and the
+        calendar. This is where the rules live, like which rows count and which price to use.
       </>
     ),
   },
@@ -72,8 +73,8 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     step: "Semantic layer",
     detail: (
       <>
-        Every number on this site is defined once, by name, in YAML: Total Mishap Loss, Median
-        Mishap Cost, Net Worth After Mishaps and the rest. Change a definition there and it changes
+        Every number on this site is defined once, by name, in YAML, like Total Mishap Loss,
+        Median Mishap Cost, Net Worth After Mishaps and the rest. Change a definition there and it changes
         everywhere.
       </>
     ),
@@ -92,9 +93,9 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     step: "Validation",
     detail: (
       <>
-        Before any chart was built, every metric was checked by hand: MetricFlow&apos;s answers
-        against the warehouse and against the source Sheet&apos;s own year-by-year totals, down to the
-        dollar. dbt tests catch duplicate mishaps and missing costs on every build, and each release
+        Before any chart was built, every metric was checked by hand, comparing MetricFlow&apos;s
+        answers with the warehouse and with the source Sheet&apos;s own year-by-year totals, down to
+        the dollar. dbt tests catch duplicate mishaps and missing costs on every build, and each release
         to production must match development before the site reads it.
       </>
     ),
@@ -103,8 +104,8 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     step: "AI-assisted dashboard",
     detail: (
       <>
-        The site was built with Claude. AI is non-deterministic: ask twice and you can get two
-        different pages. The numbers are not: the page only reads values the semantic layer
+        The site was built with Claude. AI is non-deterministic. Ask twice and you can get two
+        different pages. The numbers are not. The page only reads values the semantic layer
         produced, and only sorts, picks and formats them. It never writes its own query or does its
         own math, so it can&apos;t invent its own version of a figure.
       </>
@@ -144,7 +145,7 @@ export default function Page() {
         <h2>The mission</h2>
         <p>Larry&apos;s mishaps are the hook. The point is the dbt semantic layer.</p>
         <p className="mission">
-          Define a metric once. Use it everywhere: in dashboards, in reports, in AI answers. Always
+          Define a metric once. Use it everywhere, in dashboards, reports and AI answers. Always
           the same, always traceable to the warehouse.
         </p>
         <p>
@@ -171,10 +172,10 @@ export default function Page() {
           ))}
         </ol>
 
-        <h3>An example: one metric, everywhere</h3>
+        <h3>One metric, everywhere</h3>
         <p>
           Below is {label(kpis, "total_mishap_loss")} exactly as it&apos;s defined in the semantic
-          layer: a few lines of YAML, and the only place the metric exists. It produces{" "}
+          layer. It&apos;s a few lines of YAML, and the only place the metric exists. It produces{" "}
           <strong className="faq-figure">{usdFull(total.total_mishap_loss)}</strong>, the same figure in the
           headline on <Link href="/costs-by-season">Mishap Costs by Season</Link> and in the first answer
           on <Link href="/faq">We&apos;ve Got Answers</Link>. Sliced by season or loss kind, the same
@@ -194,7 +195,7 @@ export default function Page() {
         <h2>Data collection</h2>
         <ul className="roomy">
           <li>
-            <strong>What counts:</strong> any time Larry loses money or property, or misses out on
+            <strong>What counts.</strong> Any time Larry loses money or property, or misses out on
             income, because of his own behavior or bad luck. Ordinary purchases, normal gifts and
             other people&apos;s losses don&apos;t count.
           </li>
@@ -214,7 +215,7 @@ export default function Page() {
             twice.
           </li>
           <li>
-            <strong>How each mishap was priced:</strong> the amount said or shown in the episode
+            <strong>How each mishap was priced.</strong> The amount said or shown in the episode
             when there is one (<em>stated</em>); otherwise a researched <em>reference</em> price, a
             typical price for that kind of item (<em>category default</em>), or a reasoned{" "}
             <em>assumption</em> for one-offs like a hospital wing. Estimates have a low, middle and
@@ -225,10 +226,10 @@ export default function Page() {
             found today were converted back to that year with the consumer price index.
           </li>
           <li>
-            <strong>Confidence:</strong> every price carries one of three levels.{" "}
-            <em>High</em>: the amount is stated in the episode. <em>Medium</em>: a solid reference
-            price for the same thing. <em>Low</em>: a category default or an assumption, with a
-            wide range.
+            <strong>Confidence.</strong> Every price carries one of three levels.{" "}
+            <em>High</em> means the amount is stated in the episode. <em>Medium</em> means a solid
+            reference price for the same thing. <em>Low</em> means a category default or an
+            assumption, with a wide range.
           </li>
           <li>
             <strong>Net worth</strong> is the central estimate of Larry David&apos;s reported net
@@ -236,12 +237,12 @@ export default function Page() {
             divorce added back.
           </li>
           <li>
-            <strong>Typical mishap</strong> means the lower median: with an even number of mishaps,
-            the lower of the middle two.
+            <strong>Typical mishap</strong> means the lower median. With an even number of mishaps,
+            it&apos;s the lower of the middle two.
           </li>
           <li>
-            <strong>Still in review:</strong> a few Season 12 episodes. The numbers update once
-            they&apos;re done.
+            <strong>Still in review.</strong> A few Season 12 episodes are still being checked. The
+            numbers update once they&apos;re done.
           </li>
         </ul>
       </section>
@@ -252,7 +253,7 @@ export default function Page() {
         <ul>
           <li>
             <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/List_of_Curb_Your_Enthusiasm_episodes">
-              Wikipedia: List of Curb Your Enthusiasm episodes
+              Wikipedia, List of Curb Your Enthusiasm episodes
             </a>
           </li>
           <li>The Curb Your Enthusiasm fan wiki (Fandom), for episode details</li>
@@ -276,24 +277,24 @@ export default function Page() {
             <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/articles/entertainment-articles/how-much-money-did-jerry-seinfeld-make-off-of-seinfeld-from-salary-and-royalties/">
               Celebrity Net Worth
             </a>
-            : the Seinfeld syndication windfall (2000)
+            , the Seinfeld syndication windfall (2000)
           </li>
           <li>
             <a target="_blank" rel="noopener noreferrer" href="https://extratv.com/2007/06/05/larry-david-and-wife-laurie-split-after-14-years">Extra</a>
-            : his fortune before and after the 2007 divorce
+            , his fortune before and after the 2007 divorce
           </li>
           <li>
             <a target="_blank" rel="noopener noreferrer" href="https://www.businessinsider.in/heres-why-larry-david-says-he-isnt-really-worth-half-a-billion/articleshow/46449672.cms">
               Business Insider
             </a>
-            : reported net worth, 2015
+            , reported net worth, 2015
           </li>
           <li>
             <a target="_blank" rel="noopener noreferrer" href="https://thewrap.com/jerry-seinfeld-larry-david-100-million-dollars-netflix-deal">TheWrap</a>
-            : the Netflix Seinfeld deal (2019)
+            , the Netflix Seinfeld deal (2019)
           </li>
           <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/?p=43">Celebrity Net Worth</a>: current
+            <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/?p=43">Celebrity Net Worth</a>, current
             estimate (2026)
           </li>
         </ul>

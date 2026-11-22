@@ -31,12 +31,15 @@ export default function Page() {
       </header>
 
       <section className="card build-strip" aria-label="The idea behind it">
+        <p className="card-sub">
+          The numbers on the dashboard pages all come from one method, defining each metric in the
+          dbt semantic layer that sits on top of the data warehouse.
+        </p>
         <p className="mission">Define a metric once. Use it everywhere.</p>
         <p className="card-sub">
-          Every number on this site is defined once, by name, and read straight from the semantic
-          layer, so the dashboard, the answers and any AI asking the data all get the same figure.
-          The site itself never does its own math. Get the full story{" "}
-          <Link href="/about">here</Link>.
+          Each metric has one name and one definition, so the dashboard, the answers and any AI
+          asking the data all get the same figure. The site itself never does its own math. Get
+          the full story <Link href="/about">here</Link>.
         </p>
         <ol className="pipeline-inline" aria-label="The build, step by step">
           {PIPELINE.map((step, i) => (
