@@ -80,8 +80,9 @@ h2 { font-size: 1.15rem; font-weight: 600; }
   transition: transform 0.2s ease;
 }
 /* the gap between tabs and filters belongs to the tabs row, so it collapses with it */
-.tabs-row { padding-bottom: 14px; }
-.header-spacer { height: 133px; } /* until the header is measured after load */
+/* the extra top padding balances the gap below, so the tabs sit centered in their row */
+.tabs-row { padding-top: 1rem; padding-bottom: 14px; }
+.header-spacer { height: 149px; } /* until the header is measured after load */
 .tabs {
   overflow: hidden;
   min-height: 0;
@@ -450,6 +451,7 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .icon-link { display: inline-flex; align-items: center; }
 .link-icon { width: 20px; height: 20px; fill: currentColor; flex: none; }
 .icon-link .link-icon { width: 30px; height: 30px; } /* logo-only links: the logo is the link */
+.icon-link .mail-icon { width: 33px; height: 33px; } /* the envelope is shorter than it is wide, so a touch bigger to match the logos' weight */
 /* About: the repo line after the build steps, GitHub logo beside it */
 /* sized and spaced like a numbered step (28px mark, text at the steps' indent), in Curb
    yellow like the step circles */
@@ -550,7 +552,7 @@ html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
 @media (max-width: 640px) {
   /* navbar: brand + hamburger; the tabs open as a panel over the page, under the header */
   .tabs { flex-wrap: nowrap; justify-content: space-between; }
-  .tabs-row { padding-bottom: 4px; position: relative; } /* the menu drops from the brand bar, over the filters */
+  .tabs-row { padding-top: 0; padding-bottom: 4px; position: relative; } /* the menu drops from the brand bar, over the filters */
   .menu-toggle { display: grid; }
   .tab-list {
     display: none;
