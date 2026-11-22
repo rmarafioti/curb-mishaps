@@ -31,11 +31,11 @@ export default function Page() {
       </header>
 
       <section className="card build-strip" aria-label="The idea behind it">
+        <p className="mission">How it&apos;s built. Define a metric once, use it everywhere.</p>
         <p className="build-lead">
           The numbers on the dashboard pages all come from one method, defining each metric in the
           dbt semantic layer that sits on top of the data warehouse.
         </p>
-        <p className="mission">Define a metric once. Use it everywhere.</p>
         <p className="card-sub">
           Each metric has one name and one definition, so the dashboard, the answers and any AI
           asking the data all get the same figure. The site itself never does its own math. Get

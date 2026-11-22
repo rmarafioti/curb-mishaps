@@ -405,7 +405,7 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .shortcut a, .build-strip a { color: var(--link); text-underline-offset: 2px; }
 
 /* home: the build pipeline in one line, steps joined by yellow arrows */
-/* the lead-in above the mission line: Curb font in white, a step below the yellow mission */
+/* the lead-in under the mission line: Curb font in white, a step below the yellow mission */
 .build-lead {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 800;
