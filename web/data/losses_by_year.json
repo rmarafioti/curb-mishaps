@@ -82,13 +82,13 @@
     },
     {
       "metric_time__year": "2021-01-01 00:00:00",
-      "realized_loss": 10185,
+      "realized_loss": 35185,
       "hypothetical_loss": 0,
       "catastrophic_loss": 0,
-      "total_mishap_loss": 10185,
+      "total_mishap_loss": 35185,
       "net_worth_mid": 650000000,
-      "pct_mishap_to_net_worth": 1.566923076923077e-05,
-      "net_worth_after_mishaps": 649989815
+      "pct_mishap_to_net_worth": 5.413076923076923e-05,
+      "net_worth_after_mishaps": 649964815
     },
     {
       "metric_time__year": "2007-01-01 00:00:00",
@@ -142,13 +142,13 @@
     },
     {
       "metric_time__year": "2020-01-01 00:00:00",
-      "realized_loss": 197750,
+      "realized_loss": 347750,
       "hypothetical_loss": 3000,
       "catastrophic_loss": 195000,
-      "total_mishap_loss": 395750,
+      "total_mishap_loss": 545750,
       "net_worth_mid": 650000000,
-      "pct_mishap_to_net_worth": 0.0006088461538461538,
-      "net_worth_after_mishaps": 649604250
+      "pct_mishap_to_net_worth": 0.0008396153846153846,
+      "net_worth_after_mishaps": 649454250
     },
     {
       "metric_time__year": "2011-01-01 00:00:00",
@@ -204,10 +204,10 @@
       {
         "metric_time__year": "2021-01-01 00:00:00",
         "episode__season": "11",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -252,10 +252,10 @@
       {
         "metric_time__year": "2020-01-01 00:00:00",
         "episode__season": "10",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 3000,
         "catastrophic_loss": 195000,
-        "total_mishap_loss": 395750
+        "total_mishap_loss": 545750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -388,20 +388,20 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_damage",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "property_damage",
         "realized_loss": 300,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_damage",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -412,20 +412,20 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_lost",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind_category": "purchase",
         "realized_loss": 450,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_lost",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -492,6 +492,14 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "payment",
         "realized_loss": 27293,
@@ -502,10 +510,10 @@
       {
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind_category": "fine_fee",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -588,14 +596,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "gift",
         "realized_loss": 300,
@@ -604,16 +604,24 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
-        "mishap__loss_kind_category": "donation",
+        "metric_time__year": "2005-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
+        "realized_loss": 300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2020-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 500
       },
       {
-        "metric_time__year": "2020-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
+        "metric_time__year": "2002-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
@@ -808,10 +816,10 @@
       {
         "metric_time__year": "2021-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -856,10 +864,10 @@
       {
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 0,
         "catastrophic_loss": 195000,
-        "total_mishap_loss": 392750
+        "total_mishap_loss": 542750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -970,10 +978,10 @@
       {
         "metric_time__year": "2021-01-01 00:00:00",
         "mishap__is_catastrophic": "0",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -1018,10 +1026,10 @@
       {
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__is_catastrophic": "0",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 3000,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 200750
+        "total_mishap_loss": 350750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -1193,15 +1201,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_damage",
-        "episode__season": "9",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "property_damage",
         "episode__season": "7",
@@ -1209,6 +1208,15 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "9",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -1220,15 +1228,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_lost",
-        "episode__season": "4",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind_category": "purchase",
         "episode__season": "2",
@@ -1236,6 +1235,15 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "4",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -1310,6 +1318,15 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "11",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "payment",
         "episode__season": "7",
@@ -1322,10 +1339,10 @@
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind_category": "fine_fee",
         "episode__season": "10",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -1418,15 +1435,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
-        "episode__season": "5",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "gift",
         "episode__season": "7",
@@ -1436,18 +1444,27 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
-        "mishap__loss_kind_category": "donation",
-        "episode__season": "3",
+        "metric_time__year": "2005-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "5",
+        "realized_loss": 300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2020-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "10",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 500
       },
       {
-        "metric_time__year": "2020-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
-        "episode__season": "10",
+        "metric_time__year": "2002-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "3",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
@@ -1666,10 +1683,10 @@
         "metric_time__year": "2021-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "episode__season": "11",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -1720,10 +1737,10 @@
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "episode__season": "10",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 0,
         "catastrophic_loss": 195000,
-        "total_mishap_loss": 392750
+        "total_mishap_loss": 542750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -1848,10 +1865,10 @@
         "metric_time__year": "2021-01-01 00:00:00",
         "mishap__is_catastrophic": "0",
         "episode__season": "11",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -1902,10 +1919,10 @@
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 3000,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 200750
+        "total_mishap_loss": 350750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -2081,15 +2098,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_damage",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
@@ -2097,6 +2105,15 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -2108,15 +2125,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_lost",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "purchase",
@@ -2124,6 +2132,15 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -2198,6 +2215,15 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "payment",
@@ -2210,10 +2236,10 @@
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "fine_fee",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -2306,15 +2332,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "gift",
@@ -2324,18 +2341,27 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
+        "metric_time__year": "2005-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "donation",
+        "mishap__loss_kind_category": "bet",
+        "realized_loss": 300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2020-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "bet",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 500
       },
       {
-        "metric_time__year": "2020-01-01 00:00:00",
+        "metric_time__year": "2002-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
+        "mishap__loss_kind_category": "donation",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
@@ -2650,15 +2676,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_damage",
-        "mishap__is_catastrophic": "0",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "property_damage",
         "mishap__is_catastrophic": "0",
@@ -2666,6 +2683,15 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_damage",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -2677,15 +2703,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_lost",
-        "mishap__is_catastrophic": "0",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind_category": "purchase",
         "mishap__is_catastrophic": "0",
@@ -2693,6 +2710,15 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_lost",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -2767,6 +2793,15 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "payment",
         "mishap__is_catastrophic": "0",
@@ -2779,10 +2814,10 @@
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind_category": "fine_fee",
         "mishap__is_catastrophic": "0",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -2875,15 +2910,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
-        "mishap__is_catastrophic": "0",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "gift",
         "mishap__is_catastrophic": "0",
@@ -2893,8 +2919,17 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
-        "mishap__loss_kind_category": "donation",
+        "metric_time__year": "2005-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2020-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
         "realized_loss": 500,
         "hypothetical_loss": 0,
@@ -2902,8 +2937,8 @@
         "total_mishap_loss": 500
       },
       {
-        "metric_time__year": "2020-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
+        "metric_time__year": "2002-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
         "mishap__is_catastrophic": "0",
         "realized_loss": 500,
         "hypothetical_loss": 0,
@@ -3141,10 +3176,10 @@
         "metric_time__year": "2021-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__is_catastrophic": "0",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -3195,10 +3230,10 @@
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__is_catastrophic": "0",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 197750
+        "total_mishap_loss": 347750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -3461,16 +3496,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_damage",
-        "episode__season": "9",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
@@ -3479,6 +3504,16 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "episode__season": "9",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -3491,16 +3526,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_lost",
-        "episode__season": "4",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "purchase",
@@ -3509,6 +3534,16 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "4",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -3591,6 +3626,16 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "11",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "payment",
@@ -3605,10 +3650,10 @@
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "fine_fee",
         "episode__season": "10",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -3711,16 +3756,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
-        "episode__season": "5",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "gift",
@@ -3731,20 +3766,30 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
+        "metric_time__year": "2005-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "donation",
-        "episode__season": "3",
-        "realized_loss": 500,
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "5",
+        "realized_loss": 300,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 500
+        "total_mishap_loss": 300
       },
       {
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "bet",
         "episode__season": "10",
+        "realized_loss": 500,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 500
+      },
+      {
+        "metric_time__year": "2002-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "3",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
@@ -4093,16 +4138,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_damage",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "9",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "property_damage",
         "mishap__is_catastrophic": "0",
@@ -4111,6 +4146,16 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_damage",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "9",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -4123,16 +4168,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind_category": "property_lost",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "4",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind_category": "purchase",
         "mishap__is_catastrophic": "0",
@@ -4141,6 +4176,16 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind_category": "property_lost",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "4",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -4223,6 +4268,16 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "11",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "payment",
         "mishap__is_catastrophic": "0",
@@ -4237,10 +4292,10 @@
         "mishap__loss_kind_category": "fine_fee",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -4343,16 +4398,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind_category": "bet",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "5",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind_category": "gift",
         "mishap__is_catastrophic": "0",
@@ -4363,20 +4408,30 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
-        "mishap__loss_kind_category": "donation",
+        "metric_time__year": "2005-01-01 00:00:00",
+        "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
-        "episode__season": "3",
-        "realized_loss": 500,
+        "episode__season": "5",
+        "realized_loss": 300,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 500
+        "total_mishap_loss": 300
       },
       {
         "metric_time__year": "2020-01-01 00:00:00",
         "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
+        "realized_loss": 500,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 500
+      },
+      {
+        "metric_time__year": "2002-01-01 00:00:00",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "3",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
@@ -4639,10 +4694,10 @@
         "mishap__loss_kind": "realized",
         "mishap__is_catastrophic": "0",
         "episode__season": "11",
-        "realized_loss": 10185,
+        "realized_loss": 35185,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 10185
+        "total_mishap_loss": 35185
       },
       {
         "metric_time__year": "2007-01-01 00:00:00",
@@ -4699,10 +4754,10 @@
         "mishap__loss_kind": "realized",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
-        "realized_loss": 197750,
+        "realized_loss": 347750,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 197750
+        "total_mishap_loss": 347750
       },
       {
         "metric_time__year": "2011-01-01 00:00:00",
@@ -4977,16 +5032,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_damage",
-        "mishap__is_catastrophic": "0",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
@@ -4995,6 +5040,16 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -5007,16 +5062,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_lost",
-        "mishap__is_catastrophic": "0",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "purchase",
@@ -5025,6 +5070,16 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -5107,6 +5162,16 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "payment",
@@ -5121,10 +5186,10 @@
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "fine_fee",
         "mishap__is_catastrophic": "0",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -5227,16 +5292,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
-        "mishap__is_catastrophic": "0",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "gift",
@@ -5247,9 +5302,19 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
+        "metric_time__year": "2005-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "donation",
+        "mishap__loss_kind_category": "bet",
+        "mishap__is_catastrophic": "0",
+        "realized_loss": 300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2020-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
         "realized_loss": 500,
         "hypothetical_loss": 0,
@@ -5257,9 +5322,9 @@
         "total_mishap_loss": 500
       },
       {
-        "metric_time__year": "2020-01-01 00:00:00",
+        "metric_time__year": "2002-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
+        "mishap__loss_kind_category": "donation",
         "mishap__is_catastrophic": "0",
         "realized_loss": 500,
         "hypothetical_loss": 0,
@@ -5644,17 +5709,6 @@
         "total_mishap_loss": 250
       },
       {
-        "metric_time__year": "2017-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_damage",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "9",
-        "realized_loss": 3300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 3300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
@@ -5664,6 +5718,17 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 300
+      },
+      {
+        "metric_time__year": "2017-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_damage",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "9",
+        "realized_loss": 3300,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 3300
       },
       {
         "metric_time__year": "2001-01-01 00:00:00",
@@ -5677,17 +5742,6 @@
         "total_mishap_loss": 535
       },
       {
-        "metric_time__year": "2004-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_lost",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "4",
-        "realized_loss": 5450,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 5450
-      },
-      {
         "metric_time__year": "2001-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "purchase",
@@ -5697,6 +5751,17 @@
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
         "total_mishap_loss": 450
+      },
+      {
+        "metric_time__year": "2004-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "4",
+        "realized_loss": 5450,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 5450
       },
       {
         "metric_time__year": "2021-01-01 00:00:00",
@@ -5787,6 +5852,17 @@
         "total_mishap_loss": 25000
       },
       {
+        "metric_time__year": "2021-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "11",
+        "realized_loss": 25000,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 25000
+      },
+      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "payment",
@@ -5803,10 +5879,10 @@
         "mishap__loss_kind_category": "fine_fee",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
-        "realized_loss": 130250,
+        "realized_loss": 280250,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 130250
+        "total_mishap_loss": 280250
       },
       {
         "metric_time__year": "2002-01-01 00:00:00",
@@ -5919,17 +5995,6 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2005-01-01 00:00:00",
-        "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "5",
-        "realized_loss": 300,
-        "hypothetical_loss": 0,
-        "catastrophic_loss": 0,
-        "total_mishap_loss": 300
-      },
-      {
         "metric_time__year": "2009-01-01 00:00:00",
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "gift",
@@ -5941,15 +6006,15 @@
         "total_mishap_loss": 300
       },
       {
-        "metric_time__year": "2002-01-01 00:00:00",
+        "metric_time__year": "2005-01-01 00:00:00",
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "donation",
+        "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
-        "episode__season": "3",
-        "realized_loss": 500,
+        "episode__season": "5",
+        "realized_loss": 300,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
-        "total_mishap_loss": 500
+        "total_mishap_loss": 300
       },
       {
         "metric_time__year": "2020-01-01 00:00:00",
@@ -5957,6 +6022,17 @@
         "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
+        "realized_loss": 500,
+        "hypothetical_loss": 0,
+        "catastrophic_loss": 0,
+        "total_mishap_loss": 500
+      },
+      {
+        "metric_time__year": "2002-01-01 00:00:00",
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "3",
         "realized_loss": 500,
         "hypothetical_loss": 0,
         "catastrophic_loss": 0,
@@ -6195,6 +6271,6 @@
       }
     ]
   },
-  "exported_at": "2026-11-22T14:25:51+00:00",
+  "exported_at": "2026-11-22T17:28:29+00:00",
   "source": "curb_prod"
 }
