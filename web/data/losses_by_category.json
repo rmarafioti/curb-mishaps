@@ -24,8 +24,8 @@
     {
       "mishap__loss_kind": "realized",
       "mishap__loss_kind_category": "fine_fee",
-      "total_mishap_loss": 132060,
-      "mishap_count": 6
+      "total_mishap_loss": 282060,
+      "mishap_count": 7
     },
     {
       "mishap__loss_kind": "realized",
@@ -60,8 +60,8 @@
     {
       "mishap__loss_kind": "realized",
       "mishap__loss_kind_category": "donation",
-      "total_mishap_loss": 1039500,
-      "mishap_count": 5
+      "total_mishap_loss": 1064500,
+      "mishap_count": 6
     },
     {
       "mishap__loss_kind": "realized",
@@ -209,16 +209,16 @@
       {
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
-        "episode__season": "9",
-        "total_mishap_loss": 3300,
-        "mishap_count": 2
+        "episode__season": "7",
+        "total_mishap_loss": 300,
+        "mishap_count": 1
       },
       {
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
-        "episode__season": "7",
-        "total_mishap_loss": 300,
-        "mishap_count": 1
+        "episode__season": "9",
+        "total_mishap_loss": 3300,
+        "mishap_count": 2
       },
       {
         "mishap__loss_kind": "realized",
@@ -229,17 +229,17 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_lost",
-        "episode__season": "4",
-        "total_mishap_loss": 5450,
-        "mishap_count": 2
-      },
-      {
-        "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "purchase",
         "episode__season": "2",
         "total_mishap_loss": 450,
         "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "episode__season": "4",
+        "total_mishap_loss": 5450,
+        "mishap_count": 2
       },
       {
         "mishap__loss_kind": "realized",
@@ -313,6 +313,13 @@
       },
       {
         "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "11",
+        "total_mishap_loss": 25000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "payment",
         "episode__season": "7",
         "total_mishap_loss": 27293,
@@ -322,8 +329,8 @@
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "fine_fee",
         "episode__season": "10",
-        "total_mishap_loss": 130250,
-        "mishap_count": 3
+        "total_mishap_loss": 280250,
+        "mishap_count": 4
       },
       {
         "mishap__loss_kind": "hypothetical",
@@ -432,13 +439,6 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
-        "episode__season": "5",
-        "total_mishap_loss": 300,
-        "mishap_count": 1
-      },
-      {
-        "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "gift",
         "episode__season": "7",
         "total_mishap_loss": 300,
@@ -446,15 +446,22 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "donation",
-        "episode__season": "3",
-        "total_mishap_loss": 500,
+        "mishap__loss_kind_category": "bet",
+        "episode__season": "5",
+        "total_mishap_loss": 300,
         "mishap_count": 1
       },
       {
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "bet",
         "episode__season": "10",
+        "total_mishap_loss": 500,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "episode__season": "3",
         "total_mishap_loss": 500,
         "mishap_count": 1
       },
@@ -548,8 +555,8 @@
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "fine_fee",
         "mishap__is_catastrophic": "0",
-        "total_mishap_loss": 132060,
-        "mishap_count": 6
+        "total_mishap_loss": 282060,
+        "mishap_count": 7
       },
       {
         "mishap__loss_kind": "realized",
@@ -590,8 +597,8 @@
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "donation",
         "mishap__is_catastrophic": "0",
-        "total_mishap_loss": 1039500,
-        "mishap_count": 5
+        "total_mishap_loss": 1064500,
+        "mishap_count": 6
       },
       {
         "mishap__loss_kind": "realized",
@@ -769,17 +776,17 @@
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
         "mishap__is_catastrophic": "0",
-        "episode__season": "9",
-        "total_mishap_loss": 3300,
-        "mishap_count": 2
+        "episode__season": "7",
+        "total_mishap_loss": 300,
+        "mishap_count": 1
       },
       {
         "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "property_damage",
         "mishap__is_catastrophic": "0",
-        "episode__season": "7",
-        "total_mishap_loss": 300,
-        "mishap_count": 1
+        "episode__season": "9",
+        "total_mishap_loss": 3300,
+        "mishap_count": 2
       },
       {
         "mishap__loss_kind": "realized",
@@ -791,19 +798,19 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "property_lost",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "4",
-        "total_mishap_loss": 5450,
-        "mishap_count": 2
-      },
-      {
-        "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "purchase",
         "mishap__is_catastrophic": "0",
         "episode__season": "2",
         "total_mishap_loss": 450,
         "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "property_lost",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "4",
+        "total_mishap_loss": 5450,
+        "mishap_count": 2
       },
       {
         "mishap__loss_kind": "realized",
@@ -887,6 +894,14 @@
       },
       {
         "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "11",
+        "total_mishap_loss": 25000,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "payment",
         "mishap__is_catastrophic": "0",
         "episode__season": "7",
@@ -898,8 +913,8 @@
         "mishap__loss_kind_category": "fine_fee",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
-        "total_mishap_loss": 130250,
-        "mishap_count": 3
+        "total_mishap_loss": 280250,
+        "mishap_count": 4
       },
       {
         "mishap__loss_kind": "hypothetical",
@@ -1039,14 +1054,6 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "bet",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "5",
-        "total_mishap_loss": 300,
-        "mishap_count": 1
-      },
-      {
-        "mishap__loss_kind": "realized",
         "mishap__loss_kind_category": "gift",
         "mishap__is_catastrophic": "0",
         "episode__season": "7",
@@ -1055,10 +1062,10 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "mishap__loss_kind_category": "donation",
+        "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
-        "episode__season": "3",
-        "total_mishap_loss": 500,
+        "episode__season": "5",
+        "total_mishap_loss": 300,
         "mishap_count": 1
       },
       {
@@ -1066,6 +1073,14 @@
         "mishap__loss_kind_category": "bet",
         "mishap__is_catastrophic": "0",
         "episode__season": "10",
+        "total_mishap_loss": 500,
+        "mishap_count": 1
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__loss_kind_category": "donation",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "3",
         "total_mishap_loss": 500,
         "mishap_count": 1
       },
@@ -1159,6 +1174,6 @@
       }
     ]
   },
-  "exported_at": "2026-11-22T14:25:51+00:00",
+  "exported_at": "2026-11-22T17:28:29+00:00",
   "source": "curb_prod"
 }
