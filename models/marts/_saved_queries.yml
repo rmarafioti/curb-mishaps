@@ -107,3 +107,27 @@ saved_queries:
         - TimeDimension('metric_time', 'year')
       where:
         - "{{ TimeDimension('metric_time', 'year') }} <= '2024-01-01'"
+
+  - name: season_forecast
+    label: If the show had kept going
+    description: >
+      Season 13 (2025) and Season 14 (2026), each with everyday mishaps only and if a
+      catastrophe hits (has_forecast_catastrophe, the page's filter): expected cost with
+      its 80% range, expected mishaps, everyday losses by kind and the chance of a
+      catastrophe, in dollars of the year it airs.
+    query_params:
+      metrics:
+        - forecast_loss_median
+        - forecast_loss_p10
+        - forecast_loss_p90
+        - forecast_mishaps_median
+        - forecast_mishaps_p10
+        - forecast_mishaps_p90
+        - forecast_realized_loss_median
+        - forecast_hypothetical_loss_median
+        - forecast_catastrophe_chance
+        - forecast_episodes
+      group_by:
+        - Dimension('season_forecast__season')
+        - Dimension('season_forecast__has_forecast_catastrophe')
+        - TimeDimension('metric_time', 'year')

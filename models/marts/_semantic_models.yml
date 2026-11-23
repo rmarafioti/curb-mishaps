@@ -130,3 +130,64 @@ semantic_models:
         non_additive_dimension:
           name: year_start_date
           window_choice: max
+
+  - name: season_forecast
+    description: >
+      Grain: one row per forecast season and version (fct_season_forecast): Season 13 in
+      2025 and Season 14 in 2026, each with everyday mishaps only and if a catastrophe
+      hits. Medians and percentiles from scripts/forecast.py, in dollars of the year each
+      season airs. Not additive: query grouped by season and has_forecast_catastrophe,
+      never summed.
+    model: ref('fct_season_forecast')
+    defaults:
+      agg_time_dimension: air_year_start_date
+    entities:
+      - name: season_forecast
+        # primary: one row per season_forecast_key (season + version)
+        type: primary
+        expr: season_forecast_key
+    dimensions:
+      - name: season
+        type: categorical
+      # the filter: 0 = everyday mishaps only, 1 = if a catastrophe hits
+      - name: has_forecast_catastrophe
+        type: categorical
+      - name: air_year_start_date
+        type: time
+        # not a column: like net worth, a date for the year so the forecast sits on
+        # metric_time__year next to the real seasons
+        expr: date(air_year, 1, 1)
+        type_params:
+          time_granularity: year
+    # one row per season and version, so each sum is that row's own value once grouped by both
+    measures:
+      - name: forecast_episodes
+        agg: sum
+        expr: episodes
+      - name: forecast_mishaps_p10
+        agg: sum
+        expr: mishaps_p10
+      - name: forecast_mishaps_median
+        agg: sum
+        expr: mishaps_median
+      - name: forecast_mishaps_p90
+        agg: sum
+        expr: mishaps_p90
+      - name: forecast_loss_p10
+        agg: sum
+        expr: loss_p10_usd
+      - name: forecast_loss_median
+        agg: sum
+        expr: loss_median_usd
+      - name: forecast_loss_p90
+        agg: sum
+        expr: loss_p90_usd
+      - name: forecast_realized_loss_median
+        agg: sum
+        expr: realized_loss_median_usd
+      - name: forecast_hypothetical_loss_median
+        agg: sum
+        expr: hypothetical_loss_median_usd
+      - name: forecast_catastrophe_chance
+        agg: sum
+        expr: catastrophe_chance

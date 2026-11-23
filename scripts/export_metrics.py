@@ -111,6 +111,8 @@ def slices(saved_query, sliceable):
     if saved_query["name"] in UNSLICED_QUERIES:
         return [], {}
     metric_names = [m for m in params["metrics"] if m in sliceable]
+    if not metric_names:
+        return [], {}  # nothing the filters can slice (e.g. the forecast)
     extra = [d for d in FILTER_DIMENSIONS if d not in group_by]
     wheres = [w["where_sql_template"] for w in (params["where"] or {}).get("where_filters", [])]
     result = {}

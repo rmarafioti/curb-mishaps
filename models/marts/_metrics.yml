@@ -125,6 +125,20 @@ metrics:
         name: mishap_count
         fill_nulls_with: 0
 
+  - name: routine_mishap_count
+    label: Everyday Mishaps
+    description: >
+      Kept mishaps that aren't catastrophic. The forecast's frequency input: grouped by
+      episode (with episode_count), it gives every episode's count, zeros included.
+    type: simple
+    type_params:
+      measure:
+        name: mishap_count
+        # an episode with no everyday mishap reads 0, not blank
+        fill_nulls_with: 0
+    filter: |
+      {{ Dimension('mishap__is_catastrophic') }} = 0
+
   - name: episode_count
     label: Episodes
     description: Number of episodes, including those with no mishap.
@@ -207,3 +221,95 @@ metrics:
       metrics:
         - name: net_worth_mid
         - name: cumulative_mishap_loss
+
+  # --- Forecast: Season 13 (2025) and Season 14 (2026), if the show had kept going -----
+  # From scripts/forecast.py via the season_forecast seed. Two rows per season (everyday
+  # only, and if a catastrophe hits), in dollars of the year each season airs. Medians and
+  # percentiles don't add up: query these grouped by season_forecast__season and
+  # season_forecast__has_forecast_catastrophe, never across seasons or versions.
+
+  - name: forecast_loss_median
+    label: Expected Cost
+    description: >
+      The season's median simulated total loss: everyday mishaps only, or plus a
+      catastrophe when grouped by has_forecast_catastrophe = 1. Half the simulated seasons
+      cost less, half more. In dollars of the year it airs.
+    type: simple
+    type_params:
+      measure: forecast_loss_median
+
+  - name: forecast_loss_p10
+    label: Low End
+    description: >
+      10th percentile of the season's simulated total loss: 1 in 10 simulated seasons cost
+      less. With the high end, the 80% range.
+    type: simple
+    type_params:
+      measure: forecast_loss_p10
+
+  - name: forecast_loss_p90
+    label: High End
+    description: >
+      90th percentile of the season's simulated total loss: 1 in 10 simulated seasons cost
+      more. With the low end, the 80% range.
+    type: simple
+    type_params:
+      measure: forecast_loss_p90
+
+  - name: forecast_mishaps_median
+    label: Expected Mishaps
+    description: The season's median simulated number of everyday mishaps.
+    type: simple
+    type_params:
+      measure: forecast_mishaps_median
+
+  - name: forecast_mishaps_p10
+    label: Mishaps (low end)
+    description: 10th percentile of the season's simulated everyday mishap count.
+    type: simple
+    type_params:
+      measure: forecast_mishaps_p10
+
+  - name: forecast_mishaps_p90
+    label: Mishaps (high end)
+    description: 90th percentile of the season's simulated everyday mishap count.
+    type: simple
+    type_params:
+      measure: forecast_mishaps_p90
+
+  - name: forecast_realized_loss_median
+    label: Everyday Realized
+    description: >
+      Median simulated total of the season's everyday realized losses (money or property
+      actually lost). Not part of a sum: the medians of the pieces don't add up to the
+      median of the whole.
+    type: simple
+    type_params:
+      measure: forecast_realized_loss_median
+
+  - name: forecast_hypothetical_loss_median
+    label: Everyday Hypothetical
+    description: >
+      Median simulated total of the season's everyday hypothetical losses (missed income).
+      Most simulated seasons have one or none, so the median is small; a big missed
+      opportunity shows up in the high end instead.
+    type: simple
+    type_params:
+      measure: forecast_hypothetical_loss_median
+
+  - name: forecast_catastrophe_chance
+    label: Chance of a Catastrophe
+    description: >
+      Chance the season has a catastrophe that could happen again (the house fire or Latte
+      Larry's): the share of the 12 real seasons that had one. The divorce is left out:
+      it was the show's one divorce, and Larry ends the series unmarried.
+    type: simple
+    type_params:
+      measure: forecast_catastrophe_chance
+
+  - name: forecast_episodes
+    label: Forecast Episodes
+    description: Episodes in the forecast season (10, like every real season).
+    type: simple
+    type_params:
+      measure: forecast_episodes

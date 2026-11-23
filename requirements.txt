@@ -5,3 +5,5 @@
 dbt-metricflow[dbt-bigquery]
 sqlfluff
 sqlfluff-templater-dbt
+# the forecast (scripts/forecast.py): negative binomial and trend tests; pulls in scipy
+statsmodels

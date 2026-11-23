@@ -1,0 +1,28 @@
+seeds:
+  - name: season_forecast
+    description: >
+      Grain: one row per forecast season (Season 13 in 2025, Season 14 in 2026: "if the
+      show had kept going", one season a year after 2024) and has_forecast_catastrophe:
+      the season with everyday mishaps only (0), and the same season if a catastrophe
+      hits (1). Written by scripts/forecast.py from MetricFlow's mishap data; never
+      edited by hand. Every figure is a Monte Carlo result: the median and the 80% range
+      (10th and 90th percentile) of the season's mishap count and total loss, in dollars
+      of the year the season airs, plus the everyday medians by loss kind and the chance
+      of a catastrophe. Medians and percentiles are not additive: never sum them across
+      seasons, kinds or the two versions.
+    config:
+      quote_columns: false
+      column_types:
+        season: int64
+        air_year: int64
+        has_forecast_catastrophe: int64
+        episodes: int64
+        mishaps_p10: int64
+        mishaps_median: int64
+        mishaps_p90: int64
+        loss_p10_usd: float64
+        loss_median_usd: float64
+        loss_p90_usd: float64
+        realized_loss_median_usd: float64
+        hypothetical_loss_median_usd: float64
+        catastrophe_chance: float64
