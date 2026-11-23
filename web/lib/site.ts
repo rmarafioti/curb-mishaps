@@ -1,10 +1,10 @@
 // Where the site lives and how it describes itself to search engines and link previews.
-// SITE_URL is the one place the address is set: swap it for the purchased domain before
-// launch and the canonical links, sitemap, robots file and preview cards all follow.
+// SITE_URL is the one place the address is set: the canonical links, sitemap, robots file
+// and preview cards all follow it. The apex domain is primary; Vercel redirects www to it.
 
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://web-five-self-13.vercel.app";
+export const SITE_URL = "https://curbmishaps.com";
 export const SITE_NAME = "Curb Mishaps";
 export const SITE_DESCRIPTION =
   "What Larry David's on-screen mishaps cost him across 12 seasons of Curb Your Enthusiasm, set against his real net worth. A dbt semantic layer project.";
