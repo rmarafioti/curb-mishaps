@@ -118,6 +118,17 @@ Cut 2026-11-20 (slicing covers them): Most Costly Mishap (the Top 10 table is `t
 
 Forecast output is a seed CSV written by the Python script (one row per forecast season: season, year, median, p10, p90, in that year's dollars), loaded with `dbt seed`; a semantic model exposes simple metrics on it and a saved query feeds the Forecast tab.
 
+**Built and audited with Rich 2026-11-23 (`scripts/forecast.py`).** Inputs come from `mf query` (`routine_mishap_count` + `episode_count` by episode; `total_mishap_loss_2026` by mishap), so the forecast reads the same governed numbers as the dashboard. What the data said and what was decided:
+- **Frequency:** everyday mishaps per episode have mean 0.90 and variance 0.90, so no overdispersion: the negative binomial collapses to a Poisson (alpha about 0). Season trend p = 0.66, not significant, so the 12 seasons are pooled. Parameter uncertainty is carried into the simulation.
+- **Severity:** log cost in 2026 dollars has no season trend (p = 0.64 on all 108 everyday mishaps, p = 0.23 on the 42 stated ones), so pooled. **Each forecast mishap's cost is a real one of its kind (realized or hypothetical), drawn at random.** A lognormal was tried and dropped: on realized costs it made $100K+ mishaps half as common as on the show (2.7% vs 5.1%), so the typical everyday season came out at $100K against a real $318K (resampling: $177K); on the 10 hypothetical costs it put the 90th percentile at about $50M. Tradeoff: no forecast mishap can cost more than the biggest real one.
+- **Catastrophic, a separate switch (`has_forecast_catastrophe`):** the seed has two rows per season, everyday mishaps only (0) and the same season if a catastrophe hits (1); the page lets the reader add it in. **The divorce is left out** (`NOT_REPEATABLE` in the script): it was the show's one divorce and Larry ends the series unmarried. So the chance is **2 of 12 seasons = 17%** (house fire, Latte Larry's), and if one hits it is one of those two.
+- **Seasons rolled separately:** one season's luck doesn't carry into the next, so 13 and 14 differ by inflation plus a little chance.
+- A trend is used automatically if one ever becomes significant (p < 0.05), and the script prints a note to update the page copy.
+- 200,000 simulations, fixed seed. Output per season and version: mishaps p10/median/p90, total loss p10/median/p90, everyday realized and hypothetical medians, catastrophe chance, in the air year's dollars. Medians don't add up across seasons, kinds or versions, so no metric sums them.
+- **Audit (2026-11-23):** inputs reconcile (120 episodes, 108 everyday + 3 catastrophic = 111 mishaps, 2026-dollar total $387,401,198 matches the metric); simulated counts average 9.04 against 9.0 expected, variance 9.8 against 10.0 across the real seasons; CPI step checked to the dollar.
+- Result (dev, with the last 3 S12 episodes still unreviewed and counted as zero-mishap episodes): Season 13 (2025 dollars) everyday only $173,148 (80% range $12,289 to $3,579,402), if a catastrophe hits $7,760,322 ($269,436 to $9,360,481); 9 mishaps (5 to 13).
+- **The Forecast tab explains all this in plain English** (every real mishap is a card in a hat; draw a season's worth 200,000 times), not in statistics terms.
+
 ---
 
 ## 5. Statistics plan (Phase 5)

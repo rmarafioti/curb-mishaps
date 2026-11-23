@@ -37,9 +37,11 @@ models/
   marts/        dim_episode, dim_net_worth, fct_mishap, each with its own .yml;
                 _semantic_models.yml, _metrics.yml, _saved_queries.yml (the chart list)
 seeds/          ld_net_worth_cpi.csv + ld_net_worth_cpi.yml
+                season_forecast.csv + .yml (written by scripts/forecast.py, never by hand)
 DEFINITIONS.md  column definitions as {% docs %} blocks (top level; see .dbtignore)
 macros/         small helpers (clean_usd)
 scripts/        export_metrics.py: every saved query → web/data/<name>.json (from prod)
+                forecast.py: mf query inputs → Monte Carlo → seeds/season_forecast.csv
 docs/           PROJECT_BRIEF.md, SETUP.md, mockups
 web/            Next.js dashboard (static; reads web/data/*.json at build time). See "Web dashboard" below.
 ```
@@ -59,6 +61,7 @@ mf validate-configs                         # semantic layer checks
 mf query --metrics total_mishap_loss --group-by metric_time__year
 mf query --saved-query losses_by_year         # one chart's request, as defined in YAML
 python scripts/export_metrics.py            # all saved queries → web/data/*.json, from prod
+python scripts/forecast.py && dbt build -s season_forecast+   # rerun the forecast after the data changes
 ```
 
 Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf validate-configs` green (once metrics exist).
@@ -156,5 +159,5 @@ npm run lint && npm run build
 4. ~~Reconcile `mf query` output to BigQuery and the Sheet's `Losses by Year` tab~~ (done 2026-11-20, every metric matched by hand; total $262,024,688)
 5. ~~Export script: saved queries (`_saved_queries.yml`) → `scripts/export_metrics.py` → `web/data/*.json`~~ (done)
 6. `web/` dashboard: merged (PR #7) and deployed on Vercel from `main` (Root Directory `web`, builds skipped when `web/` is unchanged; branches get preview deploys). `feat/home-faq` (2026-11-21) adds the home page, FAQ, About rewrite and the phone layout. Keep refining with Rich.
-7. Forecast (Python → seed → semantic model → Forecast tab), after the Sheet is finished. Scope: one season a year after 2024, Season 13 (2025) and Season 14 (2026), stop at 2026; fit in 2026 dollars, report each season in its own year's dollars via the seed's real CPI multipliers (see brief §5) (remaining `unsure` rows incl. unwatched S12; then retire the temporary `fct_mishap_amounts_match_stated_flag` test).
+7. Forecast (Python → seed → semantic model → Forecast tab). Pipeline built 2026-11-23 (`feat/forecast`): `scripts/forecast.py` → `seeds/season_forecast.csv` → `stg_season_forecast` → `fct_season_forecast` → `season_forecast` semantic model, `forecast_*` metrics and saved query. Neither trend is significant, so the 12 seasons are pooled; costs are real mishaps resampled; the catastrophe is a separate switch (`has_forecast_catastrophe`, 17%, divorce left out). See brief §5; the page explains it in plain English. The last 3 S12 episodes count as zero-mishap episodes until reviewed (Rich's call); rerun the script when they land. Next: prod build + export, then the Forecast tab and FAQ answers (`feat/forecast-page`); then retire the temporary `fct_mishap_amounts_match_stated_flag` test.
 8. End-of-development cleanup: remove the semantic-layer pieces the dashboard and forecast don't use (saved queries, metrics, export slices, category filter dim), then update docs. Check each against the page and forecast first.

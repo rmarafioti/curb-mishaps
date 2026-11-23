@@ -9,6 +9,10 @@
 Stated amount (Sheet column amount_usd), in dollars of the year the episode aired. Only filled when amount_stated = 1.
 {% enddocs %}
 
+{% docs catastrophe_chance %}
+Chance (0 to 1) that a forecast season has a catastrophe that could happen again (the house fire or Latte Larry's; the divorce is left out, since it was the show's one divorce): the share of the 12 real seasons that had one.
+{% enddocs %}
+
 {% docs confidence %}
 Confidence in the estimate: low, medium or high.
 {% enddocs %}
@@ -51,6 +55,54 @@ Mid estimate, in dollars of the year the episode aired. Only filled when amount_
 
 {% docs estimate_basis %}
 How the amount was priced: stated, reference price, or category default, with the reasoning.
+{% enddocs %}
+
+{% docs has_forecast_catastrophe %}
+Which version of the forecast season: 0 = everyday mishaps only, 1 = the same season if a catastrophe hits (one of the real repeatable ones: the house fire or Latte Larry's). The chance it hits is catastrophe_chance.
+{% enddocs %}
+
+{% docs forecast_air_year %}
+Year the forecast season would air (one season a year after Season 12 in 2024). Its losses are in this year's dollars.
+{% enddocs %}
+
+{% docs forecast_episodes %}
+Episodes in the forecast season (10, like every real season).
+{% enddocs %}
+
+{% docs forecast_hypothetical_loss_median_usd %}
+Median simulated total of the season's everyday hypothetical losses (missed income), in dollars of its air year.
+{% enddocs %}
+
+{% docs forecast_loss_median_usd %}
+Median simulated total loss for the season version (everyday mishaps only, or plus a catastrophe; see has_forecast_catastrophe), in dollars of its air year. Half the simulated seasons cost less, half more.
+{% enddocs %}
+
+{% docs forecast_loss_p10_usd %}
+10th percentile of the season's simulated total loss, in dollars of its air year: the low end of the 80% range.
+{% enddocs %}
+
+{% docs forecast_loss_p90_usd %}
+90th percentile of the season's simulated total loss, in dollars of its air year: the high end of the 80% range.
+{% enddocs %}
+
+{% docs forecast_mishaps_median %}
+Median simulated number of everyday mishaps in the season.
+{% enddocs %}
+
+{% docs forecast_mishaps_p10 %}
+10th percentile of the season's simulated everyday mishap count: the low end of the 80% range.
+{% enddocs %}
+
+{% docs forecast_mishaps_p90 %}
+90th percentile of the season's simulated everyday mishap count: the high end of the 80% range.
+{% enddocs %}
+
+{% docs forecast_realized_loss_median_usd %}
+Median simulated total of the season's everyday realized losses (money or property actually lost), in dollars of its air year.
+{% enddocs %}
+
+{% docs forecast_season %}
+Forecast season number (13 or 14).
 {% enddocs %}
 
 {% docs has_mishap %}
@@ -119,6 +171,10 @@ Rich's review call: keep, drop, pass or unsure. Only keep rows reach fct_mishap.
 
 {% docs season %}
 Season number (1-12).
+{% enddocs %}
+
+{% docs season_forecast_key %}
+Surrogate key of season + has_forecast_catastrophe: one forecast season, one version.
 {% enddocs %}
 
 {% docs sheet_row_id %}
