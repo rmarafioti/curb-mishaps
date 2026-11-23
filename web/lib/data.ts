@@ -7,6 +7,7 @@ import mishapJson from "@/data/mishap_list.json";
 import dentJson from "@/data/net_worth_dent.json";
 import seasonJson from "@/data/losses_by_season.json";
 import yearJson from "@/data/losses_by_year.json";
+import forecastJson from "@/data/season_forecast.json";
 
 export type MetricInfo = { name: string; label: string; description: string };
 
@@ -15,8 +16,14 @@ export type MetricInfo = { name: string; label: string; description: string };
 /** The dashboard's filters; same names and order as FILTER_DIMENSIONS in the export script. */
 export const FILTER_DIMS = ["episode__season", "mishap__loss_kind", "mishap__is_catastrophic"] as const;
 export type FilterDim = (typeof FILTER_DIMS)[number];
-export type Filters = Record<FilterDim, string>; // "" = all
-export const NO_FILTERS: Filters = { episode__season: "", mishap__loss_kind: "", mishap__is_catastrophic: "" };
+/** The Forecast tab's switch: "" = everyday mishaps only, "1" = add a catastrophe. It picks
+ *  between the forecast's two rows per season, so it isn't in FILTER_DIMS (no slices). */
+export const FORECAST_DIM = "season_forecast__has_forecast_catastrophe";
+export type PageFilterDim = FilterDim | typeof FORECAST_DIM;
+export type Filters = Record<PageFilterDim, string>; // "" = all (or, for the forecast, everyday only)
+export const NO_FILTERS: Filters = {
+  episode__season: "", mishap__loss_kind: "", mishap__is_catastrophic: "", [FORECAST_DIM]: "",
+};
 type Dims = Partial<Record<FilterDim, string>>;
 
 type Export<Row> = {
@@ -43,7 +50,7 @@ export function pick<Row>(data: Export<Row>, filters: Filters): (Row & Dims)[] {
   return rows.filter((row) => active.every((dim) => !(dim in row) || row[dim] === filters[dim]));
 }
 
-export const isFiltered = (filters: Filters) => FILTER_DIMS.some((dim) => filters[dim]);
+export const isFiltered = (filters: Filters) => FILTER_DIMS.some((dim) => filters[dim]) || filters[FORECAST_DIM] !== "";
 
 /** The mishaps (one row each) matching the filters, in air order. Picks rows only. */
 export const pickMishaps = (filters: Filters) =>
@@ -111,11 +118,35 @@ export type YearRow = {
   pct_mishap_to_net_worth: number;
 };
 
+/** One forecast season, one version (everyday only, or with a catastrophe). */
+export type ForecastRow = {
+  metric_time__year: string;
+  season_forecast__season: string;
+  season_forecast__has_forecast_catastrophe: string;
+  forecast_loss_median: number;
+  forecast_loss_p10: number;
+  forecast_loss_p90: number;
+  forecast_mishaps_median: number;
+  forecast_mishaps_p10: number;
+  forecast_mishaps_p90: number;
+  forecast_realized_loss_median: number;
+  forecast_hypothetical_loss_median: number;
+  forecast_catastrophe_chance: number;
+  forecast_episodes: number;
+};
+
 export const kpis = kpisJson as unknown as Export<KpiRow>;
 export const mishapList = mishapJson as unknown as Export<Mishap>;
 export const netWorthDent = dentJson as unknown as Export<DentRow>;
 export const lossesBySeason = seasonJson as unknown as Export<SeasonRow>;
 export const lossesByYear = yearJson as unknown as Export<YearRow>;
+export const seasonForecast = forecastJson as unknown as Export<ForecastRow>;
+
+/** The forecast seasons for one version, in season order. Picks rows only. */
+export const pickForecast = (withCatastrophe: boolean) =>
+  seasonForecast.rows
+    .filter((row) => row.season_forecast__has_forecast_catastrophe === (withCatastrophe ? "1" : "0"))
+    .sort(byNumber((row) => Number(row.season_forecast__season)));
 
 // --- row picking and sorting (presentation only) --------------------------------------
 
@@ -147,6 +178,9 @@ export const usdMillions = (value: number) => `$${Math.round(value / 1e6).toLoca
 
 /** a share (0.42085) as a percent: 42.1% */
 export const percent = (share: number) => `${(share * 100).toFixed(1)}%`;
+
+/** a share (0.1667) as a whole percent: 17% */
+export const percentWhole = (share: number) => `${Math.round(share * 100)}%`;
 
 /** S8 E1 */
 export const episodeCode = (row: Mishap) =>

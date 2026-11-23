@@ -7,7 +7,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NO_FILTERS, isFiltered, titleCase } from "@/lib/data";
+import { FORECAST_DIM, NO_FILTERS, isFiltered, titleCase } from "@/lib/data";
 import { useFilters } from "@/lib/filters";
 import { PAGES } from "@/lib/pages";
 
@@ -126,6 +126,25 @@ export default function SiteHeader() {
                   <option value="1">Catastrophic only</option>
                 </select>
               </label>
+            )}
+            {filterDims.includes(FORECAST_DIM) && (
+              <label>
+                Add a catastrophe?
+                {/* the forecast's two versions of each season: everyday mishaps only (No), or
+                    the same season if a catastrophe (a fire or Latte Larry's) hits (Yes) */}
+                <select value={filters[FORECAST_DIM]}
+                        onChange={(e) => setFilters({ ...filters, [FORECAST_DIM]: e.target.value })}>
+                  <option value="">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </label>
+            )}
+            {filterDims.includes(FORECAST_DIM) && (
+              <p className="screen-note filter-note">
+                Catastrophes are left out by default, from the real seasons and the forecast alike. Switch to Yes
+                to put them back in the real seasons and add one, hypothetically, to each forecast year to see where
+                the financial loss lands.
+              </p>
             )}
             {isFiltered(filters) && (
               <button type="button" className="clear" onClick={() => setFilters(NO_FILTERS)}>Clear filters</button>

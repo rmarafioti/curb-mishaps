@@ -3,12 +3,12 @@
 // the navbar, not a tab; it lists these as cards (tagline is the card's opening line in
 // LD's voice, blurb says what's inside).
 
-import type { FilterDim } from "@/lib/data";
+import { FORECAST_DIM, type PageFilterDim } from "@/lib/data";
 
 type Page = {
   href: string;
   label: string;
-  filters: FilterDim[];
+  filters: PageFilterDim[];
   tagline: string;
   blurb: string;
 };
@@ -23,7 +23,7 @@ export const PAGES: Page[] = [
   { href: "/net-worth", label: "Net Worth vs. Mishaps", filters: ["episode__season"],
     tagline: "Who's the real LD?",
     blurb: "His real net worth against what he'd have if the mishaps were real." },
-  { href: "/forecast", label: "Forecast", filters: [],
+  { href: "/forecast", label: "Forecast", filters: [FORECAST_DIM],
     tagline: "LD's future flops.",
     blurb: "What two more seasons would likely have cost him." },
   { href: "/faq", label: "We've Got Answers", filters: [],
