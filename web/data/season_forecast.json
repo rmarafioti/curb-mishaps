@@ -1,7 +1,7 @@
 {
   "name": "season_forecast",
   "label": "If the show had kept going",
-  "description": "Season 13 (2025) and Season 14 (2026), each with everyday mishaps only and if a catastrophe hits (has_forecast_catastrophe, the page's filter): expected cost with its 80% range, expected mishaps, everyday losses by kind and the chance of a catastrophe, in dollars of the year it airs.\n",
+  "description": "Season 13 (2025) and Season 14 (2026), each with everyday mishaps only and if a catastrophe hits (has_forecast_catastrophe, the page's filter): expected cost with its 80% range, expected mishaps and the chance of a catastrophe, in dollars of the year it airs.\n",
   "metrics": [
     {
       "name": "forecast_loss_median",
@@ -34,16 +34,6 @@
       "description": "90th percentile of the season's simulated everyday mishap count."
     },
     {
-      "name": "forecast_realized_loss_median",
-      "label": "Everyday Realized",
-      "description": "Median simulated total of the season's everyday realized losses (money or property actually lost). Not part of a sum: the medians of the pieces don't add up to the median of the whole."
-    },
-    {
-      "name": "forecast_hypothetical_loss_median",
-      "label": "Everyday Hypothetical",
-      "description": "Median simulated total of the season's everyday hypothetical losses (missed income). Most simulated seasons have one or none, so the median is small; a big missed opportunity shows up in the high end instead."
-    },
-    {
       "name": "forecast_catastrophe_chance",
       "label": "Chance of a Catastrophe",
       "description": "Chance the season has a catastrophe that could happen again (the house fire or Latte Larry's): the share of the 12 real seasons that had one. The divorce is left out: it was the show's one divorce, and Larry ends the series unmarried."
@@ -65,8 +55,6 @@
       "forecast_mishaps_median": 9,
       "forecast_mishaps_p10": 5,
       "forecast_mishaps_p90": 13,
-      "forecast_realized_loss_median": 52026,
-      "forecast_hypothetical_loss_median": 336,
       "forecast_catastrophe_chance": 0.1667,
       "forecast_episodes": 10
     },
@@ -80,23 +68,6 @@
       "forecast_mishaps_median": 9,
       "forecast_mishaps_p10": 5,
       "forecast_mishaps_p90": 13,
-      "forecast_realized_loss_median": 52026,
-      "forecast_hypothetical_loss_median": 336,
-      "forecast_catastrophe_chance": 0.1667,
-      "forecast_episodes": 10
-    },
-    {
-      "metric_time__year": "2026-01-01 00:00:00",
-      "season_forecast__season": "14",
-      "season_forecast__has_forecast_catastrophe": "1",
-      "forecast_loss_median": 7985538,
-      "forecast_loss_p10": 276629,
-      "forecast_loss_p90": 9625460,
-      "forecast_mishaps_median": 9,
-      "forecast_mishaps_p10": 5,
-      "forecast_mishaps_p90": 13,
-      "forecast_realized_loss_median": 53781,
-      "forecast_hypothetical_loss_median": 346,
       "forecast_catastrophe_chance": 0.1667,
       "forecast_episodes": 10
     },
@@ -110,14 +81,25 @@
       "forecast_mishaps_median": 9,
       "forecast_mishaps_p10": 5,
       "forecast_mishaps_p90": 13,
-      "forecast_realized_loss_median": 53781,
-      "forecast_hypothetical_loss_median": 346,
+      "forecast_catastrophe_chance": 0.1667,
+      "forecast_episodes": 10
+    },
+    {
+      "metric_time__year": "2026-01-01 00:00:00",
+      "season_forecast__season": "14",
+      "season_forecast__has_forecast_catastrophe": "1",
+      "forecast_loss_median": 7985538,
+      "forecast_loss_p10": 276629,
+      "forecast_loss_p90": 9625460,
+      "forecast_mishaps_median": 9,
+      "forecast_mishaps_p10": 5,
+      "forecast_mishaps_p90": 13,
       "forecast_catastrophe_chance": 0.1667,
       "forecast_episodes": 10
     }
   ],
   "filterable_metrics": [],
   "slices": {},
-  "exported_at": "2026-11-23T23:08:13+00:00",
+  "exported_at": "2026-11-25T17:08:44+00:00",
   "source": "curb_prod"
 }
