@@ -102,9 +102,11 @@ export default function NetWorthDent({ rows, seasonOf, highlightYear }: Props) {
   return (
     <figure className="chart">
       <div className="legend" aria-hidden="true">
-        <span className="legend-item"><span className="legend-line real" />{NET_WORTH}</span>
+        {/* where each line's points come from, so readers know why they don't line up: net worth
+            changes when a new report turns up, the after line has a point per season */}
+        <span className="legend-item"><span className="legend-line real" />{NET_WORTH}<span className="legend-note">as reported online</span></span>
         <span className="legend-item"><span className="legend-swatch gap" />{LOSS}</span>
-        <span className="legend-item"><span className="legend-line after" />{AFTER}</span>
+        <span className="legend-item"><span className="legend-line after" />{AFTER}<span className="legend-note">by Curb season</span></span>
       </div>
 
       {/* on narrow screens the chart keeps a readable width and scrolls sideways, like the timeline */}
@@ -181,13 +183,6 @@ export default function NetWorthDent({ rows, seasonOf, highlightYear }: Props) {
         )}
       </div>
       </div>
-      <figcaption className="note">
-        Small marks show each change in his reported net worth, labelled in millions where there&apos;s
-        room<span className="hover-only"> (hover for every year)</span>. Each year&apos;s real net
-        worth minus every mishap up to that year gives the lower line. Losses are added up in the
-        dollars of the year each one happened. This is the character&apos;s bill, not Larry David&apos;s
-        actual bank account.
-      </figcaption>
     </figure>
   );
 }

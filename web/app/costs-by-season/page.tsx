@@ -7,7 +7,7 @@ import CostsBySeason from "@/components/views/CostsBySeason";
 export const metadata: Metadata = pageMetadata(
   "/costs-by-season",
   "Mishap Costs by Season",
-  "Every financial mishap Larry suffers on Curb Your Enthusiasm, on a timeline and season by season, with the total bill.",
+  "Every financial mishap Larry suffers on Curb Your Enthusiasm, charted in the order it aired and priced, with the total bill.",
 );
 
 export default function Page() {

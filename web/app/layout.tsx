@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Libre_Franklin } from "next/font/google";
 import SiteHeader from "@/components/SiteHeader";
-import { dateOf, kpis } from "@/lib/data";
+import { kpis, longDateOf } from "@/lib/data";
 import { FiltersProvider } from "@/lib/filters";
 import { AUTHOR, BRAND, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -41,10 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main className="page">
             {children}
             <footer className="footer">
-              <span>
-                Data exported from {kpis.source} on {dateOf(kpis.exported_at)}. Amounts are in the
-                dollars of the year each episode aired; estimates use the mid of a researched range.
-              </span>
+              <span>Updated {longDateOf(kpis.exported_at)}.</span>
               <span>Best viewed on a desktop or laptop, since the charts are wide.</span>
             </footer>
           </main>

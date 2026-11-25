@@ -42,6 +42,8 @@ type Props = {
 export default function ForecastChart({ history, forecast, yearOf, withCatastrophe, historyLabel, forecastLabel }: Props) {
   const [active, setActive] = useState<number | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  // "Total Mishap Loss" without "Total": true with or without catastrophes ("mishap loss")
+  const lossLabel = historyLabel.replace(/^Total\s+/i, "").toLowerCase();
 
   const real = history
     .map((r) => ({ season: Number(r.episode__season), cost: r.total_mishap_loss }))
@@ -91,9 +93,9 @@ export default function ForecastChart({ history, forecast, yearOf, withCatastrop
   return (
     <figure className="chart">
       <div className="legend" aria-hidden="true">
-        <span className="legend-item"><span className="legend-line after" />Real seasons, {historyLabel.toLowerCase()}</span>
-        <span className="legend-item"><span className="legend-line forecast" />Forecast, {forecastLabel.toLowerCase()}</span>
-        <span className="legend-item"><span className="legend-swatch forecast-band" />Forecast range, low to high</span>
+        <span className="legend-item"><span className="legend-line after" />Real Seasons, {lossLabel}</span>
+        <span className="legend-item"><span className="legend-line forecast" />Future Flops, {forecastLabel.toLowerCase()}</span>
+        <span className="legend-item"><span className="legend-swatch forecast-band" />Range, low to high</span>
       </div>
 
       <div className="plot-scroll">
@@ -164,7 +166,7 @@ export default function ForecastChart({ history, forecast, yearOf, withCatastrop
                 <>
                   <strong className="tooltip-value">{usdFull(realPoint.cost)}</strong>
                   <span className="tooltip-title">Season {realPoint.season} · {yearOf.get(String(realPoint.season))}</span>
-                  <span className="tooltip-meta">{historyLabel}{withCatastrophe ? "" : ", everyday mishaps"}</span>
+                  <span className="tooltip-meta">{withCatastrophe ? historyLabel : `${lossLabel}, everyday mishaps`}</span>
                 </>
               )}
               {aheadPoint && (
@@ -173,24 +175,16 @@ export default function ForecastChart({ history, forecast, yearOf, withCatastrop
                   <span className="tooltip-title">Season {aheadPoint.season} · {aheadPoint.year} · forecast</span>
                   <span className="tooltip-meta">{forecastLabel}{withCatastrophe ? ", with a catastrophe" : ", everyday mishaps"}</span>
                   <span className="tooltip-range">
-                    Loss range: {usdCompact(aheadPoint.low)} –{" "}
+                    Range {usdCompact(aheadPoint.low)} –{" "}
                     <mark className="tooltip-mid">{usdCompact(aheadPoint.median)}</mark> –{" "}
                     {usdCompact(aheadPoint.high)}
                   </span>
-                  <span className="tooltip-basis">The forecast&apos;s low and high ends for this year.</span>
                 </>
               )}
             </div>
           )}
         </div>
       </div>
-      <figcaption className="note">
-        Each step up the scale is ten times the one below, so a cheap season and a hugely expensive one fit on
-        one chart. Real seasons are in the dollars of the year they aired, forecast seasons in the dollars of 2025 and
-        2026.{withCatastrophe
-          ? " Real seasons include their catastrophes, and each forecast season has one."
-          : " Catastrophes are left out of the real seasons too, so both sides compare everyday mishaps."}
-      </figcaption>
     </figure>
   );
 }

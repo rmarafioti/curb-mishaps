@@ -4,6 +4,7 @@
 
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
+import { CatastropheChance, SEASON_14_COSTS_MORE, UNLUCKY } from "@/lib/shared-answers";
 import Link from "next/link";
 import {
   NO_FILTERS, byNumber, episodeCode, kpis, lossesBySeason, lossesByYear, mishapList, netWorthDent,
@@ -11,8 +12,8 @@ import {
 } from "@/lib/data";
 
 export const metadata: Metadata = pageMetadata(
-  "/faq",
-  "We've Got Answers",
+  "/answers",
+  "Pretty, Pretty, Pretty Good Answers",
   "Plain answers about what Larry's mishaps cost him across Curb Your Enthusiasm, read straight from the dashboard's metrics.",
 );
 
@@ -35,15 +36,16 @@ const Figure = ({ children }: { children: React.ReactNode }) => <strong classNam
 
 const SECTIONS: { title: string; items: Faq[] }[] = [
   {
-    title: "What the mishaps cost him",
+    title: "What the Mishaps Cost Larry",
     items: [
       {
         question: "How much money did Larry lose to mishaps across the whole series?",
         answer: (
           <p>
-            <Figure>{usdFull(total.total_mishap_loss)}</Figure> across {total.mishap_count} mishaps, in the
-            dollars of the year each episode aired. Because many costs are estimates, the full range
-            is {usdCompact(total.total_mishap_loss_low)} to {usdCompact(total.total_mishap_loss_high)}.
+            <Figure>{usdFull(total.total_mishap_loss)}</Figure> across {total.mishap_count} mishaps, each priced
+            at what it cost the year its episode aired. Because many costs are estimates, the range
+            is {usdCompact(total.total_mishap_loss_low)} –{" "}
+            <Figure>{usdCompact(total.total_mishap_loss)}</Figure> – {usdCompact(total.total_mishap_loss_high)}.
           </p>
         ),
         see: { href: "/costs-by-season", label: "Mishap Costs by Season" },
@@ -58,19 +60,21 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
             </p>
             <p>
               <Figure>{usdFull(hypothetical.total_mishap_loss)}</Figure> is hypothetical, income he missed
-              out on, across {hypothetical.mishap_count} mishaps. Both count toward the total.
+              out on, across {hypothetical.mishap_count} mishaps. Added together, they make
+              the <Figure>{usdFull(total.total_mishap_loss)}</Figure> total.
             </p>
           </>
         ),
-        see: { href: "/costs-by-season", label: "Mishap Costs by Season (Loss kind filter)" },
+        see: { href: "/costs-by-season", label: "Mishap Costs by Season (Loss Type filter)" },
       },
       {
         question: "What does a typical mishap cost?",
         answer: (
           <p>
-            <Figure>{usdFull(total.median_mishap_cost)}</Figure>. That&apos;s the median. Half his mishaps
-            cost less, half cost more. A few disasters make the total huge, but most mishaps are small
-            change. (With an even number of mishaps, it&apos;s the lower of the middle two.)
+            <Figure>{usdFull(total.median_mishap_cost)}</Figure>, the lower median. Line up every mishap from
+            cheapest to most expensive and it&apos;s the one in the middle. With an even number of mishaps,
+            it&apos;s the lower of the two middle ones. A few disasters make the total huge, but most mishaps
+            cost only a few hundred dollars.
           </p>
         ),
       },
@@ -79,12 +83,9 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
         answer: (
           <p>
             Season {costliestSeason.episode__season} was the most expensive
-            at <Figure>{usdFull(costliestSeason.total_mishap_loss)}</Figure> over {costliestSeason.mishap_count} mishaps.
+            at <Figure>{usdFull(costliestSeason.total_mishap_loss)}</Figure> across {costliestSeason.mishap_count} mishaps.
             Season {cheapestSeason.episode__season} was the cheapest
-            at <Figure>{usdFull(cheapestSeason.total_mishap_loss)}</Figure> over {cheapestSeason.mishap_count} mishaps.
-            {cheapestSeason.episode__season === "12" && (
-              <> Season 12 is still being reviewed, though, so it may not stay the cheapest.</>
-            )}
+            at <Figure>{usdFull(cheapestSeason.total_mishap_loss)}</Figure> across {cheapestSeason.mishap_count} mishaps.
           </p>
         ),
         see: { href: "/costs-by-season", label: "Mishap Costs by Season (Season filter)" },
@@ -102,16 +103,16 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
     ],
   },
   {
-    title: "What it does to his net worth",
+    title: "What It Does to His Net Worth",
     items: [
       {
         question: "Where do the mishaps leave his net worth at the end of the series?",
         answer: (
           <p>
-            By {yearOf(end.metric_time__year)} his real net worth is about {usdCompact(end.net_worth_mid)}.
-            Take out every mishap so far ({usdCompact(end.cumulative_mishap_loss)}) and he&apos;d be left
-            with <Figure>{usdFull(end.net_worth_after_mishaps_to_date)}</Figure>. That&apos;s the
-            character&apos;s bill set against the real man&apos;s fortune, not his actual bank account.
+            By {yearOf(end.metric_time__year)} LD&apos;s reported net worth is about {usdCompact(end.net_worth_mid)},
+            not counting his real 2007 divorce. Subtract every mishap from the series ({usdCompact(end.cumulative_mishap_loss)}) and he&apos;d be left
+            with <Figure>{usdFull(end.net_worth_after_mishaps_to_date)}</Figure>. That&apos;s the Curb mishaps
+            set against the real man&apos;s fortune, not his actual bank account.
           </p>
         ),
         see: { href: "/net-worth", label: "Net Worth vs. Mishaps" },
@@ -129,70 +130,45 @@ const SECTIONS: { title: string; items: Faq[] }[] = [
     ],
   },
   {
-    title: "If the show had kept going",
+    title: "Future Flops",
     items: [
-      {
-        question: "If the show ran one season a year through 2026, is there a trend in mishaps per season?",
-        answer: (
-          <p>
-            No. Across the 12 real seasons, neither how often mishaps happen nor what a typical one costs (with
-            inflation taken out) rose or fell in a way the data can tell apart from chance. So the forecast
-            treats every season alike and draws from all 12.
-          </p>
-        ),
-        see: { href: "/forecast", label: "Forecast" },
-      },
+      { ...UNLUCKY, see: { href: "/future-flops", label: "Future Flops" } },
       {
         question: "How many mishaps would Seasons 13 and 14 bring?",
         answer: (
           <p>
-            About <Figure>{everyday[0].forecast_mishaps_median}</Figure> everyday mishaps each, and most likely
-            between {everyday[0].forecast_mishaps_p10} and {everyday[0].forecast_mishaps_p90}. Like the real seasons,
+            About <Figure>{everyday[0].forecast_mishaps_median}</Figure> everyday mishaps each, with 8 out of 10
+            pretend seasons getting between {everyday[0].forecast_mishaps_p10} and {everyday[0].forecast_mishaps_p90}.
+            Like the real seasons,
             most would be money actually lost, with a missed opportunity now and then.
           </p>
         ),
-        see: { href: "/forecast", label: "Forecast" },
+        see: { href: "/future-flops", label: "Future Flops" },
       },
       {
         question: "What's the chance of a catastrophic mishap in 2025 or 2026?",
-        answer: (
-          <p>
-            <Figure>{catastropheChance}</Figure> each season. Two of the 12 real seasons had one, the house fire
-            and Latte Larry&apos;s burning down. The divorce isn&apos;t counted again, since it was the show&apos;s
-            one divorce and Larry ends the series unmarried.
-          </p>
-        ),
-        see: { href: "/forecast", label: "Forecast" },
+        answer: <CatastropheChance chance={<Figure>{catastropheChance}</Figure>} />,
+        see: { href: "/future-flops", label: "Future Flops" },
       },
       {
-        question: "What would each forecast season cost?",
+        question: "What would Seasons 13 and 14 cost?",
         answer: (
           <p>
             {everyday.map((row, i) => (
               <span key={row.season_forecast__season}>
                 {i > 0 && " "}
-                Season {row.season_forecast__season} ({yearOf(row.metric_time__year)}) would most likely
-                cost <Figure>{usdCompact(row.forecast_loss_median)}</Figure> in everyday mishaps, and 8 times in 10
-                between {usdCompact(row.forecast_loss_p10)} and {usdCompact(row.forecast_loss_p90)}.
+                Season {row.season_forecast__season} ({yearOf(row.metric_time__year)}) has an expected cost
+                of <Figure>{usdCompact(row.forecast_loss_median)}</Figure> in everyday mishaps, with 8 out of 10
+                pretend seasons landing between {usdCompact(row.forecast_loss_p10)} and {usdCompact(row.forecast_loss_p90)}.
               </span>
             ))}{" "}
             If a catastrophe hits, Season {withCatastrophe[0].season_forecast__season} would cost
             about {usdCompact(withCatastrophe[0].forecast_loss_median)}.
           </p>
         ),
-        see: { href: "/forecast", label: "Forecast" },
+        see: { href: "/future-flops", label: "Future Flops" },
       },
-      {
-        question: "Would a bigger bill mean more mishaps, or mostly inflation?",
-        answer: (
-          <p>
-            Mostly inflation. With no trend in how often mishaps happen or what they really cost, the only
-            steady difference between Season 13 and Season 14 is prices, a few percent a year. Each season is
-            shown in the dollars of the year it would air.
-          </p>
-        ),
-        see: { href: "/forecast", label: "Forecast" },
-      },
+      { ...SEASON_14_COSTS_MORE, see: { href: "/future-flops", label: "Future Flops" } },
     ],
   },
 ];
@@ -201,15 +177,15 @@ export default function Page() {
   return (
     <>
       <header className="masthead">
-        <h1>We&apos;ve got answers</h1>
+        <p className="hero-lede">Let me ask you a question&hellip;</p>
+        <h1>Pretty, Pretty, Pretty Good Answers</h1>
         <p className="lede">
-          The facts, answered plainly, each one read straight from the dashboard&apos;s metrics. A
-          few Season 12 episodes are still being reviewed, so the figures may still change.
+          The facts, answered plainly, each one read straight from the dashboard&apos;s metrics.
         </p>
       </header>
 
       {SECTIONS.map((section) => (
-        <section key={section.title} className="card faq">
+        <section key={section.title} className="faq faq-plain">
           <h2>{section.title}</h2>
           {section.items.map((item) => (
             <details key={item.question} className="disclosure faq-item">

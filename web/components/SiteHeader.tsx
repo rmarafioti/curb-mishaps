@@ -106,10 +106,10 @@ export default function SiteHeader() {
             )}
             {filterDims.includes("mishap__loss_kind") && (
               <label>
-                Loss kind
+                Loss Type
                 <select value={filters.mishap__loss_kind}
                         onChange={(e) => setFilters({ ...filters, mishap__loss_kind: e.target.value })}>
-                  <option value="">All loss kinds</option>
+                  <option value="">All loss types</option>
                   {KINDS.map((kind) => <option key={kind} value={kind}>{titleCase(kind)}</option>)}
                 </select>
               </label>
@@ -129,7 +129,7 @@ export default function SiteHeader() {
             )}
             {filterDims.includes(FORECAST_DIM) && (
               <label>
-                Add a catastrophe?
+                Add A Catastrophe?
                 {/* the forecast's two versions of each season: everyday mishaps only (No), or
                     the same season if a catastrophe (a fire or Latte Larry's) hits (Yes) */}
                 <select value={filters[FORECAST_DIM]}
@@ -138,13 +138,6 @@ export default function SiteHeader() {
                   <option value="1">Yes</option>
                 </select>
               </label>
-            )}
-            {filterDims.includes(FORECAST_DIM) && (
-              <p className="screen-note filter-note">
-                Catastrophes are left out by default, from the real seasons and the forecast alike. Switch to Yes
-                to put them back in the real seasons and add one, hypothetically, to each forecast year to see where
-                the financial loss lands.
-              </p>
             )}
             {isFiltered(filters) && (
               <button type="button" className="clear" onClick={() => setFilters(NO_FILTERS)}>Clear filters</button>

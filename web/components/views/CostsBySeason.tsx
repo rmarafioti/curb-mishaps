@@ -3,6 +3,7 @@
 // Tab 1, Mishap Costs by Season: the headline numbers, every mishap on the timeline, and
 // the same mishaps as a table. Numbers come from the export; this only picks and formats.
 
+import InfoTip from "@/components/InfoTip";
 import MishapTable from "@/components/MishapTable";
 import MishapTimeline from "@/components/MishapTimeline";
 import { kpis, label, pick, pickMishaps, usdCompact } from "@/lib/data";
@@ -16,9 +17,10 @@ export default function CostsBySeason() {
   return (
     <>
       <header className="masthead">
-        <h1>Mishap costs by season</h1>
+        <p className="hero-lede">What&apos;s the damage?!</p>
+        <h1>Mishap Costs by Season</h1>
         <p className="lede">
-          Every on-screen financial mishap across 12 seasons, priced in the dollars of the year it aired.
+          Each on-screen financial mishap across 12 seasons, priced at what it cost the year it aired.
         </p>
       </header>
 
@@ -28,17 +30,26 @@ export default function CostsBySeason() {
             <span className="kpi-label">{label(kpis, "total_mishap_loss")}</span>
             <span className="hero-value">{usdCompact(k.total_mishap_loss)}</span>
             <span className="kpi-sub">
-              Range {usdCompact(k.total_mishap_loss_low)} – {usdCompact(k.total_mishap_loss_high)}
+              {/* low – mid – high, like the timeline tooltip; the mid is the total we count */}
+              Range {usdCompact(k.total_mishap_loss_low)} –{" "}
+              <mark className="range-mid">{usdCompact(k.total_mishap_loss)}</mark> –{" "}
+              {usdCompact(k.total_mishap_loss_high)}
             </span>
           </div>
           <div className="tile">
-            <span className="kpi-label">Mishaps</span>
+            <span className="kpi-label">Mishap Count</span>
             <span className="tile-value">{k.mishap_count}</span>
           </div>
           <div className="tile">
-            <span className="kpi-label">Typical mishap</span>
+            <span className="kpi-label with-tip">
+              Typical Mishap Cost
+              <InfoTip term="Typical Mishap Cost">
+                <strong>Lower median:</strong> the middle cost when every mishap is lined up from
+                lowest to highest. With an even number of mishaps, the lower of the two middle
+                mishaps is picked.
+              </InfoTip>
+            </span>
             <span className="tile-value">{usdCompact(k.median_mishap_cost)}</span>
-            <span className="kpi-sub">lower median</span>
           </div>
         </section>
       ) : (
@@ -46,10 +57,10 @@ export default function CostsBySeason() {
       )}
 
       <section className="card">
-        <h2>Every mishap, 2000–2024</h2>
+        <h2>Every Mishap, 2000–2024</h2>
         <p className="card-sub">
-          <span className="hover-only">Hover or tab to a dot to see what happened and how it was priced.</span>
-          <span className="touch-only">Swipe sideways through all 12 seasons; every mishap is listed below.</span>
+          <span className="hover-only">Hover over a dot to see what happened.</span>
+          <span className="touch-only">Swipe sideways through all 12 seasons.</span>
         </p>
         <MishapTimeline mishaps={mishaps} />
         <MishapTable key={Object.values(filters).join("|")} mishaps={mishaps} />

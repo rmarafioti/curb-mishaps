@@ -1,6 +1,6 @@
 # Every metric the dashboard, exports and AI answers use. Charts ask for these by name and
 # slice by dimensions (e.g. --group-by metric_time__year, episode__season,
-# mishap__loss_kind_category); no metric logic lives anywhere else.
+# mishap__loss_kind); no metric logic lives anywhere else.
 #
 # MetricFlow metric types used here:
 #   simple:  one measure, optionally filtered
@@ -41,42 +41,6 @@ metrics:
         name: mishap_cost_high
         fill_nulls_with: 0
 
-  - name: realized_loss
-    label: Realized
-    description: Everyday money or property actually lost (catastrophic excluded).
-    type: simple
-    type_params:
-      measure:
-        name: mishap_cost
-        fill_nulls_with: 0
-    # Dimension('<entity>__<dimension>') names a dimension through its entity
-    filter: |
-      {{ Dimension('mishap__loss_kind') }} = 'realized'
-      and {{ Dimension('mishap__is_catastrophic') }} = 0
-
-  - name: hypothetical_loss
-    label: Hypothetical
-    description: Everyday missed income, e.g. the HBO show and the golf club (catastrophic excluded).
-    type: simple
-    type_params:
-      measure:
-        name: mishap_cost
-        fill_nulls_with: 0
-    filter: |
-      {{ Dimension('mishap__loss_kind') }} = 'hypothetical'
-      and {{ Dimension('mishap__is_catastrophic') }} = 0
-
-  - name: catastrophic_loss
-    label: Catastrophic
-    description: The divorce, the house fire and Latte Larry's.
-    type: simple
-    type_params:
-      measure:
-        name: mishap_cost
-        fill_nulls_with: 0
-    filter: |
-      {{ Dimension('mishap__is_catastrophic') }} = 1
-
   - name: median_mishap_cost
     label: Median Mishap Cost
     description: >
@@ -89,7 +53,7 @@ metrics:
     type_params:
       measure: mishap_cost_median
 
-  # --- 2026 dollars (cost trend and forecast only) -----------------------------------
+  # --- 2026 dollars (forecast input only) ---------------------------------------------
 
   - name: total_mishap_loss_2026
     label: Total Mishap Loss (2026 $)
@@ -99,20 +63,6 @@ metrics:
       measure:
         name: mishap_cost_2026
         fill_nulls_with: 0
-
-  - name: median_routine_mishap_cost_2026
-    label: Median Routine Mishap Cost (2026 $)
-    description: >
-      The severity trend with inflation removed: the lower median cost across the routine
-      mishaps in each group (e.g. per season), each converted to 2026 dollars. With an even
-      number of mishaps it is the lower of the middle two, not their average. Catastrophic mishaps
-      (the divorce, the house fire, Latte Larry's) are excluded so a single outlier can't
-      move a season's median; they are forecast separately as rare events.
-    type: simple
-    type_params:
-      measure: mishap_cost_2026_median
-    filter: |
-      {{ Dimension('mishap__is_catastrophic') }} = 0
 
   # --- Counts and frequency ----------------------------------------------------------
 
@@ -136,6 +86,7 @@ metrics:
         name: mishap_count
         # an episode with no everyday mishap reads 0, not blank
         fill_nulls_with: 0
+    # Dimension('<entity>__<dimension>') names a dimension through its entity
     filter: |
       {{ Dimension('mishap__is_catastrophic') }} = 0
 
@@ -145,14 +96,6 @@ metrics:
     type: simple
     type_params:
       measure: episode_count
-
-  - name: mishaps_per_episode
-    label: Mishaps per Episode
-    description: Kept mishaps / episodes. The frequency trend; no dollars, so inflation can't affect it.
-    type: ratio
-    type_params:
-      numerator: mishap_count
-      denominator: episode_count
 
   # --- Net worth (semi-additive: single-year only) -----------------------------------
 
@@ -174,19 +117,6 @@ metrics:
     type_params:
       numerator: total_mishap_loss
       denominator: net_worth_mid
-
-  - name: net_worth_after_mishaps
-    label: Net Worth After That Year's Mishaps
-    description: >
-      That year's net worth minus that year's total mishap loss. Single-year only: query
-      it grouped by metric_time__year.
-    type: derived
-    type_params:
-      expr: net_worth_mid - total_mishap_loss
-      # derived metrics list the metrics their expr uses
-      metrics:
-        - name: net_worth_mid
-        - name: total_mishap_loss
 
   # --- Running dent: the character's losses taken out of the real net worth -------------
   # The one place mishaps are subtracted as a running total (an exception to the brief's
@@ -276,26 +206,6 @@ metrics:
     type: simple
     type_params:
       measure: forecast_mishaps_p90
-
-  - name: forecast_realized_loss_median
-    label: Everyday Realized
-    description: >
-      Median simulated total of the season's everyday realized losses (money or property
-      actually lost). Not part of a sum: the medians of the pieces don't add up to the
-      median of the whole.
-    type: simple
-    type_params:
-      measure: forecast_realized_loss_median
-
-  - name: forecast_hypothetical_loss_median
-    label: Everyday Hypothetical
-    description: >
-      Median simulated total of the season's everyday hypothetical losses (missed income).
-      Most simulated seasons have one or none, so the median is small; a big missed
-      opportunity shows up in the high end instead.
-    type: simple
-    type_params:
-      measure: forecast_hypothetical_loss_median
 
   - name: forecast_catastrophe_chance
     label: Chance of a Catastrophe

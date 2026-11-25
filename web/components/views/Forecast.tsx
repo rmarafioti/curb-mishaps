@@ -2,9 +2,9 @@
 
 // Tab 4, Forecast: if the show had kept going, one season a year, Season 13 (2025) and
 // Season 14 (2026). A chart puts the forecast at the end of the real seasons, then each
-// forecast season's figures, the catastrophe chance, and the method in plain English as
+// forecast season's figures, the mishap count, the catastrophe chance, and the method in plain English as
 // open/close questions (docs/PROJECT_BRIEF.md section 5 has the details). The navbar's
-// "Add a catastrophe?" switch picks the version: everyday mishaps only (No, the default), or
+// "Add A Catastrophe?" switch picks the version: everyday mishaps only (No, the default), or
 // the same season if a catastrophe hits (Yes); the real seasons follow it. Picks rows only.
 
 import ForecastChart from "@/components/ForecastChart";
@@ -13,9 +13,28 @@ import {
   usdCompact, yearOf,
 } from "@/lib/data";
 import { useFilters } from "@/lib/filters";
+import { CatastropheChance, SEASON_14_COSTS_MORE, UNLUCKY } from "@/lib/shared-answers";
 
 // each real season aired in one year
 const SEASON_YEAR = new Map(mishapList.rows.map((m) => [m.episode__season, Number(yearOf(m.metric_time__year))]));
+
+// "Expected Cost" (a metric label, Title Case) as a sub line: "Expected cost"
+const sentenceCase = (text: string) => text.charAt(0) + text.slice(1).toLowerCase();
+
+// the method answer the "Why are the ranges so broad?" link opens and scrolls to
+const WHY_RANGES = "why-ranges";
+function openAnswer(id: string) {
+  const answer = document.getElementById(id);
+  if (!(answer instanceof HTMLDetailsElement)) return;
+  answer.open = true;
+  answer.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// the two catastrophes a forecast season can draw (the divorce is left out), with what each cost
+const catastrophe = (name: RegExp) =>
+  mishapList.rows.find((m) => m.mishap__is_catastrophic === "1" && name.test(m.mishap__description));
+const FIRE = catastrophe(/house fire/i);
+const LATTE_LARRYS = catastrophe(/latte larry/i);
 
 export default function Forecast() {
   const { filters } = useFilters();
@@ -26,50 +45,76 @@ export default function Forecast() {
     ? lossesBySeason.rows
     : pick(lossesBySeason, { ...NO_FILTERS, mishap__is_catastrophic: "0" });
   const chance = percentWhole(seasons[0].forecast_catastrophe_chance);
-  // "Expected Cost" (the metric label) as the start of a sentence: "Expected cost, ..."
   const costLabel = label(seasonForecast, "forecast_loss_median");
-  const costSub = costLabel.charAt(0) + costLabel.slice(1).toLowerCase();
+  // the mishap count is drawn the same way for both seasons, so one tile shows it (Season 13's row)
+  const count = seasons[0];
 
   return (
     <>
       <header className="masthead">
-        <h1>If the show had kept going&hellip;</h1>
-        <p className="lede">
-          What two more seasons would likely have cost him, one a year after 2024, Season 13 in 2025 and
-          Season 14 in 2026. The real show took breaks between seasons. One a year is the what-if.
-        </p>
+        <p className="hero-lede">If the show MUST go on&hellip;</p>
+        <h1>Future Flops</h1>
+        <p className="lede">What Seasons 13 and 14 would likely have cost LD, if they&apos;d aired in 2025 and 2026.</p>
       </header>
 
       <section className="forecast-seasons" aria-label="Forecast seasons and the chance of a catastrophe">
+        {/* what the switch does, above the tiles it changes */}
+        <p className="kpis-note">
+          {withCatastrophe
+            ? "Catastrophes are added back to the real seasons, and each forecast season gets one."
+            : "Catastrophes are left out by default. Select Yes in “Add A Catastrophe?” above to add them back to the real seasons and one to each forecast season."}
+        </p>
+        <p className="kpis-note">
+          Each season is in the dollars of the year it aired, or would have aired.{" "}
+          <a href={`#${WHY_RANGES}`} onClick={(e) => { e.preventDefault(); openAnswer(WHY_RANGES); }}>
+            Why are the ranges for Seasons 13 and 14 so broad?
+          </a>
+        </p>
+        {/* the season costs lead (bigger, yellow); the count and the chance are smaller, in white */}
         {seasons.map((row) => (
-          <div className="tile" key={row.season_forecast__season}>
+          <div className="tile tile-lead" key={row.season_forecast__season}>
             <span className="kpi-label">
               Season {row.season_forecast__season}, {yearOf(row.metric_time__year)}
             </span>
             <span className="tile-value">{usdCompact(row.forecast_loss_median)}</span>
-            <span className="kpi-sub">{costSub}, {withCatastrophe ? "with a catastrophe" : "everyday mishaps"}</span>
-            <span className="forecast-range">
-              Range {usdCompact(row.forecast_loss_p10)} low to {usdCompact(row.forecast_loss_p90)} high
-            </span>
-            <span className="forecast-range">
-              About {row.forecast_mishaps_median} mishaps ({row.forecast_mishaps_p10} to {row.forecast_mishaps_p90})
-              in {row.forecast_episodes} episodes
+            <span className="kpi-sub">{sentenceCase(costLabel)}</span>
+            <span className="kpi-sub">
+              {/* low – mid – high, like the Costs card; the mid is the expected cost */}
+              Range {usdCompact(row.forecast_loss_p10)} –{" "}
+              <mark className="range-mid">{usdCompact(row.forecast_loss_median)}</mark> –{" "}
+              {usdCompact(row.forecast_loss_p90)}
             </span>
           </div>
         ))}
         <div className="tile">
+          <span className="kpi-label">Mishap Count, each season</span>
+          <span className="tile-value">{count.forecast_mishaps_median}</span>
+          <span className="kpi-sub">In {count.forecast_episodes} episodes</span>
+          <span className="kpi-sub">
+            Range {count.forecast_mishaps_p10} –{" "}
+            <mark className="range-mid">{count.forecast_mishaps_median}</mark> –{" "}
+            {count.forecast_mishaps_p90}
+          </span>
+        </div>
+        <div className="tile">
           <span className="kpi-label">{label(seasonForecast, "forecast_catastrophe_chance")}, each season</span>
           <span className="tile-value">{chance}</span>
-          <span className="forecast-range">
-            {withCatastrophe
-              ? "Both forecast years include one, hypothetically, a house fire or a Latte Larry's."
-              : "A house fire or a Latte Larry's. Switch \u201cAdd a catastrophe?\u201d to Yes to see what both forecast years would look like with one."}
-          </span>
+          {FIRE && LATTE_LARRYS && (
+            <span className="kpi-sub">
+              The house fire ({usdCompact(FIRE.total_mishap_loss)}) or Latte Larry&apos;s burning down
+              ({usdCompact(LATTE_LARRYS.total_mishap_loss)})
+            </span>
+          )}
         </div>
       </section>
 
       <section className="card">
-        <h2>The real seasons, then the forecast</h2>
+        <h2>The Real Seasons, Then the Future Flops</h2>
+        {/* the tooltip follows the mouse across the whole plot, one season at a time */}
+        <p className="card-sub">
+          <span className="hover-only">Hover along the chart to see each season&apos;s figures.</span>
+          <span className="touch-only">Swipe sideways through every season.</span>
+        </p>
         <ForecastChart
           history={history}
           forecast={seasons}
@@ -80,10 +125,10 @@ export default function Forecast() {
         />
       </section>
 
-      <section className="card faq">
-        <h2>How we got these numbers</h2>
+      <section className="faq faq-plain">
+        <h2>The Numbers Explained</h2>
         {METHOD.map((item) => (
-          <details key={item.question} className="disclosure faq-item method-item">
+          <details key={item.question} id={item.id} className="disclosure faq-item method-item">
             <summary>{item.question}</summary>
             <div className="faq-answer">{item.answer(chance)}</div>
           </details>
@@ -94,64 +139,39 @@ export default function Forecast() {
 }
 
 // The method, as questions that open. Plain English: what each step does and why.
-const METHOD: { question: string; answer: (chance: string) => React.ReactNode }[] = [
+const METHOD: { question: string; id?: string; answer: (chance: string) => React.ReactNode }[] = [
   {
     question: "Where do the forecast numbers come from?",
     answer: () => (
       <>
         <p>
-          Think of every everyday mishap from the 12 real seasons as a card in a hat, each with what it cost. To
-          make a pretend season, we first decide how many mishaps it has. The real seasons averaged about 9 in 10
-          episodes, so a pretend one gets about 9, sometimes 5, sometimes 13. Then we draw that many cards, and
-          each one costs what that real mishap did. Add them up and that&apos;s one pretend season.
+          Picture each mishap from the 12 real seasons, minus the catastrophes, as a card in a hat marked with
+          what it cost. A pretend season starts with a random number of mishaps, varying the way the real seasons
+          did. Draw that many cards and add up what they cost.
         </p>
         <p>
-          We do that 200,000 times. The middle result is the expected cost. Half the pretend seasons cost less,
-          half cost more. The range is where 8 in 10 of them land, leaving out the luckiest and unluckiest tenth.
+          Repeat that 200,000 times and line the results up from cheapest to most expensive. The one in the middle
+          is the expected cost, so half the pretend seasons cost less and half cost more. The range cuts off the
+          cheapest tenth and the priciest tenth, so 8 out of 10 pretend seasons land inside it.
         </p>
       </>
     ),
   },
+  // these three also appear on the answers page, so they come from one shared source
+  { question: UNLUCKY.question, answer: () => UNLUCKY.answer },
   {
-    question: "Did Larry get more or less unlucky over the years?",
+    question: "Where does the catastrophe chance come from, and why no divorce?",
+    answer: (chance) => <CatastropheChance chance={chance} />,
+  },
+  { question: SEASON_14_COSTS_MORE.question, answer: () => SEASON_14_COSTS_MORE.answer },
+  {
+    question: "Why are the ranges so broad?",
+    id: WHY_RANGES,
     answer: () => (
       <p>
-        No. We checked both how often mishaps happen and what they cost (with inflation taken out), season by
-        season. Neither moved in a way the data can tell apart from chance. So all 12 seasons go in the same hat,
-        and each counts the same.
-      </p>
-    ),
-  },
-  {
-    question: "Why draw real mishaps instead of fitting a curve?",
-    answer: () => (
-      <p>
-        A smooth curve fitted to the costs made the big ones, like the hospital wing and the restaurant stakes,
-        half as common as they were on the show, so a typical pretend season came out far too cheap. Drawing real
-        mishaps keeps the big ones exactly as common as they were. The catch is that no pretend mishap can cost
-        more than the biggest real one.
-      </p>
-    ),
-  },
-  {
-    question: "How are catastrophes handled, and why is the divorce left out?",
-    answer: (chance) => (
-      <p>
-        Catastrophes are rare and huge, so they&apos;re a separate switch. Two of the 12 real seasons had one, the
-        house fire and Latte Larry&apos;s burning down, so the chance is {chance} a season. Switch &ldquo;Add a
-        catastrophe?&rdquo; to Yes and each forecast season gets one of those two. The divorce is left out. It was
-        the show&apos;s one divorce, and Larry ends the series unmarried.
-      </p>
-    ),
-  },
-  {
-    question: "Why does Season 14 cost a little more than Season 13?",
-    answer: () => (
-      <p>
-        Mostly prices. The costs are compared in today&apos;s money so rising prices can&apos;t pass for a trend,
-        then each season is shown in the dollars of the year it would air, using the real price index for 2025
-        and 2026. Each season is also rolled on its own, like real seasons, so a little luck is in the difference
-        too.
+        Most mishaps cost a few hundred dollars, but a handful, like the car periscope deal and HBO passing on his
+        show, cost a million or more. A pretend season that draws one of those jumps toward the high end. Most
+        don&apos;t, which is why the expected cost sits close to the low end.
       </p>
     ),
   },
@@ -159,9 +179,8 @@ const METHOD: { question: string; answer: (chance: string) => React.ReactNode }[
     question: "How sure is this?",
     answer: () => (
       <p>
-        It&apos;s a ballpark. Twelve seasons is not a lot to go on, which is why the ranges are wide. The last
-        three episodes of Season 12 are still being reviewed. Until then they count as having no mishaps, and the
-        forecast will shift slightly once they&apos;re in.
+        It&apos;s a ballpark. Twelve seasons is not a lot to go on. And since every card is a real mishap, no
+        pretend mishap can cost more than the biggest real one.
       </p>
     ),
   },

@@ -10,8 +10,8 @@ Filters: for each saved query that shows totals, also runs it once per combinati
 the dashboard's filter dimensions (FILTER_DIMENSIONS) it doesn't already group by, and
 stores those rows under "slices". The page shows the slice matching the active filters,
 so every filtered number is still computed by MetricFlow. Only metrics built purely from
-the mishaps semantic model can be sliced (net worth and episodes have no category or
-loss kind); the rest are listed as not filterable and the page shows them unfiltered.
+the mishaps semantic model can be sliced (net worth and episodes have no loss kind or
+catastrophic flag); the rest are listed as not filterable and the page shows them unfiltered.
 
 Run from the repo root with the venv active:  python scripts/export_metrics.py
 """
@@ -34,15 +34,15 @@ PROD_SCHEMA = "curb_prod"
 # the dashboard's filters, in the order the page shows them
 FILTER_DIMENSIONS = [
     "episode__season",
-    "mishap__loss_kind_category",
     "mishap__loss_kind",
     "mishap__is_catastrophic",  # "Everyday only": the totals without the divorce, fire and Latte Larry's
 ]
 SLICEABLE_MODEL = "mishaps"
 # saved queries whose page never filters them: export the rows only, no slices (the dent
-# chart's slices were ~1.4 MB that every visitor downloaded for nothing). Remove a name here
-# to make that chart filterable again.
-UNSLICED_QUERIES = {"net_worth_dent"}
+# chart's slices were ~1.4 MB that every visitor downloaded for nothing; the year table is
+# only read whole, by the Net Worth season box and the answers page). Remove a name here to
+# make it filterable again.
+UNSLICED_QUERIES = {"net_worth_dent", "losses_by_year"}
 
 
 def run(*args):

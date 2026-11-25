@@ -32,8 +32,10 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 112, fontWeight: 900, color: BRAND.yellow, letterSpacing: "-0.03em", lineHeight: 1 }}>
             {SITE_NAME}
           </div>
-          <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1.25, maxWidth: 940 }}>
-            Every financial mishap Larry suffers across 12 seasons of Curb Your Enthusiasm, priced.
+          {/* two lines set by hand so the show's name never splits (the image renderer can't nowrap) */}
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 38, fontWeight: 800, lineHeight: 1.25 }}>
+            <div>Every financial mishap Larry suffers over</div>
+            <div>Curb Your Enthusiasm&apos;s 24 year, 12 season run, priced.</div>
           </div>
         </div>
 
