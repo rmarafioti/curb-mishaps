@@ -21,34 +21,22 @@
   ],
   "rows": [
     {
-      "metric_time__year": "2012-01-01 00:00:00",
-      "net_worth_mid": 612000000,
-      "cumulative_mishap_loss": 260829313,
-      "net_worth_after_mishaps_to_date": 351170687
+      "metric_time__year": "2000-01-01 00:00:00",
+      "net_worth_mid": 280000000,
+      "cumulative_mishap_loss": 12040,
+      "net_worth_after_mishaps_to_date": 279987960
     },
     {
-      "metric_time__year": "2006-01-01 00:00:00",
-      "net_worth_mid": 600000000,
-      "cumulative_mishap_loss": 2270015,
-      "net_worth_after_mishaps_to_date": 597729985
+      "metric_time__year": "2001-01-01 00:00:00",
+      "net_worth_mid": 333000000,
+      "cumulative_mishap_loss": 1827860,
+      "net_worth_after_mishaps_to_date": 331172140
     },
     {
-      "metric_time__year": "2008-01-01 00:00:00",
-      "net_worth_mid": 562000000,
-      "cumulative_mishap_loss": 8290140,
-      "net_worth_after_mishaps_to_date": 553709860
-    },
-    {
-      "metric_time__year": "2015-01-01 00:00:00",
-      "net_worth_mid": 650000000,
-      "cumulative_mishap_loss": 260829313,
-      "net_worth_after_mishaps_to_date": 389170687
-    },
-    {
-      "metric_time__year": "2016-01-01 00:00:00",
-      "net_worth_mid": 650000000,
-      "cumulative_mishap_loss": 260829313,
-      "net_worth_after_mishaps_to_date": 389170687
+      "metric_time__year": "2002-01-01 00:00:00",
+      "net_worth_mid": 387000000,
+      "cumulative_mishap_loss": 2130870,
+      "net_worth_after_mishaps_to_date": 384869130
     },
     {
       "metric_time__year": "2003-01-01 00:00:00",
@@ -57,28 +45,58 @@
       "net_worth_after_mishaps_to_date": 437869130
     },
     {
+      "metric_time__year": "2004-01-01 00:00:00",
+      "net_worth_mid": 493000000,
+      "cumulative_mishap_loss": 2237995,
+      "net_worth_after_mishaps_to_date": 490762005
+    },
+    {
+      "metric_time__year": "2005-01-01 00:00:00",
+      "net_worth_mid": 547000000,
+      "cumulative_mishap_loss": 2270015,
+      "net_worth_after_mishaps_to_date": 544729985
+    },
+    {
+      "metric_time__year": "2007-01-01 00:00:00",
+      "net_worth_mid": 550000000,
+      "cumulative_mishap_loss": 8290140,
+      "net_worth_after_mishaps_to_date": 541709860
+    },
+    {
+      "metric_time__year": "2008-01-01 00:00:00",
+      "net_worth_mid": 562000000,
+      "cumulative_mishap_loss": 8290140,
+      "net_worth_after_mishaps_to_date": 553709860
+    },
+    {
+      "metric_time__year": "2009-01-01 00:00:00",
+      "net_worth_mid": 575000000,
+      "cumulative_mishap_loss": 8318753,
+      "net_worth_after_mishaps_to_date": 566681247
+    },
+    {
       "metric_time__year": "2010-01-01 00:00:00",
       "net_worth_mid": 588000000,
       "cumulative_mishap_loss": 8318753,
       "net_worth_after_mishaps_to_date": 579681247
     },
     {
-      "metric_time__year": "2023-01-01 00:00:00",
-      "net_worth_mid": 650000000,
-      "cumulative_mishap_loss": 262214178,
-      "net_worth_after_mishaps_to_date": 387785822
+      "metric_time__year": "2006-01-01 00:00:00",
+      "net_worth_mid": 600000000,
+      "cumulative_mishap_loss": 2270015,
+      "net_worth_after_mishaps_to_date": 597729985
     },
     {
-      "metric_time__year": "2022-01-01 00:00:00",
-      "net_worth_mid": 650000000,
-      "cumulative_mishap_loss": 262214178,
-      "net_worth_after_mishaps_to_date": 387785822
+      "metric_time__year": "2011-01-01 00:00:00",
+      "net_worth_mid": 600000000,
+      "cumulative_mishap_loss": 260829313,
+      "net_worth_after_mishaps_to_date": 339170687
     },
     {
-      "metric_time__year": "2018-01-01 00:00:00",
-      "net_worth_mid": 650000000,
-      "cumulative_mishap_loss": 261625743,
-      "net_worth_after_mishaps_to_date": 388374257
+      "metric_time__year": "2012-01-01 00:00:00",
+      "net_worth_mid": 612000000,
+      "cumulative_mishap_loss": 260829313,
+      "net_worth_after_mishaps_to_date": 351170687
     },
     {
       "metric_time__year": "2013-01-01 00:00:00",
@@ -93,6 +111,36 @@
       "net_worth_after_mishaps_to_date": 377170687
     },
     {
+      "metric_time__year": "2015-01-01 00:00:00",
+      "net_worth_mid": 650000000,
+      "cumulative_mishap_loss": 260829313,
+      "net_worth_after_mishaps_to_date": 389170687
+    },
+    {
+      "metric_time__year": "2018-01-01 00:00:00",
+      "net_worth_mid": 650000000,
+      "cumulative_mishap_loss": 261625743,
+      "net_worth_after_mishaps_to_date": 388374257
+    },
+    {
+      "metric_time__year": "2022-01-01 00:00:00",
+      "net_worth_mid": 650000000,
+      "cumulative_mishap_loss": 262214178,
+      "net_worth_after_mishaps_to_date": 387785822
+    },
+    {
+      "metric_time__year": "2016-01-01 00:00:00",
+      "net_worth_mid": 650000000,
+      "cumulative_mishap_loss": 260829313,
+      "net_worth_after_mishaps_to_date": 389170687
+    },
+    {
+      "metric_time__year": "2023-01-01 00:00:00",
+      "net_worth_mid": 650000000,
+      "cumulative_mishap_loss": 262214178,
+      "net_worth_after_mishaps_to_date": 387785822
+    },
+    {
       "metric_time__year": "2019-01-01 00:00:00",
       "net_worth_mid": 650000000,
       "cumulative_mishap_loss": 261625743,
@@ -101,32 +149,14 @@
     {
       "metric_time__year": "2024-01-01 00:00:00",
       "net_worth_mid": 650000000,
-      "cumulative_mishap_loss": 262216038,
-      "net_worth_after_mishaps_to_date": 387783962
-    },
-    {
-      "metric_time__year": "2000-01-01 00:00:00",
-      "net_worth_mid": 280000000,
-      "cumulative_mishap_loss": 12040,
-      "net_worth_after_mishaps_to_date": 279987960
+      "cumulative_mishap_loss": 262219038,
+      "net_worth_after_mishaps_to_date": 387780962
     },
     {
       "metric_time__year": "2017-01-01 00:00:00",
       "net_worth_mid": 650000000,
       "cumulative_mishap_loss": 261625743,
       "net_worth_after_mishaps_to_date": 388374257
-    },
-    {
-      "metric_time__year": "2007-01-01 00:00:00",
-      "net_worth_mid": 550000000,
-      "cumulative_mishap_loss": 8290140,
-      "net_worth_after_mishaps_to_date": 541709860
-    },
-    {
-      "metric_time__year": "2002-01-01 00:00:00",
-      "net_worth_mid": 387000000,
-      "cumulative_mishap_loss": 2130870,
-      "net_worth_after_mishaps_to_date": 384869130
     },
     {
       "metric_time__year": "2021-01-01 00:00:00",
@@ -139,40 +169,10 @@
       "net_worth_mid": 650000000,
       "cumulative_mishap_loss": 262171493,
       "net_worth_after_mishaps_to_date": 387828507
-    },
-    {
-      "metric_time__year": "2005-01-01 00:00:00",
-      "net_worth_mid": 547000000,
-      "cumulative_mishap_loss": 2270015,
-      "net_worth_after_mishaps_to_date": 544729985
-    },
-    {
-      "metric_time__year": "2011-01-01 00:00:00",
-      "net_worth_mid": 600000000,
-      "cumulative_mishap_loss": 260829313,
-      "net_worth_after_mishaps_to_date": 339170687
-    },
-    {
-      "metric_time__year": "2004-01-01 00:00:00",
-      "net_worth_mid": 493000000,
-      "cumulative_mishap_loss": 2237995,
-      "net_worth_after_mishaps_to_date": 490762005
-    },
-    {
-      "metric_time__year": "2009-01-01 00:00:00",
-      "net_worth_mid": 575000000,
-      "cumulative_mishap_loss": 8318753,
-      "net_worth_after_mishaps_to_date": 566681247
-    },
-    {
-      "metric_time__year": "2001-01-01 00:00:00",
-      "net_worth_mid": 333000000,
-      "cumulative_mishap_loss": 1827860,
-      "net_worth_after_mishaps_to_date": 331172140
     }
   ],
   "filterable_metrics": [],
   "slices": {},
-  "exported_at": "2026-11-23T23:08:13+00:00",
+  "exported_at": "2026-11-25T17:08:44+00:00",
   "source": "curb_prod"
 }
