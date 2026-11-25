@@ -27,28 +27,29 @@ export default function NetWorthByYear() {
   return (
     <>
       <header className="masthead">
-        <h1>Net worth to mishaps by year</h1>
         {/* the final-season joke: the J.G. Wentworth commercial */}
         <p className="hero-lede">&ldquo;I have a structured settlement and I need cash nooowwww!&rdquo;</p>
-        <p className="lede">His real net worth, and what he&apos;d have if every mishap so far came out of it.</p>
+        <h1>Net Worth vs. Mishaps</h1>
+        <p className="lede">Larry David&apos;s real net worth, and what it would be if every mishap was deducted from it.</p>
       </header>
 
+      {/* the year is stated once, above the cards; the two tiles make the hero below them */}
       {row && (
-        <section className="kpis" aria-label={`Net worth in ${kpiYear}`}>
-          <div className="hero">
-            <span className="kpi-label">{label(netWorthDent, "net_worth_after_mishaps_to_date")}, {kpiYear}</span>
-            <span className="hero-value">{usdCompact(row.net_worth_after_mishaps_to_date)}</span>
-            <span className="kpi-sub">His real net worth minus every mishap up to {kpiYear}</span>
-          </div>
+        <section className="kpis kpis-stacked" aria-label={`Net worth in ${kpiYear}`}>
+          <p className="kpis-note">All figures as of {kpiYear}, with each loss in the dollars of the year it happened.</p>
           <div className="tile">
             <span className="kpi-label">{label(netWorthDent, "net_worth_mid")}</span>
             <span className="tile-value">{usdCompact(row.net_worth_mid)}</span>
-            <span className="kpi-sub">reported, {kpiYear}</span>
+            <span className="kpi-sub">Reported, without counting his real 2007 divorce. His show divorce counts instead.</span>
           </div>
           <div className="tile">
             <span className="kpi-label">{label(netWorthDent, "cumulative_mishap_loss")}</span>
             <span className="tile-value">{usdCompact(row.cumulative_mishap_loss)}</span>
-            <span className="kpi-sub">every mishap through {kpiYear}</span>
+            <span className="kpi-sub">Every mishap so far</span>
+          </div>
+          <div className="hero">
+            <span className="kpi-label">{label(netWorthDent, "net_worth_after_mishaps_to_date")}</span>
+            <span className="hero-value">{usdCompact(row.net_worth_after_mishaps_to_date)}</span>
           </div>
         </section>
       )}
@@ -58,7 +59,7 @@ export default function NetWorthByYear() {
         {seasonRow ? (
           <>
             <span className="kpi-label">
-              Season {filters.episode__season} ({seasonYear}): {label(lossesByYear, "total_mishap_loss")}
+              Season {filters.episode__season}: {label(lossesByYear, "total_mishap_loss")}
             </span>
             <span className="tile-value">{usdFull(seasonRow.total_mishap_loss)}</span>
             <span className="kpi-sub">
@@ -70,13 +71,18 @@ export default function NetWorthByYear() {
         ) : (
           <>
             <span className="kpi-label">What did one season cost him?</span>
-            <span className="kpi-sub">Pick a season above to see its total and its share of his net worth that year.</span>
+            <span className="kpi-sub">Select a season above to see its total and its share of LD&apos;s net worth.</span>
           </>
         )}
       </section>
 
       <section className="card">
         <h2>{netWorthDent.label}</h2>
+        {/* the tooltip follows the mouse across the whole plot, not only the dots */}
+        <p className="card-sub">
+          <span className="hover-only">Hover along the chart to see each year&apos;s figures.</span>
+          <span className="touch-only">Swipe sideways through every year.</span>
+        </p>
         <NetWorthDent rows={netWorthDent.rows} seasonOf={SEASON_OF_YEAR} highlightYear={seasonYear} />
       </section>
     </>

@@ -16,7 +16,7 @@ export type MetricInfo = { name: string; label: string; description: string };
 /** The dashboard's filters; same names and order as FILTER_DIMENSIONS in the export script. */
 export const FILTER_DIMS = ["episode__season", "mishap__loss_kind", "mishap__is_catastrophic"] as const;
 export type FilterDim = (typeof FILTER_DIMS)[number];
-/** The Forecast tab's switch: "" = everyday mishaps only, "1" = add a catastrophe. It picks
+/** The Future Flops switch ("Add A Catastrophe?"): "" = everyday mishaps only, "1" = add a catastrophe. It picks
  *  between the forecast's two rows per season, so it isn't in FILTER_DIMS (no slices). */
 export const FORECAST_DIM = "season_forecast__has_forecast_catastrophe";
 export type PageFilterDim = FilterDim | typeof FORECAST_DIM;
@@ -64,7 +64,6 @@ export type Mishap = {
   mishap: string;
   mishap__description: string;
   mishap__loss_kind: string;
-  mishap__loss_kind_category: string;
   mishap__is_catastrophic: string;
   mishap__estimate_basis: string;
   episode__season: string;
@@ -77,15 +76,14 @@ export type Mishap = {
 
 // Each pricing note opens with how it was priced ("assumption:", "reference:", "category
 // default:", "stated"); that lead word becomes the pricing method and the rest stays as the
-// note. Older notes that open with "catastrophic." get no method (the flag comes from
-// is_catastrophic). Text splitting only.
-const BASIS_KINDS = ["catastrophic", "assumption", "reference", "category default", "stated"];
+// note. Text splitting only.
+const BASIS_KINDS = ["assumption", "reference", "category default", "stated"];
 
 export function splitBasis(basis: string): { kind?: string; note: string } {
   const kind = BASIS_KINDS.find((k) => basis.toLowerCase().startsWith(k));
   if (!kind) return { note: basis };
   const note = basis.slice(kind.length).replace(/^[.:]\s*/, "");
-  return { kind: kind === "catastrophic" ? undefined : kind, note: note.charAt(0).toUpperCase() + note.slice(1) };
+  return { kind, note: note.charAt(0).toUpperCase() + note.slice(1) };
 }
 
 export type DentRow = {
@@ -107,14 +105,11 @@ export type SeasonRow = {
   episode__season: string;
   total_mishap_loss: number;
   mishap_count: number;
-  episode_count: number;
-  mishaps_per_episode: number;
 };
 
 export type YearRow = {
   metric_time__year: string;
   total_mishap_loss: number;
-  net_worth_mid: number;
   pct_mishap_to_net_worth: number;
 };
 
@@ -129,8 +124,6 @@ export type ForecastRow = {
   forecast_mishaps_median: number;
   forecast_mishaps_p10: number;
   forecast_mishaps_p90: number;
-  forecast_realized_loss_median: number;
-  forecast_hypothetical_loss_median: number;
   forecast_catastrophe_chance: number;
   forecast_episodes: number;
 };
@@ -152,6 +145,11 @@ export const pickForecast = (withCatastrophe: boolean) =>
 
 export const yearOf = (timestamp: string) => timestamp.slice(0, 4);
 export const dateOf = (timestamp: string) => timestamp.slice(0, 10);
+// "November 23, 2026": read in UTC so the day never shifts with the build machine's time zone
+export const longDateOf = (timestamp: string) =>
+  new Date(`${dateOf(timestamp)}T00:00:00Z`).toLocaleDateString("en-US", {
+    month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+  });
 
 export const byNumber = <T,>(key: (row: T) => number, descending = false) =>
   (a: T, b: T) => (descending ? key(b) - key(a) : key(a) - key(b));
@@ -161,12 +159,13 @@ export const label = (data: { metrics: MetricInfo[] }, name: string) =>
 
 // --- formatting -------------------------------------------------------------------------
 
-/** $262.0M, $1.8M, $25.1K, $600 */
+/** $262.2M, $1.8M, $25.1K, $10K, $600 (a trailing ".0" is dropped: $10K, not $10.0K) */
 export function usdCompact(value: number): string {
   const abs = Math.abs(value);
-  if (abs >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
-  if (abs >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-  if (abs >= 1e4) return `$${(value / 1e3).toFixed(1)}K`;
+  const short = (n: number, unit: string) => `$${n.toFixed(1).replace(/\.0$/, "")}${unit}`;
+  if (abs >= 1e9) return short(value / 1e9, "B");
+  if (abs >= 1e6) return short(value / 1e6, "M");
+  if (abs >= 1e4) return short(value / 1e3, "K");
   return `$${Math.round(value).toLocaleString("en-US")}`;
 }
 
@@ -177,7 +176,11 @@ export const usdFull = (value: number) => `$${Math.round(value).toLocaleString("
 export const usdMillions = (value: number) => `$${Math.round(value / 1e6).toLocaleString("en-US")}M`;
 
 /** a share (0.42085) as a percent: 42.1% */
-export const percent = (share: number) => `${(share * 100).toFixed(1)}%`;
+export const percent = (share: number) => {
+  const pct = share * 100;
+  // under 1%, two significant digits (0.0043%, 0.55%) so a small share never shows as 0.0%
+  return pct >= 1 ? `${pct.toFixed(1)}%` : `${pct.toLocaleString("en-US", { maximumSignificantDigits: 2 })}%`;
+};
 
 /** a share (0.1667) as a whole percent: 17% */
 export const percentWhole = (share: number) => `${Math.round(share * 100)}%`;

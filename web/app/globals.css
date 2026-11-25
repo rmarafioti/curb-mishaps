@@ -19,9 +19,8 @@
   --track: #1f3a52;
   --raised: #1a3550;     /* tooltips: a step lighter than the cards they float over */
   --field: #21405e;      /* filter dropdowns: a step lighter than the navbar */
-  --pill-catastrophic: #f0715c; /* coral: catastrophic mishaps (Top 10 pills) */
-  --pill-reference: #6cb0f0;    /* lighter sky blue, readable as small text on navy */
-  --link: #8cc6f7;              /* text links: pale sky blue, ~8:1 on the navy cards (the chart blue is too dark for text) */
+  --pill-catastrophic: #f0715c; /* coral: the catastrophic asterisk (Top 10) */
+  --link: #8cc6f7;              /* the author's logo links: pale sky blue, ~8:1 on navy (text links use white + a chart-blue underline) */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,6 +43,11 @@ body {
   grid-template-columns: minmax(0, 1fr); /* never wider than the screen; wide tables scroll inside */
   gap: 24px;
 }
+
+/* unboxed sections have no card edge to mark where one ends, so they get double the gap
+   above their heading (the first section on a page sits under the masthead as usual) */
+.page > section.prose-plain:not(:first-of-type),
+.page > section.faq-plain:not(:first-of-type) { margin-top: 24px; }
 
 .masthead { display: grid; gap: 8px; padding-bottom: 8px; }
 h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; font-weight: 650; }
@@ -153,7 +157,6 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 }
 .filter-row label { display: grid; gap: 4px; font-size: 0.8rem; color: var(--ink-secondary); }
 /* a note beside a filter (Forecast: what the catastrophe switch does), level with the dropdown */
-.filter-note { align-self: end; max-width: 100ch; } /* its last line sits on the dropdown's bottom edge */
 .filter-row select, .clear {
   font: inherit;
   font-size: 0.9rem;
@@ -188,10 +191,56 @@ h2 { font-size: 1.15rem; font-weight: 600; }
   align-content: start;
   gap: 4px;
 }
+/* Net Worth: the two tiles side by side, and the figure they make below them. A fixed width
+   (shrinks on phones) so the cards don't shift with the numbers and there's room on the right */
+.kpis-stacked { grid-template-columns: 1fr 1fr; max-width: 560px; }
+.kpis-stacked .hero { grid-column: 1 / -1; }
+/* a line above a row of tiles, the full width of their grid (Net Worth, Future Flops) */
+.kpis-note { grid-column: 1 / -1; margin: 0; font-size: 0.9rem; color: var(--ink-secondary); }
+.kpis-note + .kpis-note { margin-top: -8px; } /* two notes read as one block, not two grid rows */
 .kpi-label { color: var(--ink-secondary); font-size: 0.85rem; }
 .hero-value { font-size: 3.5rem; font-weight: 650; line-height: 1.05; }
 .tile-value { font-size: 2.75rem; font-weight: 600; line-height: 1.05; }
 .kpi-sub { color: var(--ink-muted); font-size: 0.8rem; }
+/* the "i" beside a term (components/InfoTip): a small ringed letter; its box opens below the card */
+.tile { position: relative; }
+.with-tip { display: flex; align-items: center; gap: 6px; } /* a label with an "i": centered on the text */
+.infotip { display: inline-flex; }
+.infotip-button {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-secondary);
+  font: italic 700 11px/1 Georgia, serif; /* the classic info "i" */
+  cursor: pointer;
+}
+.infotip-button:focus-visible { outline: 2px solid var(--heading); outline-offset: 2px; }
+.infotip-button[aria-expanded="true"] { color: var(--heading); }
+.infotip-box {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.3);
+  padding: 10px 12px;
+  color: var(--ink);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  z-index: 3;
+}
+.infotip-box strong { color: var(--heading); }
+/* the "i" on a table header (Costs list, How It Was Priced): the box opens under the header at
+   the column's width; on phones the same "i" sits on its own line above the list */
+.th-tip { position: relative; }
+.th-tip .infotip-box { min-width: 300px; font-weight: 400; }
+.pricing-key { position: relative; font-size: 0.85rem; color: var(--ink-secondary); margin-top: 8px; }
 
 /* --- charts ----------------------------------------------------------------------------- */
 
@@ -222,22 +271,41 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 /* a halo in the card colour, so a line passing behind a label never cuts through it */
 .range-label, .forecast-value { paint-order: stroke; stroke: var(--surface); stroke-width: 4px; stroke-linejoin: round; }
 .forecast-value { fill: var(--heading); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; pointer-events: none; }
-.legend-line.forecast { background: repeating-linear-gradient(90deg, var(--series-2) 0 6px, transparent 6px 10px); }
+.legend-line.forecast { background: var(--series-2); } /* solid in the legend so the dot sits centred; the colour tells it apart */
 .legend-swatch.forecast-band { background: rgba(194, 132, 0, 0.35); }
-/* Forecast: the two seasons' figures and the catastrophe chance, three tiles in a row above
-   the chart (stacked on phones) */
-.forecast-seasons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-@media (max-width: 720px) { .forecast-seasons { grid-template-columns: 1fr; } }
-.forecast-seasons .tile-value { color: var(--heading); font-size: 2rem; }
-.forecast-range { color: var(--ink-secondary); font-size: 0.9rem; }
+/* Forecast: the two seasons' costs, the mishap count and the catastrophe chance, four tiles in
+   a row above the chart (two by two on tablets, stacked on phones) */
+/* the season costs lead: wider tiles, bigger yellow figures; the count and chance step down to
+   smaller white ones, like the Net Worth tiles under their hero */
+.forecast-seasons { display: grid; grid-template-columns: 1.35fr 1.35fr 1fr 1fr; gap: 12px; }
+@media (max-width: 960px) { .forecast-seasons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .forecast-seasons { grid-template-columns: 1fr; } }
+.forecast-seasons .tile-value { color: var(--ink); font-size: 2rem; }
+.forecast-seasons .tile-lead .tile-value { color: var(--heading); font-size: 2.75rem; }
+/* "Why are the ranges so broad?" opens its answer and scrolls to it, clear of the fixed filter row */
+.method-item { scroll-margin-top: 110px; }
 .method-item .faq-answer p + p { margin-top: 0; }
 .season-callout { display: flex; flex-wrap: wrap; align-items: baseline; align-content: center; gap: 4px 16px; min-height: 96px; } /* same height empty or filled, so the chart below never jumps */
 .season-callout .kpi-label { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
 .season-callout .tile-value { color: var(--heading); }
 .season-callout .kpi-sub { font-size: 0.9rem; color: var(--ink-secondary); }
-.legend-line { width: 16px; height: 2px; border-radius: 1px; }
-.legend-line.real { background: var(--series-2); }
-.legend-line.after { background: var(--series-1); }
+/* a line with a dot on it, like the chart's lines and their points (--dot: the series colour) */
+.legend-line { position: relative; width: 20px; height: 2px; border-radius: 1px; flex: none; }
+.legend-line::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot);
+  transform: translate(-50%, -50%);
+}
+.legend-line.real { background: var(--series-2); --dot: var(--series-2); }
+.legend-line.after { background: var(--series-1); --dot: var(--series-1); }
+.legend-line.forecast { --dot: var(--series-2); }
+.legend-note { color: var(--ink-muted); } /* where a series comes from, after its name */
 .legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
 .legend-swatch.gap { background: linear-gradient(rgba(245, 196, 0, 0.55), rgba(245, 196, 0, 0.08)); }
 .crosshair { stroke: var(--axis); stroke-width: 1; pointer-events: none; }
@@ -248,7 +316,6 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 .dot { stroke: var(--surface); stroke-width: 2; transition: r 0.1s; }
 .hit { fill: transparent; cursor: pointer; outline: none; }
 .hit:focus-visible { stroke: var(--ink); stroke-width: 1.5; }
-.direct-label { fill: var(--ink-secondary); font-size: 12px; }
 .nw-mark { fill: var(--series-2); pointer-events: none; }
 .nw-label { fill: var(--ink-secondary); font-size: 11px; font-variant-numeric: tabular-nums; pointer-events: none; }
 .note { color: var(--ink-muted); font-size: 0.8rem; }
@@ -275,8 +342,14 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 .tooltip-meta { color: var(--ink-secondary); font-size: 0.8rem; }
 /* low – mid – high; the mid (the cost we count) in Curb yellow */
 .tooltip-range { font-size: 0.82rem; margin-top: 4px; font-variant-numeric: tabular-nums; }
-.tooltip-mid { background: none; color: var(--heading); font-weight: 700; }
-.tooltip-basis { color: var(--ink-muted); font-size: 0.78rem; margin-top: 4px; }
+.tooltip-mid, .range-mid { background: none; color: var(--heading); font-weight: 700; } /* the mid of a range: the figure we count */
+.kpi-sub .range-mid, .mishap-table .range-mid { color: var(--series-2); font-weight: 600; } /* in the card and table, stepped down so it doesn't shout */
+/* the pricing note in the mishap list: the lighter grey and smaller size of the Top 10 notes,
+   method word bolded, so the text-heavy list has room to breathe */
+.mishap-table .m-note { color: var(--ink-muted); font-size: 0.82rem; }
+.mishap-table .m-note strong { color: var(--ink-secondary); font-weight: 600; }
+/* the price range leads the pricing note in the mishap list, on its own line */
+.mishap-table .m-range { display: block; margin-bottom: 2px; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* --- tables ----------------------------------------------------------------------------- */
 
@@ -284,46 +357,67 @@ h2 { font-size: 1.15rem; font-weight: 600; }
 table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 th { text-align: left; color: var(--ink-secondary); font-weight: 500; padding: 8px 10px; border-bottom: 1px solid var(--axis); }
 td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+/* no rule under the last row (Top 10, and each page of the mishap list) */
+tbody tr:last-child td { border-bottom: none; }
 .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .nowrap { white-space: nowrap; }
 .basis { display: block; color: var(--ink-muted); font-size: 0.78rem; margin-top: 2px; }
 
-/* Top 10: rank and mishap in the display face; how it was priced as a colored pill */
+/* Top 10: the rank in the display face, in Curb yellow */
 .rank { font-family: var(--font-display), system-ui, sans-serif; font-weight: 900; font-size: 1.15rem; line-height: 1.35; color: var(--heading); text-align: right; width: 2.5ch; }
-/* desktop: Episode and Cost only as wide as their content, so spare width goes to the
-   left-hand columns and Episode sits next to Cost (phones restack the row) */
+/* the full mishap list on wider screens: Aired and Episode stay put while the other columns
+   scroll sideways under them (card background; once scrolled, a shadow on the frozen edge
+   shows the rows sliding behind) */
+.mishap-table .phone-label { display: none; }
 @media (min-width: 641px) {
-  .top10 .t-episode, .top10 .top-cost, .top10 th:nth-child(4), .top10 th:nth-child(5) { width: 1%; }
+  .mishap-table .m-what { min-width: 240px; }
+  .mishap-table .m-basis { min-width: 320px; }
+  .mishap-table .m-date, .mishap-table .m-episode { position: sticky; z-index: 1; background: var(--surface); border-bottom: none; }
+  /* collapsed table borders don't move with sticky cells, so their row lines are drawn as
+     shadows instead (and the border is dropped, or the line shows twice) */
+  .mishap-table .m-date { left: 0; width: 7rem; min-width: 7rem; box-shadow: inset 0 -1px 0 var(--grid); }
+  .mishap-table .m-episode { left: 7rem; box-shadow: inset 0 -1px 0 var(--grid); }
+  .mishap-table th.m-date, .mishap-table th.m-episode { box-shadow: inset 0 -1px 0 var(--axis); }
+  .mishap-table tbody tr:last-child td { box-shadow: none; } /* no line under the last row */
+  /* the shadow is a gradient strip hung off the frozen edge (a cell's outer box-shadow gets
+     painted over by its neighbors); it fades in once the rows have scrolled under */
+  .mishap-table .m-episode::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    width: 14px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent);
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+  }
+  .is-scrolled .mishap-table .m-episode::after { opacity: 1; }
+}
+@media (min-width: 641px) {
+  .top10 .t-episode, .top10 .top-cost, .top10 th:nth-child(3), .top10 th:nth-child(4) { width: 1%; }
   .top10 .t-episode { padding-right: 32px; }
 }
 .top-cost { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
 .mishap-title { display: block; font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); }
-.pill {
-  display: inline-block;
-  margin-top: 1px; /* lines up with the first line of the mishap title */
-  padding: 1px 9px;
-  white-space: nowrap;
-  border-radius: 999px;
-  border: 1px solid currentColor;
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: capitalize;
-  letter-spacing: 0.02em;
-}
-.pill-catastrophic { color: var(--pill-catastrophic); background: rgba(240, 113, 92, 0.14); }
-/* the Catastrophic flag, in line after the mishap title: coral text with an asterisk, not a pill */
-.cat-flag {
-  margin-left: 8px;
-  color: var(--pill-catastrophic);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.cat-flag::before { content: "*"; margin-right: 2px; }
-.pill-assumption { color: var(--heading); background: rgba(245, 196, 0, 0.12); }
-.pill-reference { color: var(--pill-reference); background: rgba(108, 176, 240, 0.14); }
-.pill-category-default, .pill-stated { color: var(--ink-secondary); background: rgba(238, 245, 250, 0.08); }
+/* Top 10: under each title, the price range (estimates), then the note led by its method */
+.t-range { display: block; margin-top: 4px; font-size: 0.82rem; color: var(--ink-secondary); font-variant-numeric: tabular-nums; }
+.top10 .range-mid { color: var(--series-2); font-weight: 600; }
+.top10 .basis strong { color: var(--ink-secondary); font-weight: 600; }
+/* a hairline between the range and the note it explains (only when there's a range) */
+.top10 .t-range + .basis { border-top: 1px solid var(--grid); margin-top: 6px; padding-top: 6px; }
+/* the catastrophic mark: a large coral asterisk after the title (defined in the legend) */
+.cat-star { margin-left: 6px; color: var(--pill-catastrophic); font-family: system-ui, sans-serif; font-size: 1.4em; font-weight: 700; line-height: 0; vertical-align: -0.2em; }
+.method-legend .cat-star { margin: 0 2px 0 0; font-size: 1.3em; }
+/* the key above the Top 10, in its own box: "Term: definition" on one line each, term in
+   white, definition in grey, all five stacked in one narrow column */
+.legend-card { justify-self: start; width: fit-content; max-width: 100%; padding: 16px 24px; gap: 8px; } /* as wide as its content, left edge in line with the list; an image goes to its right later */
+.legend-title { font-size: 0.95rem; color: var(--heading); }
+.method-legend { display: grid; gap: 6px; font-size: 0.85rem; }
+.method-legend dt, .method-legend dd { display: inline; }
+.method-legend dt { color: var(--ink); font-weight: 600; }
+.method-legend dd { color: var(--ink-secondary); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* open/close rows (FAQ answers as <details>, the mishap table's toggle button): our own
@@ -345,6 +439,7 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 /* the table's toggle on the left, its pager on the right of the same line, so the
    buttons never move with the rows' height */
 .table-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; min-height: 34px; }
+.table-view { min-width: 0; } /* lets the card's grid column stay card-width, so a wide table scrolls inside instead of stretching the card */
 .table-view .table-scroll { margin-top: 8px; }
 /* styled like the card's h2 so the table is easy to spot */
 .disclosure-toggle {
@@ -369,12 +464,14 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
   cursor: pointer;
 }
 .pager button:disabled { opacity: 0.4; cursor: default; }
-.pager-arrow { color: var(--heading); font-weight: 700; }
 .pager-status { color: var(--ink-secondary); font-variant-numeric: tabular-nums; }
 
 /* --- FAQ -------------------------------------------------------------------------------- */
 
 .faq { gap: 0; }
+.faq-plain { display: grid; } /* questions straight on the page, no card box (Future Flops, Answers) */
+.faq-plain h2 { color: var(--heading); } /* with no box, the gold heading marks where a section starts */
+.faq-plain .faq-item { border-top: none; } /* no rule between questions; the chevrons line them up */
 .faq h2 { margin-bottom: 8px; }
 .faq-item { border-top: 1px solid var(--grid); }
 .faq-item > summary { padding: 14px 0; font-weight: 500; align-items: flex-start; }
@@ -383,15 +480,18 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .faq-answer { padding: 0 0 16px 22px; display: grid; gap: 8px; color: var(--ink-secondary); max-width: 76ch; }
 .faq-figure { color: var(--heading); font-weight: 700; font-variant-numeric: tabular-nums; }
 .faq-see { font-size: 0.85rem; color: var(--ink-muted); }
-.faq-see a, .faq-see a:visited { color: var(--link); }
 
 /* --- home ------------------------------------------------------------------------------- */
 
-/* hero: room to breathe above the cards; a grid so the art can sit beside the copy later */
+/* hero: room to breathe above the questions; a grid so the art can sit beside the copy later */
 .home-hero { display: grid; align-items: center; gap: 32px; padding: 32px 0 24px; }
 .home-hero-copy { display: grid; gap: 16px; }
+/* keeps the show's name on one line on wider screens; phones let it wrap (too long for a narrow line) */
+@media (min-width: 641px) { .nowrap-wide { white-space: nowrap; } }
 /* tighter than the other titles (-0.01em), closer to the show's own title card */
 .home-hero h1 { font-size: clamp(2.6rem, 7vw, 4.5rem); line-height: 1.05; letter-spacing: -0.03em; }
+/* Libre Franklin sets "ha" tighter than its neighbors (46 vs ~60 units); open it to match */
+.home-hero h1 .kern-ha { letter-spacing: -0.015em; }
 /* hero copy (home intro, page subheaders): the display face, white, a step down from the title */
 .hero-lede {
   font-family: var(--font-display), system-ui, sans-serif;
@@ -402,40 +502,30 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
   max-width: 34ch;
 }
 
-.explore { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-.explore-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  display: grid;
-  align-content: start; /* short cards keep their lines together, not spread to the row height */
-  gap: 6px;
-  color: var(--ink);
-  text-decoration: none;
-  transition: border-color 0.15s;
-}
-.explore-card:focus-visible { border-color: var(--heading); }
-.explore-title { font-family: var(--font-display), system-ui, sans-serif; font-weight: 800; font-size: 1.35rem; line-height: 1.2; }
-/* home: the shortcut to the answers and the small notes under the hero */
+/* home: the questions (one per dashboard) and the shortcut to the answers */
 .home-notes { display: grid; gap: 8px; padding: 16px 0; } /* a little more air above and below than the page's 24px gap */
-.questions-lead { font-size: 1.35rem; line-height: 1.2; margin-bottom: 4px; } /* h2: Curb display face */
+.questions-lead { font-size: 1.35rem; line-height: 1.2; margin-bottom: 4px; color: var(--heading); } /* h2: Curb display face, yellow like the build box's heading */
 .shortcut { color: var(--ink-secondary); max-width: 70ch; }
 .sample-questions { padding-left: 20px; display: grid; gap: 6px; }
 .sample-questions li::marker { color: var(--heading); }
-.sample-questions a { color: var(--ink); text-decoration: none; }
-.home-notes .screen-note:first-of-type { margin-top: 8px; }
 .shortcut strong { color: var(--ink); }
-.shortcut a, .build-strip a { color: var(--link); text-underline-offset: 2px; }
-
-/* home: the build pipeline in one line, steps joined by yellow arrows */
-/* the lead-in under the mission line: Curb font in white, a step below the yellow mission */
-.build-lead {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 800;
-  font-size: clamp(1rem, 1.8vw, 1.15rem);
-  line-height: 1.4;
+/* text links, site-wide: white text underlined in the chart blue, so they read as links without
+   hover (phones) and stay calm in a list; gold underline on hover */
+.sample-questions a, .shortcut a, .build-strip a, .kpis-note a, .prose a, .faq-see a {
   color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--series-1);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+
+/* home: the build box. The explanation under the yellow mission line: regular body face in
+   white, so the heading leads and the chips carry the display font */
+.build-lead {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 65ch;
   margin: 0;
 }
 .build-strip .mission { margin: 0; }
@@ -449,8 +539,6 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
   white-space: nowrap;
 }
 .step-arrow { color: var(--heading); font-weight: 700; margin: 0 12px; }
-.explore-tagline { color: var(--heading); font-weight: 600; } /* the LD-voice line, Curb yellow */
-.explore-blurb { color: var(--ink-secondary); font-size: 0.9rem; }
 
 /* --- prose pages (forecast, about) ----------------------------------------------------- */
 
@@ -480,15 +568,16 @@ td { padding: 8px 10px; border-bottom: 1px solid var(--grid); vertical-align: to
 .repo-link { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
 .repo-link .link-icon { width: 28px; height: 28px; color: var(--heading); }
 .prose ul.link-row { list-style: none; padding-left: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; } /* About: author links */
-.prose ul.roomy { gap: 14px; } /* longer, multi-line points (About: Data collection) */
-/* highlights in the long list: bold in the text's own soft tone (like the show titles), not bright white;
-   named terms (stated, reference, high...) also italic */
-.prose ul.roomy strong { color: inherit; font-weight: 700; }
-.prose ul.roomy li > strong:first-child { color: var(--ink); } /* each point's lead-in, white: the one bright spot per bullet */
-.prose ul.roomy em { color: inherit; font-weight: 700; font-style: italic; }
 .prose strong { color: var(--ink); font-weight: 600; }
+/* a prose section straight on the page, no card box (About: The Mission); spaced like a card */
+.prose-plain { display: grid; gap: 12px; min-width: 0; }
+.prose-plain h2 { color: var(--heading); }
+.prose .build-lead { color: var(--ink); } /* white like on home, over the prose grey */
+/* About: the intro's closing line, the project's point, on its own line in Curb yellow */
+.lede-hook { color: var(--heading); font-weight: 700; }
 .prose h3 { font-size: 1rem; font-weight: 600; margin-top: 8px; }
-.prose a, .prose a:visited { color: var(--link); text-underline-offset: 2px; }
+.prose a.icon-link { color: var(--link); text-decoration: none; } /* logo-only links (author): pale blue, no underline; gold on hover */
+.prose .author-name { color: var(--heading); font-weight: 700; } /* About: the author's name in Curb yellow */
 .prose em { color: var(--ink); font-style: normal; font-weight: 500; } /* named terms: stated, low, ... */
 /* show titles: italic and heavier so they stand out, in the text's soft tone (not bright white) */
 cite { font-style: italic; font-weight: 700; color: inherit; }
@@ -517,6 +606,8 @@ cite { font-style: italic; font-weight: 700; color: inherit; }
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 1; /* in front of the connecting line */
+  box-sizing: border-box; /* 28px including the ring, so its centre is 14px in */
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -529,12 +620,14 @@ cite { font-style: italic; font-weight: 700; color: inherit; }
   font-weight: 900;
   font-size: 0.85rem;
 }
+/* the connecting line: from this circle's centre to the next one's, behind both circles */
 .pipeline li:not(:last-child)::after {
   content: "";
   position: absolute;
-  left: 14px;
-  top: 30px;
-  bottom: 2px;
+  z-index: 0;
+  left: 13px;
+  top: 14px;
+  bottom: -14px;
   width: 2px;
   background: var(--axis);
 }
@@ -550,8 +643,14 @@ cite { font-style: italic; font-weight: 700; color: inherit; }
   font-size: 0.85rem;
   line-height: 1.55;
   color: var(--ink);
-  /* full card width, so the YAML fits without a scrollbar (still scrolls on a phone) */
+  /* full card width, so the YAML fits without a scrollbar */
 }
+/* phones: long lines wrap inside the box instead of scrolling sideways; spaces and indents are kept */
+@media (max-width: 640px) {
+  .code { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: visible; }
+}
+/* About: the Total Mishap Loss figure in gold, like the answers page (over .prose strong's white) */
+.prose .faq-figure { color: var(--heading); font-weight: 700; }
 
 /* --- display face: Libre Franklin (Franklin Gothic revival) for titles and KPI figures --- */
 
@@ -650,16 +749,15 @@ html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
   .phone-only { display: block; }
 
 
-  /* Top 10: each mishap as a block instead of a 5-column row:
-     rank | title + note
-          | pill .... cost
-          | episode */
+  /* Top 10: each mishap as a block instead of a 4-column row:
+     rank | title + range + note
+          | episode .... cost */
   .top10 thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .top10, .top10 tbody { display: block; }
   .top10 tr {
     display: grid;
     grid-template-columns: 2.2ch minmax(0, 1fr) auto;
-    grid-template-areas: "rank title title" ". pill cost" ". episode episode";
+    grid-template-areas: "rank title title" ". episode cost";
     column-gap: 10px;
     row-gap: 6px;
     padding: 14px 0;
@@ -668,30 +766,34 @@ html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
   .top10 td { display: block; padding: 0; border: none; }
   .top10 .rank { grid-area: rank; text-align: left; width: auto; }
   .top10 .t-title { grid-area: title; }
-  .top10 .t-pill { grid-area: pill; align-self: center; }
   .top10 .top-cost { grid-area: cost; align-self: center; }
-  .top10 .t-episode { grid-area: episode; white-space: normal; color: var(--ink-secondary); font-size: 0.85rem; }
+  .top10 .t-episode { grid-area: episode; align-self: center; white-space: normal; color: var(--ink-secondary); font-size: 0.85rem; }
 
-  /* the full mishap list: each mishap as a block instead of a 4-column row, so it fits:
+  /* the full mishap list: each mishap as a block instead of a 5-column row, so it fits:
      what happened ........... cost
-     date · episode */
+     date · episode
+     how it was priced */
   .mishap-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .mishap-table, .mishap-table tbody { display: block; }
   .mishap-table tr {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    grid-template-areas: "what what cost" "date episode episode";
+    grid-template-areas: "what what cost" "date episode episode" "basis basis basis";
     column-gap: 10px;
     row-gap: 4px;
     padding: 12px 0;
     border-bottom: 1px solid var(--grid);
   }
+  .top10 tr:last-child, .mishap-table tr:last-child { border-bottom: none; }
   .mishap-table td { display: block; padding: 0; border: none; }
   .mishap-table .m-what { grid-area: what; color: var(--ink); }
   .mishap-table .m-cost { grid-area: cost; }
   .mishap-table .m-date, .mishap-table .m-episode { font-size: 0.82rem; color: var(--ink-secondary); }
   .mishap-table .m-date { grid-area: date; }
   .mishap-table .m-episode { grid-area: episode; overflow: hidden; text-overflow: ellipsis; }
+  .mishap-table .m-basis { grid-area: basis; font-size: 0.82rem; color: var(--ink-secondary); }
+  .mishap-table .m-basis:empty { display: none; }
+  .mishap-table .phone-label { display: inline; color: var(--ink-muted); }
   .pager { width: 100%; justify-content: space-between; }
 }
 
@@ -700,12 +802,12 @@ html, .plot-scroll { scrollbar-color: #345a7a var(--page); } /* thumb, track */
 /* touch screens fire :hover on tap and leave it stuck, so these apply only where hover works */
 @media (hover: hover) {
   .shortcut a:hover, .build-strip a:hover, .sample-questions a:hover { color: var(--heading); }
+  .sample-questions a:hover, .shortcut a:hover, .build-strip a:hover, .kpis-note a:hover, .prose a:hover, .faq-see a:hover { text-decoration-color: var(--heading); }
   .brand:hover { color: var(--heading); }
   .tab:hover { color: var(--ink); }
   .disclosure-toggle:hover { color: var(--heading); }
   .faq-item > summary:hover { color: var(--heading); }
   .faq-see a:hover { color: var(--heading); }
-  .explore-card:hover { border-color: var(--heading); }
   .prose a:hover { color: var(--heading); }
 }
 /* text for one kind of device: mouse hints vs. touch hints */

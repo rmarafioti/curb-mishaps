@@ -18,24 +18,18 @@ saved_queries:
         - total_mishap_loss
         - total_mishap_loss_low
         - total_mishap_loss_high
-        - total_mishap_loss_2026
         - mishap_count
         - median_mishap_cost
 
   - name: losses_by_year
     label: Losses by year vs. net worth
     description: >
-      The year table: losses by kind against that year's net worth, for the 12 years a
-      season aired.
+      Each year's total loss and its share of that year's net worth, for the 12 years a
+      season aired (the Net Worth season box, the worst-year answer).
     query_params:
       metrics:
-        - realized_loss
-        - hypothetical_loss
-        - catastrophic_loss
         - total_mishap_loss
-        - net_worth_mid
         - pct_mishap_to_net_worth
-        - net_worth_after_mishaps
       group_by:
         - TimeDimension('metric_time', 'year')
       where:
@@ -43,46 +37,31 @@ saved_queries:
 
   - name: losses_by_season
     label: Losses by season
-    description: Total loss, frequency and routine severity per season.
+    description: Total loss and mishap count per season (the costliest and cheapest season answer).
     query_params:
       metrics:
         - total_mishap_loss
         - mishap_count
-        - episode_count
-        - mishaps_per_episode
-        - median_routine_mishap_cost_2026
       group_by:
         - Dimension('episode__season')
-
-  - name: losses_by_category
-    label: Losses by category
-    description: Total loss and mishap count per loss category.
-    query_params:
-      metrics:
-        - total_mishap_loss
-        - mishap_count
-      group_by:
-        - Dimension('mishap__loss_kind')
-        - Dimension('mishap__loss_kind_category')
 
   - name: mishap_list
     label: Every mishap
     description: >
       One row per kept mishap: what happened, its cost, its low-mid-high price range and
       how it was priced. The page sorts it for the top 10 disasters and picks out the rows
-      behind a year, season or category (dbt does not support order_by or limit on saved
-      queries yet).
+      behind a season or loss type (dbt does not support order_by or limit on saved queries
+      yet).
     query_params:
       metrics:
         - total_mishap_loss
-        # the price range on the timeline tooltip (low = high on stated prices)
+        # each mishap's price range (low = high on stated prices)
         - total_mishap_loss_low
         - total_mishap_loss_high
       group_by:
         - Entity('mishap')
         - Dimension('mishap__description')
         - Dimension('mishap__loss_kind')
-        - Dimension('mishap__loss_kind_category')
         - Dimension('mishap__is_catastrophic')
         - Dimension('mishap__estimate_basis')
         - Dimension('episode__season')
@@ -94,7 +73,7 @@ saved_queries:
         - TimeDimension('metric_time', 'year')
 
   - name: net_worth_dent
-    label: The dent in his net worth
+    label: The Dent in His Net Worth
     description: >
       Real net worth each year next to what he'd have if every mishap so far came out of
       it, 2000-2024 (every year, so the line runs through the years between seasons).
@@ -113,8 +92,8 @@ saved_queries:
     description: >
       Season 13 (2025) and Season 14 (2026), each with everyday mishaps only and if a
       catastrophe hits (has_forecast_catastrophe, the page's filter): expected cost with
-      its 80% range, expected mishaps, everyday losses by kind and the chance of a
-      catastrophe, in dollars of the year it airs.
+      its 80% range, expected mishaps and the chance of a catastrophe, in dollars of the
+      year it airs.
     query_params:
       metrics:
         - forecast_loss_median
@@ -123,8 +102,6 @@ saved_queries:
         - forecast_mishaps_median
         - forecast_mishaps_p10
         - forecast_mishaps_p90
-        - forecast_realized_loss_median
-        - forecast_hypothetical_loss_median
         - forecast_catastrophe_chance
         - forecast_episodes
       group_by:

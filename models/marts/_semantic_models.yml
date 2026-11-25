@@ -66,12 +66,6 @@ semantic_models:
         agg_params:
           percentile: 0.5
           use_approximate_percentile: true
-      - name: mishap_cost_2026_median
-        agg: percentile
-        expr: mishap_cost_2026
-        agg_params:
-          percentile: 0.5
-          use_approximate_percentile: true
 
   - name: episodes
     description: >
@@ -182,12 +176,6 @@ semantic_models:
       - name: forecast_loss_p90
         agg: sum
         expr: loss_p90_usd
-      - name: forecast_realized_loss_median
-        agg: sum
-        expr: realized_loss_median_usd
-      - name: forecast_hypothetical_loss_median
-        agg: sum
-        expr: hypothetical_loss_median_usd
       - name: forecast_catastrophe_chance
         agg: sum
         expr: catastrophe_chance

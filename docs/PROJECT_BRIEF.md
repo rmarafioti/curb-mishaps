@@ -163,7 +163,7 @@ Frequency–severity model, insurance style:
 2. Rich keeps reviewing in the Sheet; new rows flow through on each `dbt build`; Claude prices new `keep` rows.
 3. **BI build (dashboard) and forecast start only after all data is in.**
 
-**Data sources used so far:** Wikipedia episode lists, Curb Fandom wiki, IMDb plot synopses (read via the browser extension; Seasons 11–12 have no IMDb synopses), Rich's own recollection (`source = user`), price references cited per row in `estimate_source`.
+**Data sources used so far:** Wikipedia episode lists, IMDb plot synopses (read via the browser extension; Seasons 11–12 have no IMDb synopses), Rich's own recollection (`source = user`), price references cited per row in `estimate_source`.
 
 ---
 

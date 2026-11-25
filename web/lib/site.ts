@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const SITE_URL = "https://curbmishaps.com";
 export const SITE_NAME = "Curb Mishaps";
 export const SITE_DESCRIPTION =
-  "What Larry David's on-screen mishaps cost him across 12 seasons of Curb Your Enthusiasm, set against his real net worth. A dbt semantic layer project.";
+  "Every financial mishap Larry suffers over Curb Your Enthusiasm's 24 year, 12 season run, priced and set against Larry David's real net worth. A dbt semantic layer project.";
 
 export const AUTHOR = {
   name: "Rich Marafioti",
@@ -30,7 +30,7 @@ export const OG_IMAGE = {
   url: "/opengraph-image",
   width: 1200,
   height: 630,
-  alt: `${SITE_NAME}, what Larry David's on-screen mishaps cost him across 12 seasons of Curb Your Enthusiasm`,
+  alt: `${SITE_NAME}, every financial mishap Larry suffers over Curb Your Enthusiasm's 24 year, 12 season run, priced`,
 };
 
 /**

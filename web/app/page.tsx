@@ -1,8 +1,7 @@
-// Home: what the project is, the build story in one line (full version on About), a
-// shortcut to the answers, and a way into each tab.
+// Home: what the project is, one question per dashboard as the way into the tabs (plus a
+// shortcut to the answers), and the build story in short (full version on About).
 
 import Link from "next/link";
-import { PAGES } from "@/lib/pages";
 import { AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 // structured data for search engines: the site and who made it
@@ -19,12 +18,13 @@ const JSON_LD = {
 // AI answering questions). The full walkthrough is on About.
 const PIPELINE = ["Source data", "BigQuery", "dbt", "Semantic layer", "MetricFlow", "Validation", "Dashboards & AI answers"];
 
-// a few of the questions We've Got Answers answers (same wording as there)
+// a few of the questions Pretty, Pretty, Pretty Good Answers answers (same wording as there), each linking to
+// the dashboard page that answers it: the home page's way into the tabs
 const SAMPLE_QUESTIONS = [
-  "How much money did Larry lose to mishaps across the whole series?",
-  "How much of that is realized, and how much is hypothetical?",
-  "Where do the mishaps leave his net worth at the end of the series?",
-  "What's the chance of a catastrophic mishap in 2025 or 2026?",
+  { q: "How much money did Larry lose to mishaps across the whole series?", href: "/costs-by-season" },
+  { q: "What was his single most expensive mishap?", href: "/top-10" },
+  { q: "Where do the mishaps leave his net worth at the end of the series?", href: "/net-worth" },
+  { q: "What's the chance of a catastrophic mishap in 2025 or 2026?", href: "/future-flops" },
 ];
 
 export default function Page() {
@@ -38,24 +38,34 @@ export default function Page() {
       {/* hero: title and intro now; the art goes in a second column later */}
       <header className="home-hero">
         <div className="home-hero-copy">
-          <h1>Curb Mishaps</h1>
+          <h1>Curb Mis<span className="kern-ha">h</span>aps</h1>
           <p className="hero-lede">
-            Every financial mishap Larry suffers across 12 seasons of <em>Curb Your Enthusiasm</em> (2000–2024),
-            priced and set against Larry David&apos;s real net worth.
+            Every financial mishap Larry suffers over <span className="nowrap-wide"><em>Curb Your Enthusiasm</em>&apos;s</span> 24 year, 12 season run,
+            priced and set against Larry David&apos;s real net worth. All laid out in 4 simple dashboards.
+          </p>
+          <p className="screen-note phone-only">
+            Best viewed on a desktop or laptop, since the charts are wide.
           </p>
         </div>
       </header>
 
+      {/* the questions follow the hero's "4 simple dashboards", one per dashboard, in tab order */}
+      <div className="home-notes">
+        <h2 className="questions-lead">The Dashboards Answer Questions Like:</h2>
+        <ul className="sample-questions">
+          {SAMPLE_QUESTIONS.map(({ q, href }) => <li key={q}><Link href={href}>{q}</Link></li>)}
+        </ul>
+        <p className="shortcut">
+          Or cut to the chase and read <Link href="/answers">every answer</Link>.
+        </p>
+      </div>
+
       <section className="card build-strip" aria-label="The idea behind it">
         <p className="mission">How it&apos;s built. Define a metric once, use it everywhere.</p>
         <p className="build-lead">
-          The numbers on the dashboard pages all come from one method, defining each metric in the
-          dbt semantic layer that sits on top of the data warehouse.
-        </p>
-        <p className="card-sub">
-          Each metric has one name and one definition, so the dashboard, the answers and any AI
-          asking the data all get the same figure. The site itself never does its own math. Get
-          the full story <Link href="/about">here</Link>.
+          Every metric lives in the dbt semantic layer, so the dashboards, the answers and any AI
+          asking the data all get the same number. Get the{" "}
+          <Link href="/about">full story</Link>.
         </p>
         <ol className="pipeline-inline" aria-label="The build, step by step">
           {PIPELINE.map((step, i) => (
@@ -66,33 +76,6 @@ export default function Page() {
           ))}
         </ol>
       </section>
-
-      <div className="home-notes">
-        <h2 className="questions-lead">We answer questions like:</h2>
-        <ul className="sample-questions">
-          {SAMPLE_QUESTIONS.map((q) => <li key={q}><Link href="/faq">{q}</Link></li>)}
-        </ul>
-        <p className="shortcut">
-          Explore the data on the first four pages below, or read every answer{" "}
-          <Link href="/faq">here</Link>.
-        </p>
-        <p className="screen-note">
-          A few Season 12 episodes are still being reviewed, so the figures may still change.
-        </p>
-        <p className="screen-note phone-only">
-          Best viewed on a desktop or laptop. On a phone, charts scroll sideways.
-        </p>
-      </div>
-
-      <nav className="explore" aria-label="Explore the dashboard">
-        {PAGES.map((p) => (
-          <Link key={p.href} href={p.href} className="explore-card">
-            <span className="explore-title">{p.label}</span>
-            <span className="explore-tagline">{p.tagline}</span>
-            <span className="explore-blurb">{p.blurb}</span>
-          </Link>
-        ))}
-      </nav>
 
     </>
   );

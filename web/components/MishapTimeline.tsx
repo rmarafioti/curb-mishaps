@@ -2,11 +2,12 @@
 
 // Every mishap in the order it aired, one evenly spaced point each, joined by a line so the
 // ups and downs read as a timeline (cost on a log scale, $10 to $1B). Season dividers mark
-// where each season starts. Hover or tab to a point to see what happened, the episode and
-// how it was priced. Positions only; every value comes from mishap_list.json.
+// where each season starts. Hover or tab to a point to see the cost, what happened, the
+// episode and the price range (how it was priced is in the table below). Positions only;
+// every value comes from mishap_list.json.
 
 import { useState } from "react";
-import { type Mishap, dateOf, episodeCode, splitBasis, titleCase, usdCompact, usdFull, yearOf } from "@/lib/data";
+import { type Mishap, episodeCode, usdCompact, usdFull, yearOf } from "@/lib/data";
 
 const MIN_WIDTH = 960;
 const STEP = 16; // px between points at full width; the chart scrolls sideways past MIN_WIDTH
@@ -40,16 +41,9 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
     .map((m, i) => ({ m, i }))
     .filter(({ m, i }) => i === 0 || m.episode__season !== mishaps[i - 1].episode__season);
 
-  // the two biggest get a direct label; the rest are in the tooltip and the table
-  const labeled = mishaps
-    .map((m, i) => ({ m, i }))
-    .sort((a, b) => b.m.total_mishap_loss - a.m.total_mishap_loss)
-    .slice(0, 2);
-
   const path = mishaps.map((m, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(m.total_mishap_loss)}`).join(" ");
 
   const current = active !== null ? mishaps[active] : null;
-  const basis = current?.mishap__estimate_basis ? splitBasis(current.mishap__estimate_basis) : null;
   const across = active !== null ? x(active) / width : 0;
   const down = current ? y(current.total_mishap_loss) / HEIGHT : 0;
   // the tooltip opens beside the dot: to the right, or to the left near the right edge; it
@@ -113,22 +107,6 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
               />
             ))}
 
-            {labeled.map(({ m, i }) => {
-              // near the right edge the title goes on the dot's left so it stays in the chart
-              const leftSide = x(i) > width * 0.75;
-              return (
-                <text
-                  key={`label-${m.mishap}`}
-                  className="direct-label"
-                  x={leftSide ? x(i) - 10 : x(i) + 10}
-                  y={y(m.total_mishap_loss) + 4}
-                  textAnchor={leftSide ? "end" : "start"}
-                >
-                  {m.episode__episode_title}
-                </text>
-              );
-            })}
-
             {/* hit targets: a bit bigger than each dot (easier to land on), focusable for
                 keyboard users; the details show only while one is hovered with a mouse or
                 focused from the keyboard (touch screens don't hover, so taps are ignored) */}
@@ -161,11 +139,7 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
               <strong className="tooltip-value">{usdFull(current.total_mishap_loss)}</strong>
               <span className="tooltip-title">{current.mishap__description}</span>
               <span className="tooltip-meta">
-                {episodeCode(current)} · “{current.episode__episode_title}” · {dateOf(current.metric_time__day)}
-              </span>
-              <span className="tooltip-meta">
-                {titleCase(current.mishap__loss_kind)} · {titleCase(current.mishap__loss_kind_category)}
-                {current.mishap__is_catastrophic === "1" ? " · Catastrophic" : ""}
+                {episodeCode(current)} · “{current.episode__episode_title}”
               </span>
               {/* estimates only (a stated price has no range); the mid is the cost we count */}
               {current.total_mishap_loss_low !== current.total_mishap_loss_high && (
@@ -175,18 +149,13 @@ export default function MishapTimeline({ mishaps }: { mishaps: Mishap[] }) {
                   {usdCompact(current.total_mishap_loss_high)}
                 </span>
               )}
-              {basis && (
-                <span className="tooltip-basis">
-                  How we priced it: {basis.kind ? `${titleCase(basis.kind)}. ${basis.note}` : basis.note}
-                </span>
-              )}
             </div>
           )}
         </div>
       </div>
       <figcaption className="note">
-        Mishaps in the order they aired, evenly spaced. Cost is on a log scale (each gridline is
-        10× the one below) so a $20 parking ticket and the $250M divorce fit on one chart.
+        The dollar lines jump 10× a tick ($10, $100, $1K and up), so a $20 parking ticket and the
+        $250M divorce fit on one chart.
       </figcaption>
     </figure>
   );

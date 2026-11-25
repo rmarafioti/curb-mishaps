@@ -32,13 +32,11 @@ const METRIC_YAML = `- name: total_mishap_loss
 
 const PIPELINE: { step: string; detail: React.ReactNode }[] = [
   {
-    step: "Investigative work",
+    step: "Investigative Work",
     detail: (
       <>
-        Every episode of all 12 seasons, checked against Wikipedia, the Curb fan wiki and IMDb plot
-        synopses, and re-watched to validate the situations those online sources describe. Each
-        money-losing moment became a row, and
-        each unstated cost was researched and priced.
+        Every episode of all 12 seasons, checked against Wikipedia and IMDb plot
+        synopses, and re-watched to validate the situations those online sources describe.
       </>
     ),
   },
@@ -53,33 +51,26 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
   },
   {
     step: "BigQuery",
-    detail: <>The warehouse reads the Sheet live as an external table. No exports or copy-paste. An edit in the Sheet reaches the warehouse on the next build.</>,
+    detail: <>The warehouse reads the Sheet live as an external table. An edit in the Sheet reaches the warehouse on the next build.</>,
   },
   {
-    step: "dbt staging",
+    step: "dbt",
     detail: (
       <>
-        Every column is cleaned, renamed and cast to its proper type. A bad cell fails the build
-        with the value in the error instead of quietly becoming a blank, and tests check the data
-        before anything is built on it.
+        Every column is cleaned and cast to its proper type, so a bad cell fails the build instead of
+        quietly becoming a blank. The models then build a star schema, one fact table of mishaps joined
+        to dimensions for episodes, net worth by year and the calendar. This is where the rules live,
+        like which rows count and which price to use. Tests catch duplicate mishaps and missing costs
+        on every build.
       </>
     ),
   },
   {
-    step: "dbt star schema",
-    detail: (
-      <>
-        One fact table of mishaps, joined to dimensions for episodes, net worth by year and the
-        calendar. This is where the rules live, like which rows count and which price to use.
-      </>
-    ),
-  },
-  {
-    step: "Semantic layer",
+    step: "Semantic Layer",
     detail: (
       <>
         Every number on this site is defined once, by name, in YAML, like Total Mishap Loss,
-        Median Mishap Cost, Net Worth After Mishaps and the rest. Change a definition there and it changes
+        Cumulative Financial Loss, Net Worth After Mishaps and the rest. Change a definition there and it changes
         everywhere.
       </>
     ),
@@ -89,7 +80,7 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
     detail: (
       <>
         dbt&apos;s metrics engine turns those definitions into SQL. Each chart is a saved query
-        (metrics by name, sliced by season, year or loss kind), exported from the production
+        (metrics by name, sliced by season, year or loss type), exported from the production
         warehouse to the files this site is built from.
       </>
     ),
@@ -100,20 +91,94 @@ const PIPELINE: { step: string; detail: React.ReactNode }[] = [
       <>
         Before any chart was built, every metric was checked by hand, comparing MetricFlow&apos;s
         answers with the warehouse and with the source Sheet&apos;s own year-by-year totals, down to
-        the dollar. dbt tests catch duplicate mishaps and missing costs on every build, and each release
-        to production must match development before the site reads it.
+        the dollar. Each release to production must match development before the dashboard reads it.
       </>
     ),
   },
   {
-    step: "AI-assisted dashboard",
+    step: "AI-Assisted Dashboard",
     detail: (
       <>
-        The site was built with Claude. AI is non-deterministic. Ask twice and you can get two
-        different pages. The numbers are not. The page only reads values the semantic layer
-        produced, and only sorts, picks and formats them. It never writes its own query or does its
-        own math, so it can&apos;t invent its own version of a figure.
+        The dashboards on this site were built with Claude. Every figure they show comes straight from
+        the semantic layer. The page only sorts, picks and formats those values, and never writes its own
+        query or does its own math, so it can&apos;t invent its own version of a figure.
       </>
+    ),
+  },
+];
+
+// Data Collection, as rows that open: how the mishaps and net worth were gathered and recorded
+const DATA_COLLECTION: { title: string; body: React.ReactNode }[] = [
+  {
+    title: "What Counts",
+    body: (
+      <p>
+        Any time Larry loses money or property, or misses out on income, because of his own behavior or bad
+        luck. Ordinary purchases, normal gifts and other people&apos;s losses don&apos;t count.
+      </p>
+    ),
+  },
+  {
+    title: "Realized and Hypothetical",
+    body: (
+      <p>
+        <em>Realized</em> losses are money or property actually lost. <em>Hypothetical</em> losses are income
+        he missed out on (the shelved musical, the car periscope stake). Both count toward every total.
+      </p>
+    ),
+  },
+  {
+    title: "Catastrophic Mishaps",
+    body: (
+      <p>
+        The divorce, the house fire and Latte Larry&apos;s count too, and are tracked as their own group so
+        they don&apos;t distort the everyday numbers.
+      </p>
+    ),
+  },
+  {
+    title: "One Divorce, Counted Once",
+    body: (
+      <p>
+        Larry plays himself, so the show&apos;s losses are set against his real fortune. The show&apos;s 2011
+        divorce is valued at his real 2007 settlement, and the real divorce cost is added back to his net worth
+        so it isn&apos;t counted twice.
+      </p>
+    ),
+  },
+  {
+    title: "How Each Mishap Was Priced",
+    body: (
+      <>
+        <ul>
+          <li><strong>Stated.</strong> The amount said or shown in the episode, used whenever there is one.</li>
+          <li><strong>Reference.</strong> A researched price for the same thing.</li>
+          <li><strong>Category default.</strong> A typical price for that kind of item.</li>
+          <li><strong>Assumption.</strong> A reasoned best guess, for one-offs like a hospital wing.</li>
+        </ul>
+        <p>
+          Estimates have a low, middle and high value. Totals use the middle, and the low and high give the
+          range.
+        </p>
+      </>
+    ),
+  },
+  {
+    title: "Dollars of the Year It Aired",
+    body: (
+      <p>
+        Every amount is in the dollars of the year the episode aired. Prices found today were converted back
+        to that year with the consumer price index.
+      </p>
+    ),
+  },
+  {
+    title: "Net Worth",
+    body: (
+      <p>
+        The central estimate of Larry David&apos;s reported net worth, without counting his real 2007 divorce.
+        In years with no report, it steps evenly from one reported figure to the next.
+      </p>
     ),
   },
 ];
@@ -144,20 +209,21 @@ export default function Page() {
     <>
       <header className="masthead">
         <h1>About</h1>
-        <p className="hero-lede">This project is pretty, pretty, pretty bonkers.</p>
         <p className="lede">
-          <cite>Curb Your Enthusiasm</cite> is comedy gold, the hit HBO show starring Larry David
-          playing himself, the co-creator of <cite>Seinfeld</cite>. In almost every
+          <cite>Curb Your Enthusiasm</cite>, the hit HBO show, stars Larry David, the co-creator
+          of <cite>Seinfeld</cite>, playing himself. In almost every
           episode, the iconic Jewish curmudgeon talks himself into a situation that ends up costing
-          him money. So I wondered, if we tallied up every one of those mishaps and set them against
+          him money. So I wondered, if I tallied up every one of those mishaps and set them against
           Larry David&apos;s real-life net worth, what would his personality actually cost him?
         </p>
+        <p className="lede lede-hook">Larry&apos;s mishaps are the hook. The point is the dbt semantic layer.</p>
       </header>
 
-      <section className="card prose">
-        <h2>The mission</h2>
-        <p>Larry&apos;s mishaps are the hook. The point is the dbt semantic layer.</p>
-        <p className="mission">
+      {/* no card box. Styled like the home page's build box: the gold display line leads,
+          the statement under it in the white body face */}
+      <section className="prose prose-plain">
+        <h2 className="mission">The Mission</h2>
+        <p className="build-lead">
           Define a metric once. Use it everywhere, in dashboards, reports and AI answers. Always
           the same, always traceable to the warehouse.
         </p>
@@ -168,14 +234,12 @@ export default function Page() {
         </p>
         <p>
           That matters most with AI. An AI that writes its own SQL can be confidently wrong. An AI
-          that asks a governed semantic layer gives answers that match the agreed definitions. In
-          this project, every metric was checked by hand against the warehouse and the source Sheet before
-          anything was built on it.
+          that asks a governed semantic layer gives answers that match the agreed definitions.
         </p>
       </section>
 
-      <section className="card prose">
-        <h2>How it&apos;s built</h2>
+      <section className="prose prose-plain">
+        <h2 className="mission">How It&apos;s Built</h2>
         <ol className="pipeline">
           {PIPELINE.map((p) => (
             <li key={p.step}>
@@ -185,132 +249,117 @@ export default function Page() {
           ))}
         </ol>
 
-        <h3>One metric, everywhere</h3>
+        <h3>One Metric, Everywhere</h3>
         <p>
           Below is {label(kpis, "total_mishap_loss")} exactly as it&apos;s defined in the semantic
           layer. It&apos;s a few lines of YAML, and the only place the metric exists. It produces{" "}
           <strong className="faq-figure">{usdFull(total.total_mishap_loss)}</strong>, the same figure in the
           headline on <Link href="/costs-by-season">Mishap Costs by Season</Link> and in the first answer
-          on <Link href="/faq">We&apos;ve Got Answers</Link>. Sliced by season or loss kind, the same
+          on <Link href="/answers">Pretty, Pretty, Pretty Good Answers</Link>. Sliced by season or loss type, the same
           definition gives every filtered total.
         </p>
         <pre className="code" aria-label="Total Mishap Loss, as defined in the semantic layer (YAML)"><code>{METRIC_YAML}</code></pre>
+
+        {/* live queries are the usual setup; the static export was a scope choice for a finished show */}
+        <h3>Why the Numbers Are Exported</h3>
+        <p>
+          In most setups, a dashboard or an AI agent queries the semantic layer live. Change a filter and
+          MetricFlow writes the SQL, runs it in the warehouse and hands back the number. This site skips that
+          on purpose. The show is finished, and the data only changes when the Sheet gets a review, so every
+          chart&apos;s query, and every filter combination the page offers, is run once against production and
+          saved as a file.
+        </p>
+        <p>
+          The page loads instantly, there&apos;s no warehouse bill on each visit, and every figure is still
+          exactly what the semantic layer produced.
+        </p>
         <p className="repo-link">
           <GitHubIcon />
           <span>
-            View the code for this project{" "}
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/rmarafioti/curb-mishaps">here</a>.
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/rmarafioti/curb-mishaps">
+              View the code for this project on GitHub
+            </a>
           </span>
         </p>
       </section>
 
-      <section className="card prose">
-        <h2>Data collection</h2>
-        <ul className="roomy">
-          <li>
-            <strong>What counts.</strong> Any time Larry loses money or property, or misses out on
-            income, because of his own behavior or bad luck. Ordinary purchases, normal gifts and
-            other people&apos;s losses don&apos;t count.
-          </li>
-          <li>
-            <strong>Realized</strong> losses are money or property actually lost.{" "}
-            <strong>Hypothetical</strong> losses are income he missed out on (the shelved musical, the
-            car periscope stake). Both count toward every total.
-          </li>
-          <li>
-            <strong>Catastrophic</strong> mishaps (the divorce, the house fire, Latte Larry&apos;s) count
-            too, and are tracked as their own group so they don&apos;t distort the everyday numbers.
-          </li>
-          <li>
-            <strong>One divorce, counted once.</strong> Larry plays himself, so the show&apos;s losses
-            are set against his real fortune. The show&apos;s 2011 divorce is valued at his real 2007
-            settlement, and that real divorce is added back to his net worth so it isn&apos;t counted
-            twice.
-          </li>
-          <li>
-            <strong>How each mishap was priced.</strong> The amount said or shown in the episode
-            when there is one (<em>stated</em>); otherwise a researched <em>reference</em> price, a
-            typical price for that kind of item (<em>category default</em>), or a reasoned{" "}
-            <em>assumption</em> for one-offs like a hospital wing. Estimates have a low, middle and
-            high value; totals use the middle, and the low and high give the range.
-          </li>
-          <li>
-            <strong>Every amount is in the dollars of the year the episode aired.</strong> Prices
-            found today were converted back to that year with the consumer price index.
-          </li>
-          <li>
-            <strong>Confidence.</strong> Every price carries one of three levels.{" "}
-            <em>High</em> means the amount is stated in the episode. <em>Medium</em> means a solid
-            reference price for the same thing. <em>Low</em> means a category default or an
-            assumption, with a wide range.
-          </li>
-          <li>
-            <strong>Net worth</strong> is the central estimate of Larry David&apos;s reported net
-            worth, anchored to the years it was reported and filled in between, with the real 2007
-            divorce added back.
-          </li>
-          <li>
-            <strong>Typical mishap</strong> means the lower median. With an even number of mishaps,
-            it&apos;s the lower of the middle two.
-          </li>
-          <li>
-            <strong>Still in review.</strong> A few Season 12 episodes are still being checked. The
-            numbers update once they&apos;re done.
-          </li>
-        </ul>
+      {/* reference material, so it rolls up: each point opens like the answers page, no card box */}
+      <section className="prose faq faq-plain">
+        <h2 className="mission">Data Collection</h2>
+        {DATA_COLLECTION.map((item) => (
+          <details key={item.title} className="disclosure faq-item">
+            <summary>{item.title}</summary>
+            <div className="faq-answer">{item.body}</div>
+          </details>
+        ))}
       </section>
 
-      <section className="card prose">
-        <h2>Sources</h2>
-        <h3>Episodes and mishaps</h3>
-        <ul>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/List_of_Curb_Your_Enthusiasm_episodes">
-              Wikipedia, List of Curb Your Enthusiasm episodes
-            </a>
-          </li>
-          <li>The Curb Your Enthusiasm fan wiki (Fandom), for episode details</li>
-          <li>IMDb plot synopses (Seasons 1–10; Seasons 11–12 have none)</li>
-          <li>Watching the episodes, for anything the synopses missed</li>
-        </ul>
-        <h3>Prices</h3>
-        <ul>
-          <li>
-            Each estimate cites its reference in its pricing note, shown on{" "}
-            <Link href="/top-10">Top 10 Disasters</Link> and when you hover a mishap on the timeline.
-          </li>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.bls.gov/cpi/">U.S. Bureau of Labor Statistics, CPI-U annual averages</a>,
-            for converting today&apos;s prices to each year&apos;s dollars
-          </li>
-        </ul>
-        <h3>Larry David&apos;s net worth</h3>
-        <ul>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/articles/entertainment-articles/how-much-money-did-jerry-seinfeld-make-off-of-seinfeld-from-salary-and-royalties/">
-              Celebrity Net Worth
-            </a>
-            , the Seinfeld syndication windfall (2000)
-          </li>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://extratv.com/2007/06/05/larry-david-and-wife-laurie-split-after-14-years">Extra</a>
-            , his fortune before and after the 2007 divorce
-          </li>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.businessinsider.in/heres-why-larry-david-says-he-isnt-really-worth-half-a-billion/articleshow/46449672.cms">
-              Business Insider
-            </a>
-            , reported net worth, 2015
-          </li>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://thewrap.com/jerry-seinfeld-larry-david-100-million-dollars-netflix-deal">TheWrap</a>
-            , the Netflix Seinfeld deal (2019)
-          </li>
-          <li>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/?p=43">Celebrity Net Worth</a>, current
-            estimate (2026)
-          </li>
-        </ul>
+      <section className="prose faq faq-plain">
+        <h2 className="mission">Sources</h2>
+        <details className="disclosure faq-item">
+          <summary>Episodes and Mishaps</summary>
+          <div className="faq-answer">
+            <ul>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/List_of_Curb_Your_Enthusiasm_episodes">
+                  Wikipedia, List of Curb Your Enthusiasm episodes
+                </a>
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.imdb.com/title/tt0264235/">IMDb plot synopses</a>
+                {" "}(Seasons 1–10; Seasons 11–12 have none)
+              </li>
+              <li>Watching the episodes, for anything the synopses missed</li>
+            </ul>
+          </div>
+        </details>
+        <details className="disclosure faq-item">
+          <summary>Prices</summary>
+          <div className="faq-answer">
+            <ul>
+              <li>
+                Each estimate cites its reference in its pricing note, shown on{" "}
+                <Link href="/top-10">Top 10 Disasters</Link> and in the How It Was Priced column
+                on <Link href="/costs-by-season">Mishap Costs by Season</Link>.
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.bls.gov/cpi/">U.S. Bureau of Labor Statistics, CPI-U annual averages</a>,
+                for converting today&apos;s prices to each year&apos;s dollars
+              </li>
+            </ul>
+          </div>
+        </details>
+        <details className="disclosure faq-item">
+          <summary>Larry David&apos;s Net Worth</summary>
+          <div className="faq-answer">
+            <ul>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/articles/entertainment-articles/how-much-money-did-jerry-seinfeld-make-off-of-seinfeld-from-salary-and-royalties/">
+                  Celebrity Net Worth
+                </a>
+                , the Seinfeld syndication windfall (2000)
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://extratv.com/2007/06/05/larry-david-and-wife-laurie-split-after-14-years">Extra</a>
+                , his fortune before and after the 2007 divorce
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.businessinsider.in/heres-why-larry-david-says-he-isnt-really-worth-half-a-billion/articleshow/46449672.cms">
+                  Business Insider
+                </a>
+                , reported net worth, 2015
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://thewrap.com/jerry-seinfeld-larry-david-100-million-dollars-netflix-deal">TheWrap</a>
+                , the Netflix Seinfeld deal (2019)
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.celebritynetworth.com/?p=43">Celebrity Net Worth</a>, current
+                estimate (2026)
+              </li>
+            </ul>
+          </div>
+        </details>
       </section>
 
       {/* the author: no card or heading, it floats on the page; the photo and name say it */}
@@ -319,7 +368,7 @@ export default function Page() {
           <Image src={headshot} alt="Rich Marafioti" className="author-photo" sizes="192px" placeholder="blur" />
           <div className="author-text">
             <p>
-              <strong>Rich Marafioti</strong> is an analytics engineer working in K–12 education, with
+              <strong className="author-name">Rich Marafioti</strong> is an analytics engineer working in K–12 education, with
               proficiencies in SQL, dbt, data modeling and BI development.
             </p>
             <ul className="link-row">
