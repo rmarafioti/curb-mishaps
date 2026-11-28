@@ -62,6 +62,7 @@ mf query --metrics total_mishap_loss --group-by metric_time__year
 mf query --saved-query losses_by_year         # one chart's request, as defined in YAML
 python scripts/export_metrics.py            # all saved queries → web/data/*.json, from prod
 python scripts/forecast.py && dbt build -s season_forecast+   # rerun the forecast after the data changes
+python scripts/audit_forecast.py            # 13 checks on the forecast's inputs and output (read-only)
 ```
 
 Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf validate-configs` green (once metrics exist).
@@ -100,12 +101,12 @@ Definition of done for any change: `sqlfluff lint` clean, `dbt build` green, `mf
 - **Hypothetical losses always count toward the total.** Never filter `loss_kind` out of `fct_mishap` or `total_mishap_loss`; `realized` / `hypothetical` is only a slice. Reconciling to the Sheet's `Losses by Year` tab shows it if they ever go missing.
 - `is_catastrophic` comes from Sheet column X (1/0 on every row). Today: house fire, 2011 divorce, Latte Larry's.
 - Dates: `episode_date` (Sheet `air_date`) joins `fct_mishap` to `dim_date.date_day`; `episode_year` is parsed from it and joins to `dim_net_worth.year`. The Sheet's `air_year` column is not used.
-- `review_status = 'unsure'` rows (incl. unwatched S12 episodes) stay out of the fact table until Rich reviews them; they flow in on the next build once marked `keep`.
+- `review_status = 'unsure'` rows stay out of the fact table until Rich reviews them; they flow in on the next build once marked `keep`. As of 2026-11-28 every row is reviewed (none `unsure`).
 - `loss_kind` (realized | hypothetical) → `loss_kind_category` (12 categories; see `stg_mishaps.yml`).
 - `needs_verification` and `estimate_source` are Sheet-only working columns; they never leave staging.
 - Each season aired within one calendar year, so `episode_year` is safe as the join to net worth.
 - In the semantic layer, don't pre-join net worth onto mishap rows. The net worth semantic model defines a `year_start_date` time dimension with `expr: date(year, 1, 1)` (year grain, `non_additive_dimension`; the column is not in `dim_net_worth`) and MetricFlow aligns it with mishaps on `metric_time__year`.
-- Stated rows have only `amount_stated_usd`; estimated rows have only `est_low/mid/high_usd` (tested on `fct_mishap`). `mishap_cost_low` / `mishap_cost_high` give the range: the stated price on stated rows, else the low / high estimate.
+- Stated rows have only `amount_stated_usd`; estimated rows have only `est_low/mid/high_usd` (the reconciliation to the Sheet's `Losses by Year` tab catches a mix-up). `mishap_cost_low` / `mishap_cost_high` give the range: the stated price on stated rows, else the low / high estimate.
 
 ## Gotchas
 
@@ -159,5 +160,5 @@ npm run lint && npm run build
 4. ~~Reconcile `mf query` output to BigQuery and the Sheet's `Losses by Year` tab~~ (done 2026-11-20, every metric matched by hand; total $262,024,688)
 5. ~~Export script: saved queries (`_saved_queries.yml`) → `scripts/export_metrics.py` → `web/data/*.json`~~ (done)
 6. `web/` dashboard: merged (PR #7) and deployed on Vercel from `main` (Root Directory `web`, builds skipped when `web/` is unchanged; branches get preview deploys). `feat/home-faq` (2026-11-21) adds the home page, FAQ, About rewrite and the phone layout. Keep refining with Rich.
-7. Forecast (Python → seed → semantic model → Forecast tab). Pipeline built 2026-11-23 (`feat/forecast`): `scripts/forecast.py` → `seeds/season_forecast.csv` → `stg_season_forecast` → `fct_season_forecast` → `season_forecast` semantic model, `forecast_*` metrics and saved query. Neither trend is significant, so the 12 seasons are pooled; costs are real mishaps resampled; the catastrophe is a separate switch (`has_forecast_catastrophe`, 17%, divorce left out). See brief §5; the page explains it in plain English. The last 3 S12 episodes count as zero-mishap episodes until reviewed (Rich's call); rerun the script when they land. Prod built and exported 2026-11-23; the Forecast tab and FAQ answers are on `feat/forecast-page`. When the last 3 S12 episodes are reviewed: rerun the forecast, prod build + export, and one copy pass over every page (Rich, agreed 2026-11-23). Then retire the temporary `fct_mishap_amounts_match_stated_flag` test.
-8. ~~End-of-development cleanup~~ (done 2026-11-25 on `feat/copy-pass`: unused metrics, saved query `losses_by_category`, the category export filter and dead web code removed; `losses_by_year` no longer sliced). Left for the forecast rerun: the seed's `realized_loss_median_usd` / `hypothetical_loss_median_usd` columns (only `scripts/forecast.py` may rewrite the seed).
+7. Forecast (Python → seed → semantic model → Forecast tab). Pipeline built 2026-11-23 (`feat/forecast`): `scripts/forecast.py` → `seeds/season_forecast.csv` → `stg_season_forecast` → `fct_season_forecast` → `season_forecast` semantic model, `forecast_*` metrics and saved query. Neither trend is significant, so the 12 seasons are pooled; costs are real mishaps resampled; the catastrophe is a separate switch (`has_forecast_catastrophe`, 17%, divorce left out). See brief §5; the page explains it in plain English. Final rerun 2026-11-28 (`feat/s12-final`) after every Sheet row was reviewed (no new mishaps in the last S12 episodes): `scripts/audit_forecast.py` added (13 checks, run after `forecast.py`), the seed's unused realized/hypothetical median columns dropped, the temporary `fct_mishap_amounts_match_stated_flag` test retired. Total $262,219,038, 112 mishaps. After merge: prod build + reconcile + export.
+8. ~~End-of-development cleanup~~ (done 2026-11-25 on `feat/copy-pass`: unused metrics, saved query `losses_by_category`, the category export filter and dead web code removed; `losses_by_year` no longer sliced). The seed's unused median columns followed with the forecast rerun (2026-11-28).

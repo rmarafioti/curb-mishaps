@@ -168,7 +168,7 @@ Check it landed:
 ```bash
 bq query --use_legacy_sql=false \
   'select count(*) as row_count, countif(review_status = "keep") as kept from `curb_dev.stg_mishaps`'
-# expect 195 rows total (as of 2026-11-19); S12 episodes 3-10 stay out of fct_mishap until you review them
+# expect 198 rows total, 112 kept (as of 2026-11-28, every row reviewed)
 ```
 
 If a test fails, read which one: `accepted_values` failures usually mean a typo in the Sheet (e.g. a new `source` value or review status), which is the test doing its job.

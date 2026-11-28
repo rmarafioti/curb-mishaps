@@ -7,9 +7,8 @@ seeds:
       hits (1). Written by scripts/forecast.py from MetricFlow's mishap data; never
       edited by hand. Every figure is a Monte Carlo result: the median and the 80% range
       (10th and 90th percentile) of the season's mishap count and total loss, in dollars
-      of the year the season airs, plus the everyday medians by loss kind and the chance
-      of a catastrophe. Medians and percentiles are not additive: never sum them across
-      seasons, kinds or the two versions.
+      of the year the season airs, plus the chance of a catastrophe. Medians and
+      percentiles are not additive: never sum them across seasons or the two versions.
     config:
       quote_columns: false
       column_types:
@@ -23,6 +22,4 @@ seeds:
         loss_p10_usd: float64
         loss_median_usd: float64
         loss_p90_usd: float64
-        realized_loss_median_usd: float64
-        hypothetical_loss_median_usd: float64
         catastrophe_chance: float64

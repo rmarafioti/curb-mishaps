@@ -7,20 +7,6 @@ models:
       mishap_cost_2026 is the CPI-adjusted copy. Metrics on this table live only in
       MetricFlow YAML. Hypothetical losses always count: never filter on loss_kind here.
       The grain is tested in stg_mishaps; this model only filters those rows.
-    data_tests:
-      # temporary: guards pricing of the remaining 'unsure' rows; retire once they are
-      # reviewed and the Sheet stops changing (reconciliation then covers the same case)
-      - dbt_utils.expression_is_true:
-          name: fct_mishap_amounts_match_stated_flag
-          arguments:
-            expression: >
-              (
-                (amount_stated = 1 and amount_stated_usd is not null)
-                or (amount_stated = 0
-                    and amount_stated_usd is null
-                    and est_low_usd is not null
-                    and est_high_usd is not null)
-              )
     columns:
       - name: mishap_key
         data_type: string

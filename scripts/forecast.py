@@ -163,8 +163,6 @@ def main():
                 "loss_p10_usd": round(p10),
                 "loss_median_usd": round(median),
                 "loss_p90_usd": round(p90),
-                "realized_loss_median_usd": round(np.median(realized) * to_own_year),
-                "hypothetical_loss_median_usd": round(np.median(hypothetical) * to_own_year),
                 "catastrophe_chance": round(catastrophe_chance, 4),
             })
 

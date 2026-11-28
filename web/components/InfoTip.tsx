@@ -22,8 +22,12 @@ export default function InfoTip({ term, children }: { term: string; children: Re
     return () => document.removeEventListener("pointerdown", close);
   }, [open]);
 
-  const isMouse = (e: React.PointerEvent | React.MouseEvent) =>
-    (e.nativeEvent as PointerEvent).pointerType === "mouse";
+  // The input that started the click, read from pointerdown. A click event can't be trusted for
+  // this: iPhone Safari reports a tap's click as pointerType "mouse", which hid the box on phones.
+  // A click with no pointerdown before it (Enter / Space) leaves this null and toggles too.
+  const downType = useRef<string | null>(null);
+
+  const isMouse = (e: React.PointerEvent) => e.pointerType === "mouse";
 
   return (
     <span
@@ -38,7 +42,12 @@ export default function InfoTip({ term, children }: { term: string; children: Re
         aria-label={`What does ${term} mean?`}
         aria-expanded={open}
         aria-describedby={open ? id : undefined}
-        onClick={(e) => !isMouse(e) && setOpen((o) => !o)}
+        onPointerDown={(e) => (downType.current = e.pointerType)}
+        onClick={() => {
+          // a mouse already opened it on hover; a tap or a key toggles it
+          if (downType.current !== "mouse") setOpen((o) => !o);
+          downType.current = null;
+        }}
         onFocus={(e) => e.currentTarget.matches(":focus-visible") && setOpen(true)}
         onBlur={() => setOpen(false)}
         onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
