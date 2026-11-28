@@ -64,30 +64,6 @@
         "median_mishap_cost": 420
       },
       {
-        "episode__season": "11",
-        "total_mishap_loss": 42685,
-        "total_mishap_loss_low": 15800,
-        "total_mishap_loss_high": 133300,
-        "mishap_count": 10,
-        "median_mishap_cost": 750
-      },
-      {
-        "episode__season": "1",
-        "total_mishap_loss": 12040,
-        "total_mishap_loss_low": 5390,
-        "total_mishap_loss_high": 27880,
-        "mishap_count": 11,
-        "median_mishap_cost": 500
-      },
-      {
-        "episode__season": "6",
-        "total_mishap_loss": 6020125,
-        "total_mishap_loss_low": 2016090,
-        "total_mishap_loss_high": 11528200,
-        "mishap_count": 6,
-        "median_mishap_cost": 10000
-      },
-      {
         "episode__season": "3",
         "total_mishap_loss": 303010,
         "total_mishap_loss_low": 101800,
@@ -104,12 +80,28 @@
         "median_mishap_cost": 450
       },
       {
-        "episode__season": "7",
-        "total_mishap_loss": 28613,
-        "total_mishap_loss_low": 8950,
-        "total_mishap_loss_high": 42970,
-        "mishap_count": 9,
-        "median_mishap_cost": 300
+        "episode__season": "11",
+        "total_mishap_loss": 42685,
+        "total_mishap_loss_low": 15800,
+        "total_mishap_loss_high": 133300,
+        "mishap_count": 10,
+        "median_mishap_cost": 750
+      },
+      {
+        "episode__season": "6",
+        "total_mishap_loss": 6020125,
+        "total_mishap_loss_low": 2016090,
+        "total_mishap_loss_high": 11528200,
+        "mishap_count": 6,
+        "median_mishap_cost": 10000
+      },
+      {
+        "episode__season": "1",
+        "total_mishap_loss": 12040,
+        "total_mishap_loss_low": 5390,
+        "total_mishap_loss_high": 27880,
+        "mishap_count": 11,
+        "median_mishap_cost": 500
       },
       {
         "episode__season": "9",
@@ -118,6 +110,14 @@
         "total_mishap_loss_high": 3115575,
         "mishap_count": 14,
         "median_mishap_cost": 500
+      },
+      {
+        "episode__season": "7",
+        "total_mishap_loss": 28613,
+        "total_mishap_loss_low": 8950,
+        "total_mishap_loss_high": 42970,
+        "mishap_count": 9,
+        "median_mishap_cost": 300
       },
       {
         "episode__season": "12",
@@ -201,33 +201,6 @@
       },
       {
         "mishap__loss_kind": "realized",
-        "episode__season": "11",
-        "total_mishap_loss": 42685,
-        "total_mishap_loss_low": 15800,
-        "total_mishap_loss_high": 133300,
-        "mishap_count": 10,
-        "median_mishap_cost": 750
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "episode__season": "1",
-        "total_mishap_loss": 7860,
-        "total_mishap_loss_low": 4320,
-        "total_mishap_loss_high": 17580,
-        "mishap_count": 9,
-        "median_mishap_cost": 500
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "episode__season": "6",
-        "total_mishap_loss": 6020125,
-        "total_mishap_loss_low": 2016090,
-        "total_mishap_loss_high": 11528200,
-        "mishap_count": 6,
-        "median_mishap_cost": 10000
-      },
-      {
-        "mishap__loss_kind": "realized",
         "episode__season": "3",
         "total_mishap_loss": 301110,
         "total_mishap_loss_low": 101050,
@@ -246,6 +219,42 @@
       },
       {
         "mishap__loss_kind": "realized",
+        "episode__season": "11",
+        "total_mishap_loss": 42685,
+        "total_mishap_loss_low": 15800,
+        "total_mishap_loss_high": 133300,
+        "mishap_count": 10,
+        "median_mishap_cost": 750
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "episode__season": "6",
+        "total_mishap_loss": 6020125,
+        "total_mishap_loss_low": 2016090,
+        "total_mishap_loss_high": 11528200,
+        "mishap_count": 6,
+        "median_mishap_cost": 10000
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "episode__season": "1",
+        "total_mishap_loss": 7860,
+        "total_mishap_loss_low": 4320,
+        "total_mishap_loss_high": 17580,
+        "mishap_count": 9,
+        "median_mishap_cost": 500
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "episode__season": "9",
+        "total_mishap_loss": 46180,
+        "total_mishap_loss_low": 18920,
+        "total_mishap_loss_high": 115325,
+        "mishap_count": 12,
+        "median_mishap_cost": 500
+      },
+      {
+        "mishap__loss_kind": "realized",
         "episode__season": "7",
         "total_mishap_loss": 28613,
         "total_mishap_loss_low": 8950,
@@ -261,15 +270,6 @@
         "total_mishap_loss_high": 10300,
         "mishap_count": 2,
         "median_mishap_cost": 180
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "episode__season": "9",
-        "total_mishap_loss": 46180,
-        "total_mishap_loss_low": 18920,
-        "total_mishap_loss_high": 115325,
-        "mishap_count": 12,
-        "median_mishap_cost": 500
       },
       {
         "mishap__loss_kind": "realized",
@@ -327,21 +327,21 @@
       },
       {
         "mishap__loss_kind": "hypothetical",
-        "episode__season": "8",
-        "total_mishap_loss": 2500000,
-        "total_mishap_loss_low": 250000,
-        "total_mishap_loss_high": 25000000,
-        "mishap_count": 1,
-        "median_mishap_cost": 2500000
-      },
-      {
-        "mishap__loss_kind": "hypothetical",
         "episode__season": "2",
         "total_mishap_loss": 1800000,
         "total_mishap_loss_low": 600000,
         "total_mishap_loss_high": 6000000,
         "mishap_count": 1,
         "median_mishap_cost": 1800000
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "episode__season": "8",
+        "total_mishap_loss": 2500000,
+        "total_mishap_loss_low": 250000,
+        "total_mishap_loss_high": 25000000,
+        "mishap_count": 1,
+        "median_mishap_cost": 2500000
       },
       {
         "mishap__loss_kind": "realized",
@@ -383,33 +383,6 @@
       },
       {
         "mishap__is_catastrophic": "0",
-        "episode__season": "11",
-        "total_mishap_loss": 42685,
-        "total_mishap_loss_low": 15800,
-        "total_mishap_loss_high": 133300,
-        "mishap_count": 10,
-        "median_mishap_cost": 750
-      },
-      {
-        "mishap__is_catastrophic": "0",
-        "episode__season": "1",
-        "total_mishap_loss": 12040,
-        "total_mishap_loss_low": 5390,
-        "total_mishap_loss_high": 27880,
-        "mishap_count": 11,
-        "median_mishap_cost": 500
-      },
-      {
-        "mishap__is_catastrophic": "0",
-        "episode__season": "6",
-        "total_mishap_loss": 1020125,
-        "total_mishap_loss_low": 1016090,
-        "total_mishap_loss_high": 1028200,
-        "mishap_count": 5,
-        "median_mishap_cost": 10000
-      },
-      {
-        "mishap__is_catastrophic": "0",
         "episode__season": "3",
         "total_mishap_loss": 303010,
         "total_mishap_loss_low": 101800,
@@ -428,12 +401,30 @@
       },
       {
         "mishap__is_catastrophic": "0",
-        "episode__season": "7",
-        "total_mishap_loss": 28613,
-        "total_mishap_loss_low": 8950,
-        "total_mishap_loss_high": 42970,
-        "mishap_count": 9,
-        "median_mishap_cost": 300
+        "episode__season": "11",
+        "total_mishap_loss": 42685,
+        "total_mishap_loss_low": 15800,
+        "total_mishap_loss_high": 133300,
+        "mishap_count": 10,
+        "median_mishap_cost": 750
+      },
+      {
+        "mishap__is_catastrophic": "0",
+        "episode__season": "6",
+        "total_mishap_loss": 1020125,
+        "total_mishap_loss_low": 1016090,
+        "total_mishap_loss_high": 1028200,
+        "mishap_count": 5,
+        "median_mishap_cost": 10000
+      },
+      {
+        "mishap__is_catastrophic": "0",
+        "episode__season": "1",
+        "total_mishap_loss": 12040,
+        "total_mishap_loss_low": 5390,
+        "total_mishap_loss_high": 27880,
+        "mishap_count": 11,
+        "median_mishap_cost": 500
       },
       {
         "mishap__is_catastrophic": "0",
@@ -443,6 +434,15 @@
         "total_mishap_loss_high": 3115575,
         "mishap_count": 14,
         "median_mishap_cost": 500
+      },
+      {
+        "mishap__is_catastrophic": "0",
+        "episode__season": "7",
+        "total_mishap_loss": 28613,
+        "total_mishap_loss_low": 8950,
+        "total_mishap_loss_high": 42970,
+        "mishap_count": 9,
+        "median_mishap_cost": 300
       },
       {
         "mishap__is_catastrophic": "0",
@@ -552,36 +552,6 @@
       {
         "mishap__loss_kind": "realized",
         "mishap__is_catastrophic": "0",
-        "episode__season": "11",
-        "total_mishap_loss": 42685,
-        "total_mishap_loss_low": 15800,
-        "total_mishap_loss_high": 133300,
-        "mishap_count": 10,
-        "median_mishap_cost": 750
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "1",
-        "total_mishap_loss": 7860,
-        "total_mishap_loss_low": 4320,
-        "total_mishap_loss_high": 17580,
-        "mishap_count": 9,
-        "median_mishap_cost": 500
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "6",
-        "total_mishap_loss": 1020125,
-        "total_mishap_loss_low": 1016090,
-        "total_mishap_loss_high": 1028200,
-        "mishap_count": 5,
-        "median_mishap_cost": 10000
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "mishap__is_catastrophic": "0",
         "episode__season": "3",
         "total_mishap_loss": 301110,
         "total_mishap_loss_low": 101050,
@@ -602,6 +572,46 @@
       {
         "mishap__loss_kind": "realized",
         "mishap__is_catastrophic": "0",
+        "episode__season": "11",
+        "total_mishap_loss": 42685,
+        "total_mishap_loss_low": 15800,
+        "total_mishap_loss_high": 133300,
+        "mishap_count": 10,
+        "median_mishap_cost": 750
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "6",
+        "total_mishap_loss": 1020125,
+        "total_mishap_loss_low": 1016090,
+        "total_mishap_loss_high": 1028200,
+        "mishap_count": 5,
+        "median_mishap_cost": 10000
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "1",
+        "total_mishap_loss": 7860,
+        "total_mishap_loss_low": 4320,
+        "total_mishap_loss_high": 17580,
+        "mishap_count": 9,
+        "median_mishap_cost": 500
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "9",
+        "total_mishap_loss": 46180,
+        "total_mishap_loss_low": 18920,
+        "total_mishap_loss_high": 115325,
+        "mishap_count": 12,
+        "median_mishap_cost": 500
+      },
+      {
+        "mishap__loss_kind": "realized",
+        "mishap__is_catastrophic": "0",
         "episode__season": "7",
         "total_mishap_loss": 28613,
         "total_mishap_loss_low": 8950,
@@ -618,16 +628,6 @@
         "total_mishap_loss_high": 10300,
         "mishap_count": 2,
         "median_mishap_cost": 180
-      },
-      {
-        "mishap__loss_kind": "realized",
-        "mishap__is_catastrophic": "0",
-        "episode__season": "9",
-        "total_mishap_loss": 46180,
-        "total_mishap_loss_low": 18920,
-        "total_mishap_loss_high": 115325,
-        "mishap_count": 12,
-        "median_mishap_cost": 500
       },
       {
         "mishap__loss_kind": "realized",
@@ -702,22 +702,22 @@
       {
         "mishap__loss_kind": "hypothetical",
         "mishap__is_catastrophic": "0",
-        "episode__season": "8",
-        "total_mishap_loss": 2500000,
-        "total_mishap_loss_low": 250000,
-        "total_mishap_loss_high": 25000000,
-        "mishap_count": 1,
-        "median_mishap_cost": 2500000
-      },
-      {
-        "mishap__loss_kind": "hypothetical",
-        "mishap__is_catastrophic": "0",
         "episode__season": "2",
         "total_mishap_loss": 1800000,
         "total_mishap_loss_low": 600000,
         "total_mishap_loss_high": 6000000,
         "mishap_count": 1,
         "median_mishap_cost": 1800000
+      },
+      {
+        "mishap__loss_kind": "hypothetical",
+        "mishap__is_catastrophic": "0",
+        "episode__season": "8",
+        "total_mishap_loss": 2500000,
+        "total_mishap_loss_low": 250000,
+        "total_mishap_loss_high": 25000000,
+        "mishap_count": 1,
+        "median_mishap_cost": 2500000
       },
       {
         "mishap__loss_kind": "realized",
@@ -761,6 +761,6 @@
       }
     ]
   },
-  "exported_at": "2026-11-25T17:08:44+00:00",
+  "exported_at": "2026-11-28T18:20:12+00:00",
   "source": "curb_prod"
 }
