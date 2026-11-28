@@ -43,12 +43,6 @@ models:
       - name: loss_p90_usd
         data_type: float64
         description: '{{ doc("forecast_loss_p90_usd") }}'
-      - name: realized_loss_median_usd
-        data_type: float64
-        description: '{{ doc("forecast_realized_loss_median_usd") }}'
-      - name: hypothetical_loss_median_usd
-        data_type: float64
-        description: '{{ doc("forecast_hypothetical_loss_median_usd") }}'
       - name: catastrophe_chance
         data_type: float64
         description: '{{ doc("catastrophe_chance") }}'

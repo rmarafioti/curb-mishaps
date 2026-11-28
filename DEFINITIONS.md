@@ -69,10 +69,6 @@ Year the forecast season would air (one season a year after Season 12 in 2024). 
 Episodes in the forecast season (10, like every real season).
 {% enddocs %}
 
-{% docs forecast_hypothetical_loss_median_usd %}
-Median simulated total of the season's everyday hypothetical losses (missed income), in dollars of its air year.
-{% enddocs %}
-
 {% docs forecast_loss_median_usd %}
 Median simulated total loss for the season version (everyday mishaps only, or plus a catastrophe; see has_forecast_catastrophe), in dollars of its air year. Half the simulated seasons cost less, half more.
 {% enddocs %}
@@ -95,10 +91,6 @@ Median simulated number of everyday mishaps in the season.
 
 {% docs forecast_mishaps_p90 %}
 90th percentile of the season's simulated everyday mishap count: the high end of the 80% range.
-{% enddocs %}
-
-{% docs forecast_realized_loss_median_usd %}
-Median simulated total of the season's everyday realized losses (money or property actually lost), in dollars of its air year.
 {% enddocs %}
 
 {% docs forecast_season %}

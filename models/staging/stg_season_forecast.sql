@@ -13,8 +13,6 @@ select
     loss_p10_usd,
     loss_median_usd,
     loss_p90_usd,
-    realized_loss_median_usd,
-    hypothetical_loss_median_usd,
     catastrophe_chance,
 
 from {{ ref('season_forecast') }}

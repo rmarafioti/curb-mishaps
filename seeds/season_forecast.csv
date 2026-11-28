@@ -1,5 +1,5 @@
-season,air_year,has_forecast_catastrophe,episodes,mishaps_p10,mishaps_median,mishaps_p90,loss_p10_usd,loss_median_usd,loss_p90_usd,realized_loss_median_usd,hypothetical_loss_median_usd,catastrophe_chance
-13,2025,0,10,5,9,13,12289,173148,3579402,52026,336,0.1667
-13,2025,1,10,5,9,13,269436,7760322,9360481,52026,336,0.1667
-14,2026,0,10,5,9,13,12507,178490,3683883,53781,346,0.1667
-14,2026,1,10,5,9,13,276629,7985538,9625460,53781,346,0.1667
+season,air_year,has_forecast_catastrophe,episodes,mishaps_p10,mishaps_median,mishaps_p90,loss_p10_usd,loss_median_usd,loss_p90_usd,catastrophe_chance
+13,2025,0,10,5,9,13,12479,170845,3581111,0.1667
+13,2025,1,10,5,9,13,269115,7760264,9361922,0.1667
+14,2026,0,10,5,9,13,12862,178473,3683147,0.1667
+14,2026,1,10,5,9,13,277094,7985676,9632936,0.1667
