@@ -26,21 +26,6 @@
       "pct_mishap_to_net_worth": 0.005452912912912913
     },
     {
-      "metric_time__year": "2021-01-01 00:00:00",
-      "total_mishap_loss": 42685,
-      "pct_mishap_to_net_worth": 6.566923076923078e-05
-    },
-    {
-      "metric_time__year": "2000-01-01 00:00:00",
-      "total_mishap_loss": 12040,
-      "pct_mishap_to_net_worth": 4.3e-05
-    },
-    {
-      "metric_time__year": "2007-01-01 00:00:00",
-      "total_mishap_loss": 6020125,
-      "pct_mishap_to_net_worth": 0.010945681818181818
-    },
-    {
       "metric_time__year": "2002-01-01 00:00:00",
       "total_mishap_loss": 303010,
       "pct_mishap_to_net_worth": 0.0007829715762273902
@@ -51,14 +36,29 @@
       "pct_mishap_to_net_worth": 0.0002172920892494929
     },
     {
-      "metric_time__year": "2009-01-01 00:00:00",
-      "total_mishap_loss": 28613,
-      "pct_mishap_to_net_worth": 4.976173913043478e-05
+      "metric_time__year": "2021-01-01 00:00:00",
+      "total_mishap_loss": 42685,
+      "pct_mishap_to_net_worth": 6.566923076923078e-05
+    },
+    {
+      "metric_time__year": "2007-01-01 00:00:00",
+      "total_mishap_loss": 6020125,
+      "pct_mishap_to_net_worth": 0.010945681818181818
+    },
+    {
+      "metric_time__year": "2000-01-01 00:00:00",
+      "total_mishap_loss": 12040,
+      "pct_mishap_to_net_worth": 4.3e-05
     },
     {
       "metric_time__year": "2017-01-01 00:00:00",
       "total_mishap_loss": 796430,
       "pct_mishap_to_net_worth": 0.001225276923076923
+    },
+    {
+      "metric_time__year": "2009-01-01 00:00:00",
+      "total_mishap_loss": 28613,
+      "pct_mishap_to_net_worth": 4.976173913043478e-05
     },
     {
       "metric_time__year": "2024-01-01 00:00:00",
@@ -78,6 +78,6 @@
   ],
   "filterable_metrics": [],
   "slices": {},
-  "exported_at": "2026-11-25T17:08:44+00:00",
+  "exported_at": "2026-11-28T18:20:12+00:00",
   "source": "curb_prod"
 }
